@@ -102,6 +102,7 @@ img {
     background-color: var(--navbar-color);
     width: 622.2px;
     min-height: 228.8px;
+    box-sizing: border-box; /* el padding no afecte el ancho total */
 }
 
 #carrito h2{
@@ -133,12 +134,14 @@ img {
 
 .carrito__item {
     display: grid;
-    grid-template-columns: 90px 1fr auto;  /* Ajustar según necesidad */
+    grid-template-columns: 90px 1fr auto;  /* Ajustar segun necesidad */
     grid-gap: 10px;
     align-items: center;
     margin-bottom: 10px;
     background-color: var(--gradient-color);
     padding: 10px;
+    width: 100%; /* ancho para considerar el padding */
+    box-sizing: border-box; /* padding y border en el ancho y alto total */
     
 }
 
@@ -147,18 +150,21 @@ img {
     grid-template-columns: auto 1fr;
     grid-gap: 8px;
     align-items: center;
+    box-sizing: border-box;
 }
 
 
 .carrito__item__img{
     max-width: 100%;
     grid-row: 1 / span 3; /* Asegurarse que la imagen ocupe las filas necesarias */
+    box-sizing: border-box;
 }
 
 .carrito__item__info__store{
     display: flex;
     align-items: center;
     gap: 8px;
+    
 
 }
 
@@ -213,7 +219,7 @@ img {
     grid-column: 2;
     display: flex;
     flex-direction: row;
-
+    box-sizing: border-box;
     gap: 10px;
 }
 
@@ -225,8 +231,7 @@ img {
     font-weight: 800;
     font-size: 1.4rem;
     line-height: 2rem;
-    /* margin-right: 35px; */
-    
+    box-sizing: border-box;
     color: #fff;
     transition: color 150ms ease-in-out;
     font: inherit;
