@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700&display=swap');
+/* Variables del CSS */
+
+:root {
+    --background-color: #F2B705;
+    --text-color: #FFFFFF;
+    --navbar-color: #DA8E04;
+    --border-color: #734207;
+    --remove-btn-color: #FAD318;
+}
+
+
+/* Estilos del CSS */
+
+html{
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Fira Sans', sans-serif;
+  }
+
+header{
+    background: var(--navbar-color);
+    
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 94.18px;
+}
+
+.header__logo {
+    margin-right: auto; 
+    padding-left: 50px;
+}
+
+.header__process__list {
+    list-style: none;
+    padding-right: 160px;
+    display: flex;
+    justify-content: center; /* Centra la lista de proceso */
+    margin: 0 auto; 
+    width: 100%; 
+
+}
+
+.header__process__list__item {
+    margin-right: 20px; 
+    display: flex;
+    flex-direction: row;
+    gap: 10px; 
+    
+}
+
+
+.rounded_number {
+    width: 20px;
+    height: 20px;
+    background-color: var(--border-color);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px; /* Centra el texto verticalmente */
+    color: var(--navbar-color);
+    font-weight: bold;
+    font-size: 13px;
+    
+}
+
+
+#main_container {
+    display: flex;
+    width: 1040px;
+    height: 556px;
+    padding: 0px 76.5px 30px 15px;
+    align-items: flex-start;
+    gap: 20px;
+    flex-shrink: 0;
+}
+
+#carrito{
+    display: flex;
+    width: 635px;
+    height: 526px;
+    padding: 20px 20px 0px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    flex-shrink: 0;
+    background-color: var(--navbar-color);
+}
+
