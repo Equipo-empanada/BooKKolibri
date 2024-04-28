@@ -10,6 +10,9 @@
     --remove-btn-color: #FAD318;
     --gradient-color: #BF7D04;
 }
+/* *, *::before, *::after {
+    box-sizing: border-box;
+} */
 
 
 /* Estilos del CSS */
@@ -90,9 +93,12 @@ img {
     margin: 0 auto;
     max-width: 1040px;
     width: 100%;
+    gap: 20px;
 
 }
 
+
+/* Carrito de compra */   
 #carrito{
     display: flex;
     flex-direction: column;
@@ -192,6 +198,7 @@ img {
 
     /* Subirlo levemente para que quede centrado con el texto */
     transform: translateY(-7px);
+    cursor: pointer;
     
 }
 
@@ -241,4 +248,112 @@ img {
 .svg_question_mark{
     width: 12px;
     height: 12px;
+}
+
+/* resumen de compra */
+#purchase_summary{
+    width: 355px;
+    height: 253.15px;
+    background: var(--navbar-color);
+
+}
+
+#purchase_summary h2{
+    font-weight: 800;
+    font-size: 1.2rem;
+    line-height: 2.2rem;
+    margin: 20px 30px 15px;
+}
+@media (max-width: 1200px) {
+    #purchase_summary h2 {
+        font-size: calc(1.64rem + 0.1333333333vw);
+    }
+}
+
+#purchase_summary__button{
+    padding: 0 30px 10px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+#purchase_summary__button button{
+    background: var(--remove-btn-color);
+    color: #000;
+    font-family: Inter;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 14.9px;
+    line-height: 1.5rem;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    transition: background-color 150ms ease-in-out, border-color 150ms ease-in-out;
+    min-height: 35px;
+    padding: 0 10px;
+    cursor: pointer;
+    width: 100%;
+    border: 2px solid var(--remove-btn-color);
+}
+
+#purchase_summary__button button:hover{
+    background: var(--background-color);
+    border: 2px solid var(--background-color);
+    
+}
+
+#purchase_summary__list{
+    margin: 20px 30px 15px;
+}
+
+#purchase_summary__list li{
+    display: flex;
+    font-size: 0.8rem;
+    list-style: none;
+}
+
+#purchase_summary__list li strong{
+    font-size: 0.9rem;
+    font-weight: 800;
+    flex: 1;
+    text-align: right;
+}
+
+#purchase_summary__total{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    flex: none;
+    font-weight: 800;
+    text-align: right;
+    padding: 10px 30px 10px;
+    box-sizing: border-box;
+    
+}
+#separation_line hr{
+    width: 100%;
+    border: 0;
+    height: 1px;
+    background: var(--background-color);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+#purchase_summary__total__price{
+    flex: 1;
+    font-size: 3rem;
+    line-height: 1;
+    box-sizing: border-box;
+    
+}
+
+#purchase_summary__total__price span{
+    white-space: nowrap;
+    box-sizing: border-box;
+    font-size: 1.7rem;
 }
