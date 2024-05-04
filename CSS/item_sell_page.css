@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+/* Variables del CSS */
+
+:root {
+    --background-color: #F2B705;
+    --text-color: #FFFFFF;
+    --navbar-color: #DA8E04;
+    --border-color: #734207;
+    --remove-btn-color: #FAD318;
+    --gradient-color: #BF7D04;
+    --suggested-item-color: #D97803;
+}
+
+/* Estilos del CSS */
+
+html{
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Fira Sans', sans-serif;
+  }
+
+header{
+    background: var(--navbar-color);
+
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+div {
+    display: block;
+    unicode-bidi: isolate;
+}
+
+
+.header {
+    margin: 0 auto;
+    width: 100%;
+    max-width: calc(1200px + 40px);
+    padding: 0 20px;
+}
+
+.header__container {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-height: 55px;
+}
+
