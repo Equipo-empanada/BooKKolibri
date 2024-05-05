@@ -43,6 +43,7 @@ h1 {
     line-height: 1.1;
     margin-top: 10px;
     margin-bottom: 30px;
+    color: var(--text-color);
 }
 
 
@@ -101,11 +102,35 @@ h1 {
     grid-template-columns: 1fr auto;
     grid-gap: 20px;
     margin-bottom: 10px;
+    color: var(--text-color);
 }
 
 
 .product_title{
     margin-bottom: 5px;
+}
+
+.EKSLcf{
+    color: var(--border-color);
+}
+
+.item_tags{
+    margin-top: 20px;
+}
+
+.item_tags_list_item{
+    font-size: 1rem;
+    line-height: 1;
+    background: var(--border-color);
+    color: var(--text-color);
+    border-radius: 10px;
+    padding: 5px 10px 4px;
+    font-weight: 600;
+    margin: 0 5px 5px 0;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    
 }
 
 .jTNWAp {
@@ -121,7 +146,7 @@ a, button {
 }
 
 .jN0tyE {
-    color: #fad318;
+    color: var(--remove-btn-color);
 }
 
 .t4O1mP {
@@ -215,6 +240,7 @@ ol, ul, li {
 .t4O1mP .bhGerK>.AMp7ql {
     line-height: 1.1rem;
     padding-top: 3px;
+    color: var(--text-color);
 }
 
 @media (min-width: 931px) {
@@ -266,10 +292,12 @@ ol, ul, li {
     gap: 10px;
 }
 
+
 h3 {
     font-size: 1.2rem;
     line-height: 1.3;
     margin-bottom: 15px;
+    color: var(--border-color);
 }
 
 .offer_info {
@@ -286,6 +314,7 @@ h3 {
     flex-wrap: wrap;
     gap: 10px;
     width: 100%;
+    padding: 0px;
 }
 
 .offer_item{
@@ -411,6 +440,7 @@ h3 {
     line-height: 1.4;
     text-align: left;
     margin-right: 10px;
+    border: none;
 }
 
 .make_offer{
@@ -423,12 +453,15 @@ h3 {
     color: var(--border-color);
     background: none;
     transition: color 150ms ease-in-out;
+    border: none;
 
 }
 
 .offer_item_info_container{
     display: grid;
 }
+
+
 
 .make_purcharse{
     padding-left: 20px;
@@ -449,6 +482,7 @@ h3 {
     transition: background-color 150ms ease-in-out, border-color 150ms ease-in-out;
     min-height: 35px;
     padding: 0 10px;
+    border: none;
 }
 
 .item_price_container{
@@ -456,6 +490,8 @@ h3 {
     flex-direction: column;
     align-items: flex-end;
     grid-area: a3;
+    font-size: x-large;
+    color: var(--text-color);
 }
 
 .item_price{
@@ -476,6 +512,7 @@ h3 {
 
 .FdeKAC.wRMaqA {
     margin-top: 5px;
+    border: none;
 }
 
 .FdeKAC.Fwo3dk {
@@ -500,7 +537,7 @@ h3 {
 
 .offer_item_adds{
     font-size: 0.9rem;
-    color: #b3aac9;
+    color: var(--text-color);
     margin-top: -15px;
     margin-bottom: 4px;
 }
