@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+/* Variables de CSS */
+:root {
+    --background-color: #F2B705;
+    --text-color: #FFFFFF;
+    --navbar-color: #DA8E04;
+    --border-color: #734207;
+    --remove-btn-color: #FAD318;
+    --gradient-color: #BF7D04;
+    --suggested-item-color: #D97803;
+}
+
+/* Estilos de CSS*/
+html{
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Fira Sans', sans-serif;
+}
+
+header{
+    background: var(--navbar-color);
+
+}
+
+
+div {
+    display: block;
+    unicode-bidi: isolate;
+}
+
+
+/* Selectores */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 94.18px;
+    margin-bottom: 40px;
+}
+
+.header__plain{
+    margin-top: 2%;
+    background-color: #F2B705;
+}
+
+.header__logo {
+    margin-right: auto;
+    padding-left: 50px;
+}
+
+.header__process__list {
+    list-style: none;
+    padding-right: 160px;
+    display: flex;
+    justify-content: center; /* Centra la lista de proceso */
+    margin: 0 auto;
+    width: 100%;
+
+}
+
+.header__process__list__item {
+    margin-right: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+}
+
+
+.rounded_number {
+    width: 20px;
+    height: 20px;
+    background-color: var(--border-color);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px; /* Centra el texto verticalmente */
+    color: var(--navbar-color);
+    font-weight: bold;
+    font-size: 13px;
+
+}
+
+#main_container{
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start; /* Alinea los elementos al inicio */
+    transition: opacity 150ms ease-in-out;
+    padding: 0 5px;
+    margin: 0 auto;
+    max-width: 1040px;
+    width: 100%;
+    gap: 20px;
+    padding-bottom: 30px;
+
+}
+

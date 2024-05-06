@@ -1,0 +1,22 @@
+.main-login{
+    width: 100vw; /* Ocupa el 100% del ancho de la ventana */
+    height: 100vh;
+}
+
+.login{
+    display: grid;
+    gap: 5%;
+    grid-template-areas: "header" "main" "footer";
+    grid-template-rows: 10% auto 10%;
+}
+.header-login{
+    grid-area: header;
+}
+
+.main{
+    grid-area: main;
+}
+
+.footer{
+    grid-area: footer;
+}
