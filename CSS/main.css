@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 /* Variables de CSS */
-:root {
+/* :root {
     --background-color: #F2B705;
     --text-color: #FFFFFF;
     --navbar-color: #DA8E04;
@@ -10,6 +10,16 @@
     --remove-btn-color: #FAD318;
     --gradient-color: #BF7D04;
     --suggested-item-color: #D97803;
+} */
+
+:root {
+    --background-color: #F3E4D7;
+    --text-color: #333333;
+    --navbar-color: linear-gradient(135deg, #161c21, #1A4265); /* Azul profundo para la barra de navegación */
+    --border-color: #C3B392; /* Un marrón suave para los bordes */
+    --remove-btn-color: #F69C7B;
+    --gradient-color: linear-gradient(135deg, #4C6A92, #F5A178);
+    --suggested-item-color: #61706D;
 }
 
 /* Estilos de CSS*/
@@ -41,8 +51,8 @@ div {
 }
 
 .header__plain{
-    margin-top: 2%;
-    background-color: #F2B705;
+    padding-top: 2%;
+    background-color: var(--background-color);
 }
 
 .header__logo {

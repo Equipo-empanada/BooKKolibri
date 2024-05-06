@@ -4,6 +4,9 @@
 a{
     color:white;
 }
+p{
+    color: white;
+}
 h1{
     margin-bottom: 20px;
     letter-spacing: 1px;
@@ -17,11 +20,13 @@ h1{
 h2{
     font-family: 'Fira Sans', sans-serif;
     font-size: 2rem;
+    color: var(--border-color);
 }
 h3{
     font-family: Inter;
     font-size: 1rem;
     font-style: oblique;
+    color: var(--border-color);
 }
 /*Organización de los contenedores de elementos header, main, footer*/
 .login .register{
@@ -57,13 +62,15 @@ h3{
 
 .bloque-session{
     grid-area: bloque_session;
-    background-color:#734207;
+    background-image: linear-gradient(135deg, #161c21, #1A4265);
+    /* background-color:var(--navbar-color); */
     justify-self:right;
     /* margin:0 auto; */
     /* margin-bottom: 50px; */
     max-width:380px;
     min-height:245px;
     min-width:280px;
+    margin-top: 1.5%;
     padding:30px 40px;
     width:100%;
     border: 5px black solid;
@@ -94,7 +101,7 @@ h3{
     width: 18.75rem;
     height: 2.25rem;
     border: black solid;
-    background-color: #FAD318;
+    background-color: var(--border-color);
     font-weight: bold;
 }
 .google{
@@ -125,6 +132,8 @@ h3{
 /*Estilo exclusivos para el registro */
 .txt-info{
     margin: 4%;
+    color: white;
+    /* color: var(--text-color); */
     /* border: 1px black solid; */
     font-size: small;
     font-family: Inter;
@@ -137,7 +146,7 @@ h3{
     width: 18.75rem;
     height: 2.25rem;
     border: black solid;
-    background-color: #FAD318;
+    background-color: var(--border-color);
     font-weight: bold;
 }
 .mensaje-instrucciones{
@@ -147,6 +156,9 @@ h3{
 /*Organización de los elementos del footter*/
 .footer{
     margin-top: 2%;
+}
+.footer a{
+    color: var(--text-color);
 }
 .pie_pagina{
     padding: 20px 10px;
@@ -170,6 +182,6 @@ h3{
     font-weight: 800;
     font-size: 1.1rem;
     line-height: 1.2;
-    color: #fff;
+    color: var(--text-color);
     align-self: flex-start;
 }
