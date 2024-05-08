@@ -25,6 +25,7 @@
     --suggested-item-color: #61706D;
     --celeste-azul: linear-gradient(290deg, #95bbcc, var(--azul-oscuro) 120%);
     --dorado-azul: linear-gradient(250deg, #a0937a, var(--azul-oscuro));
+    --footer-color: #ac804a;
     ;
 }
 
@@ -441,7 +442,7 @@ div {
 footer {
     font: 1.6rem / 1.5 "metropolis", Arial, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
-    background: var(--border-color);
+    background: var(--footer-color);
     color: #fff;
     overflow-x: hidden;
 
@@ -487,14 +488,13 @@ footer {
 @media (min-width: 601px) {
     .footer__info {
         text-align: center;
-        background: var(--border-color);
         padding: 35px 20px 40px;
     }
 }
 
 .footer__info {
     text-align: center;
-    background: var(--border-color);
+    background: var(--footer-color);
     padding: 35px 20px 40px;
 
 

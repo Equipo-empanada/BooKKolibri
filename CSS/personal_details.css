@@ -22,6 +22,7 @@
     --remove-btn-color: #F69C7B;
     --gradient-color: linear-gradient(135deg, #4C6A92, #F5A178);
     --suggested-item-color: #61706D;
+    --footer-color: #ac804a;
 }
 
 /* *, *::before, *::after {
@@ -204,7 +205,7 @@ textarea,
 footer {
     font: 1.6rem / 1.5 "metropolis", Arial, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
-    background: var(--border-color);
+    background: var(--footer-color);
     color: #fff;
     overflow-x: hidden;
 
@@ -232,14 +233,13 @@ footer {
 @media (min-width: 601px) {
     .footer__info {
         text-align: center;
-        background: var(--border-color);
         padding: 35px 20px 40px;
     }
 }
 
 .footer__info {
     text-align: center;
-    background: var(--border-color);
+    background: var(--footer-color);
     padding: 35px 20px 40px;
 
 
