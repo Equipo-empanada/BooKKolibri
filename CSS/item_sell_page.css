@@ -691,7 +691,7 @@ footer{
 
 .footer__info {
     text-align: center;
-    background: var(--border-color);
+    background: var(--footer-color);
     padding: 35px 20px 40px;
     
 

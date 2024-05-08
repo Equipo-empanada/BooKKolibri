@@ -3,14 +3,18 @@
 /* Variables del CSS */
 
 :root {
-    --background-color: #F2B705;
-    --text-color: #FFFFFF;
-    --navbar-color: #DA8E04;
-    --border-color: #734207;
-    --remove-btn-color: #FAD318;
-    --gradient-color: #BF7D04;
-    --suggested-item-color: #D97803;
+    --background-color: #F3E4D7;
+    --text-color: #333333;
+    --text-color-light: #f5f5f5;
+    --navbar-color: linear-gradient(135deg, #161c21, #1A4265); /* Azul profundo para la barra de navegación */
+    --border-color: #C3B392; /* Un marrón suave para los bordes */
+    --azul-oscuro: #1A4265;
+    --remove-btn-color: #F69C7B;
+    --gradient-color: linear-gradient(135deg, #4C6A92, #F5A178);
+    --suggested-item-color:#61706D;
+    --footer-color: #ac804a;
 }
+
 /* *, *::before, *::after {
     box-sizing: border-box;
 } */
@@ -74,6 +78,11 @@ div {
 
 }
 
+.header__process__list__item p{
+    color: var(--background-color);
+}
+
+
 
 .rounded_number {
     width: 20px;
@@ -89,6 +98,13 @@ div {
 }
 
 
+#main_container, #subcontainer {
+    max-width: 1040px; /* Ancho máximo común */
+    width: 100%; /* Asegura que ocupen todo el espacio disponible hasta el máximo */
+    margin: 0 auto; /* Centrado horizontal */
+    padding: 0 5px; /* Padding uniforme para ambos */
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+}
 
 
 
@@ -98,9 +114,6 @@ div {
     flex-wrap: wrap;
     align-items: flex-start; /* Alinea los elementos al inicio */
     transition: opacity 150ms ease-in-out;
-    padding: 0 5px;
-    margin: 0 auto;
-    max-width: 1040px;
     width: 100%;
     gap: 20px;
     padding-bottom: 30px;
@@ -122,7 +135,7 @@ div {
 }
 
 #carrito h2{
-    color: #FFF;
+    color: var(--azul-oscuro);
     font-family: Inter;
     font-size: 17.6px;
     font-style: normal;
@@ -154,7 +167,7 @@ div {
     grid-gap: 10px;
     align-items: center;
     margin-bottom: 10px;
-    background-color: var(--gradient-color);
+    background-image: linear-gradient(290deg, #95bbcc, var(--azul-oscuro) 120%);
     padding: 10px;
     width: 100%; /* ancho para considerar el padding */
     box-sizing: border-box; /* padding y border en el ancho y alto total */
@@ -242,6 +255,8 @@ div {
 
 .carrito__item__book_status p{
     font-size: small;
+    color: var(--border-color);
+    font-family: Inter;
 }
 
 .carrito__item__price{
@@ -265,6 +280,7 @@ div {
     width: 355px;
     height: 253.15px;
     background: var(--navbar-color);
+    color: var(--text-color-light);
 
 }
 
@@ -288,7 +304,7 @@ div {
 }
 
 #purchase_summary__button button{
-    background: var(--remove-btn-color);
+    background: var(--border-color);
     color: #000;
     font-family: Inter;
     display: flex;
@@ -306,7 +322,7 @@ div {
     padding: 0 10px;
     cursor: pointer;
     width: 100%;
-    border: 2px solid var(--remove-btn-color);
+    border: 2px solid var(--border-color);
 }
 
 #purchase_summary__button button:hover{
@@ -382,9 +398,8 @@ div {
 }
 
 #suggested_items{
-    background-color: var(--navbar-color);
+    background-image: linear-gradient(250deg, #a0937a , var(--azul-oscuro) );
     padding: 20px;
-    
     
 }
 
@@ -397,13 +412,16 @@ div {
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
+    color: var(--text-color-light);
     
 }
 
 @media (max-width: 1200px) {
+    
     #suggested_items h2{
         font-size: calc(1.64rem + 0.1333333333vw);
     }
+
 
 }
 
@@ -414,7 +432,15 @@ div {
     padding: 0 30px;
     min-height: 335px;
     align-items: flex-start;
+    
 }
+
+ @media (max-width: 1200px) {
+    .suggested_items_container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
 
 .suggested_item_top{
     display: grid;
@@ -423,7 +449,7 @@ div {
     font-weight: 800;
     line-height: 1;
     font-size: 1.2rem;
-    background: var(--suggested-item-color);
+    background-image: linear-gradient(290deg, #95bbcc, var(--azul-oscuro) 120%);
 }
 .suggested_item{
     display: grid;
@@ -518,7 +544,7 @@ div {
 }
 
 .suggested_item__price_stock{
-    color: rgba(255, 255, 255, 0.70);
+    color: var(--azul-oscuro);
     font-family: Inter;
     font-size: 12.2px;
     font-style: normal;
@@ -532,7 +558,7 @@ div {
 footer{
     font: 1.6rem / 1.5 "metropolis", Arial, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
-    background: var(--border-color);
+    background: var(--background-color);
     color: #fff;
     overflow-x: hidden;
     
@@ -566,7 +592,7 @@ footer{
 
 .footer__info {
     text-align: center;
-    background: var(--border-color);
+    background: var(--footer-color);
     padding: 35px 20px 40px;
     
 
@@ -594,7 +620,7 @@ footer{
 }
 
 .footer__info_B {
-    color: #B3AAC9;
+    color: var(--azul-oscuro);
     font-family: Inter;
     font-size: 12.2px;
     font-style: normal;
