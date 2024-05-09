@@ -43,6 +43,9 @@ div {
     unicode-bidi: isolate;
 }
 
+body{
+    width: 100%;
+}
 
 
 
@@ -69,6 +72,22 @@ div {
     width: 100%;
 
 }
+
+/* Make responsive the process list */
+@media (max-width: 601px) {
+
+
+    .header__process__list{
+        display: none;
+    }
+    body{
+        overflow-x: hidden;
+    }
+
+
+
+}
+
 
 .header__process__list__item {
     margin-right: 20px;
@@ -437,7 +456,7 @@ div {
 
  @media (max-width: 1200px) {
     .suggested_items_container {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
