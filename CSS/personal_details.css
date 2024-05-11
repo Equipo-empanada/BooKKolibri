@@ -89,6 +89,16 @@ h1 {
     margin-bottom: 40px;
 }
 
+.nav-link {
+    color: white;
+    transition: none;
+}
+
+.nav-link:hover {
+    color: var(--border-color);
+    transition: none;
+}
+
 .header__logo {
     margin-right: auto;
     padding-left: 50px;
