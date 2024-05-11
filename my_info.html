@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalles Personales</title>
+    <title>Mi información</title>
     <link rel="stylesheet" href="CSS/reset.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.3/darkly/bootstrap.min.css"
@@ -14,13 +14,13 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
         </script>
 
-    <link rel="stylesheet" href="CSS/personal_details.css">
+    <link rel="stylesheet" href="CSS/my_info.css">
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lgk">
         <div class="container-fluid">
-            <a class="navbar-brand font-weight-bold" href="./home.php">
+            <a class="navbar-brand font-weight-bold" href="./home.html">
                 <img class="mr-2" src="./assets/g1.svg" alt="Logo" height="50" />
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -32,7 +32,7 @@
                     <ul class="navbar-nav">
 
                         <li class="nav-item">
-                            <a class="nav-link" href="">Cambiar datos personales</a>
+                            <a class="nav-link" href="./personal_details.html">Cambiar datos personales</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="./login.php">Cambiar la contraseña</a>
@@ -53,25 +53,29 @@
     <main>
         <div id="main_container">
             <ul class="navMenu">
-                <li><a class="link" href="./my_info.html">Mi Información</a></li>
-                <li>Datos personales</li>
+                <li>Mi información</li>
             </ul>
-            <h1>Datos Personales</h1>
-            <form>
-                <span class="label">Nombre y apellido</span>
-                <input type="text" name="nombre" id="nombre" value="">
-                <span class="label">Fecha de nacimiento</span>
-                <input id="fechaNacimiento" value="" type="date"></button>
-                <span class="label">Provincia</span>
-                <input type="text" name="provincia" id="provincia" value="">
-                <span class="label">Código Postal</span>
-                <input type="text" name="postal" id="postal" value="">
-                <span class="label">Ciudad</span>
-                <input type="text" name="ciudad" id="ciudad" value="">
-                <span class="label">Número de Teléfono</span>
-                <input type="tel" name="numeroTelefono" id="numeroTelefono" value="">
-            </form>
-            <button class="guardar">Guardar</button>
+            <div class="personal-info">
+                <div class="profile-pic">
+                    <img src="./assets/icon.jpg">
+                </div>
+                <div class="personal-info-text">
+                    <div>usuario123</div>
+                    <div>diegoa.castro@ucuenca.edu.ec</div>
+                </div>
+            </div>
+            <a class="info-button" href="./personal_details.html">
+                <h1>Cambiar Datos Personales</h1>
+            </a>
+            <a class="info-button">
+                <h1>Cambiar Contraseña</h1>
+            </a>
+            <a class="info-button">
+                <h1>Ver Transacciones</h1>
+            </a>
+            <a class="info-button">
+                <h1>Ver Reseñas</h1>
+            </a>
         </div>
 
     </main>
