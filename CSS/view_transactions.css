@@ -26,7 +26,6 @@
     --celeste-azul: linear-gradient(290deg, #95bbcc, var(--azul-oscuro) 120%);
     --dorado-azul: linear-gradient(250deg, #a0937a, var(--azul-oscuro));
     --footer-color: #ac804a;
-    ;
 }
 
 /* *, *::before, *::after {
@@ -35,14 +34,15 @@
 
 
 /* Estilos del CSS */
-main {
-    background-color: var(--background-color);
-}
 
 html {
     background-color: var(--background-color);
     color: var(--text-color);
     font-family: 'Fira Sans', sans-serif;
+}
+
+main {
+    background-color: var(--background-color);
 }
 
 header {
@@ -60,15 +60,31 @@ div {
     unicode-bidi: isolate;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+}
+
+h1 {
+    font-weight: 800;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
 .navbar,
 .navbar-expand-lg,
 .navbar-dark,
 .bg-dark {
-    background: var(--gradient-color);
+    background: var(--navbar-color);
 }
 
 .nav {
-    background: var(--text-color);
+    background: var(--navbar-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -76,111 +92,137 @@ div {
     margin-bottom: 40px;
 }
 
+.nav-link {
+    color: white;
+    transition: none;
+}
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 94.18px;
-    /* padding-bottom: 40px; */
+.nav-link:hover {
+    color: var(--border-color);
+    transition: none;
 }
 
 .header__logo {
-    margin-right: 50px;
-    padding-left: 50px;
-    display: inline-block;
-}
-
-.search_bar {
-    display: block;
-    margin-left: auto;
     margin-right: auto;
-    width: 40%;
-    padding: 15px;
-    background-color: var(--navbar-color);
-    color: var(--text-color);
-    border: 1px solid var(--text-color);
+    padding-left: 50px;
 }
 
-.carrito_compra {
-    display: block;
-    margin-left: auto;
-    margin-right: 10px;
-}
-
-.profile_pic {
-    display: block;
-    margin-left: 10px;
-    margin-right: 30px;
-
-}
-
-#banner {
+.header__process__list {
+    list-style: none;
+    padding-right: 160px;
+    display: flex;
+    justify-content: center;
+    /* Centra la lista de proceso */
+    margin: 0 auto;
     width: 100%;
-    height: 300px;
-    object-fit: cover;
-    object-position: 0% 80%;
+
+}
+
+.header__process__list__item {
+    margin-right: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
 }
 
 #main_container {
 
-    display: flex;
-    flex-wrap: wrap;
+    display: block;
+    /* flex-wrap: wrap; */
     align-items: flex-start;
     /* Alinea los elementos al inicio */
     transition: opacity 150ms ease-in-out;
     padding: 0 5px;
-    margin: 0 auto;
+    margin: 0 auto auto 20px;
     max-width: 1040px;
     width: 100%;
     gap: 20px;
     padding-bottom: 30px;
+    background-color: var(--background-color);
 
 }
 
-
-#separation_line hr {
-    width: 100%;
-    border: 0;
-    height: 1px;
-    background: var(--background-color);
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.navMenu {
+    display: flex;
+    padding: 20px 0 20px;
+    background-color: var(--background-color);
 }
 
+.navMenu>li {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
 
-#purchase_summary__total__price {
-    flex: 1;
-    font-size: 3rem;
+.navMenu>li::after {
+    content: "●";
+    font-size: 10px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 5px;
+    color: var(--border-color);
+}
+
+.navMenu>li:last-child {
+    color: var(--text-color)
+}
+
+.label {
+    font-weight: 600;
+    font-size: 1.2rem;
     line-height: 1;
-    box-sizing: border-box;
-
+    color: var(--text-color);
+    margin-bottom: 15px;
+    display: block;
 }
 
-#purchase_summary__total__price span {
-    white-space: nowrap;
-    box-sizing: border-box;
-    font-size: 1.7rem;
+input,
+textarea,
+.input {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #1f0a4e;
+    width: 100%;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    min-height: 36px;
+    background: #fff;
+    border: 1px solid #a09aac;
+    transition: border-color 150ms ease-in-out, background-color 150ms ease-in-out;
+    margin-bottom: 20px;
 }
 
-/*Items sugeridos*/
+.link {
+    margin: -10px;
+    padding: 10px;
+    font-weight: 600;
+    color: var(--text-color);
+    display: inline-block;
+    background: none;
+}
+
+
+
+
 #subcontainer {
     position: relative;
     margin: 0px;
     box-sizing: border-box;
     align-items: flex-start;
+    width: 100%;
 
 }
 
-#libros_venta {
-    background-color: var(--background-color);
+#compra {
+    /* background-color: var(--footer-color); */
     padding: 20px 100px;
+    /* width: 100%; */
 
 
 }
 
-#libros_venta h2 {
+#compra h2 {
     font-weight: 800;
     font-family: Inter;
     font-size: 20px;
@@ -193,28 +235,8 @@ div {
 
 }
 
-#ofertas {
-    background-image: var(--dorado-azul);
-    padding: 20px 100px;
-    /* width: 100%; */
-
-
-}
-
-#ofertas h2 {
-    font-weight: 800;
-    font-family: Inter;
-    font-size: 20px;
-    line-height: 2.2rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-
-}
-
 #intercambio {
-    background-color: var(--background-color);
+    background-image: var(--dorado-azul);
     padding: 20px 100px;
     /* width: 100%; */
 
@@ -230,7 +252,7 @@ div {
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
-    color: var(--azul-oscuro);
+    color: var(--background-color);
 
 }
 
@@ -258,50 +280,6 @@ div {
     border: 1px solid var(--border-color);
 }
 
-#generos {
-    background-image: var(--dorado-azul);
-    padding: 20px 100px;
-    width: 100%;
-
-
-}
-
-#generos h2 {
-    font-weight: 800;
-    font-family: Inter;
-    font-size: 20px;
-    line-height: 2.2rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-
-}
-
-#generos-container {
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
-    min-width: 60%;
-    align-items: center;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.genero {
-    margin-left: auto;
-    margin-right: auto;
-    width: 80px;
-    height: 80px;
-    /* padding: 15px; */
-    background-color: var(--azul-oscuro);
-    color: var(--text-color);
-    border: 5px solid var(--background-color);
-}
-
-.genero svg {
-    fill: var(--background-color);
-}
 
 @media (max-width: 1200px) {
     #suggested_items h2 {
