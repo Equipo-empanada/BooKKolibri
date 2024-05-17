@@ -98,8 +98,8 @@ div {
     width: 40%;
     padding: 15px;
     background-color: var(--navbar-color);
-    color: var(--text-color);
-    border: 1px solid var(--text-color);
+    color: var(--background-color);
+    border: 1px solid var(-background-color);
 }
 
 .carrito_compra {
@@ -312,11 +312,13 @@ div {
 
 .suggested_items_container {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 15px;
     padding: 0 30px;
     min-height: 335px;
     align-items: flex-start;
+    width: 80%;
+    margin: auto;
 }
 
 .suggested_item_top {
@@ -369,7 +371,7 @@ div {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     line-height: 1.5;
-    max-height: 3em;
+    max-height: 4em;
 
 }
 
@@ -391,7 +393,7 @@ div {
 }
 
 .suggested_item__info__status {
-    color: #734207;
+    color: var(--border-color);
     font-family: Inter;
     text-transform: uppercase;
     white-space: nowrap;
