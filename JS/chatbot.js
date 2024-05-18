@@ -47,9 +47,12 @@ class Chatbox {
             background: #F1F1F1;
         }
         .chatbox {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
+            position: fixed;
+            bottom: 20px; /* Distance from the bottom of the screen */
+            right: 20px; /* Distance from the right of the screen */
+            max-width: 400px;
+            width: 100%;
+            z-index: 1000; /* Ensure it stays on top of other elements */
         }
         
         /* CONTENT IS CLOSE */
