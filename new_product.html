@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./CSS/reset.css">
+    <link rel="stylesheet" href="./CSS/main.css">
+    <link rel="stylesheet" href="./CSS/new-product.css">
+    <title>BookKolibri - Nuevo Producto</title>
+</head>
+<body class="body-newProduct">
+    <header class="header">
+        <a href="#">
+            <img src="./assets/g1.svg" alt="Logo" height="75" class="header__logo">
+        </a>
+    </header>
+    <main class="main-container">
+        <form action="#" class="form-producto">
+            <div class="container-main">
+                <div class="descripcion-libro">
+                    <h2 id="titulo-dev-descrip">Nueva Publicación</h2>
+                    <input type="text" id="idTituloLibro" class="txt-descripcion" placeholder="Titulo de la públicación">
+                    <div class="container-img">
+                        <div class="img-carga" id="img1"></div>
+                        <div class="img-carga" id="img2"></div>
+                        <div class="img-carga" id="img2"></div>
+                        <div class="img-carga" id="img2"></div>
+                    </div>
+                    <textarea id="idDescripLibro" class="txt-descripcion" placeholder="Ingrese la descripción aquí.&#10;Máximo 150 caracteres." maxlength="150"></textarea>
+                    <button class="btn-cargar-img" id="btnCargarImg">Cargar Imagen</button>
+                </div>
+                <div class="precio-libro">
+                    
+                    <h2 class="precio">Precio: <input type="number" class="precio-input" placeholder="$ 1.0" step="0.01" min="0"/></h3>
+                    <div class="radio-group">
+                        <label for="radio-venta" class="radio-tipo">
+                          <input type="radio" name="radio-group" id="radio-venta" class="radio-input"  value="venta"> Venta
+                        </label><br>
+                        <label for="radio-intercambio" class="radio-tipo">
+                          <input type="radio" name="radio-group" id="radio-intercambio" class="radio-input"  value="intercambio"> Intercambio
+                        </label>
+                    </div>
+                </div>
+                <div class="datos-libro">
+                    <h2>Datos del Producto</h2><br>
+                    <div class="container-datos">
+                        <div class="labels">
+                            <label for="anio">Año de lanzamiento:</label>
+                            <label for="editores">Editorial:</label>
+                            <label for="autores">Autor: </label>
+                            <label for="estado">Estado:</label>
+                            <label for="idioma">Idioma</label>
+                        </div>
+                        <div class="inputs">
+                            <input type="number" id="inputAnio" class="input-anio" name="anio" min="1900" max="2100" step="1">
+                            <input type="text" class="input-editorial" id="inputEditorial">
+                            <input type="text" class="input-autor" id="inputAutores">
+                            <select name="estado" id="estado-libro" class="input-estado select">
+                                <option value="0">Seleccionar Estado</option>
+                                <option value="1">Nuevo</option>
+                                <option value="2">Usado - Como Nuevo</option>
+                                <option value="3">Usado</option>
+                            </select>
+                            <select name="idioma" id="inputIdioma" class="input-idioma">
+                                <option value="0">Seleccionar Idioma</option>
+                                <option value="esp">Español</option>
+                                <option value="ing">Inglés</option>
+                                <option value="fran">Francés</option>
+                                <option value="rus">Ruso</option>
+                                <option value="otr">Otro</option>
+                            </select>                       
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subcontainer-main">
+                <div class="etiquetas">
+                    <h2>Etiquetas</h2>
+                    <div class="labels-etq">
+                        <label for="ficcion">Ficción</label>
+                    </div>
+                    <div class="checkbox-etq">
+                        <input type="checkbox" name="" id="">
+                    </div>
+                </div>
+                <div class="punto-encuentro">
+                    <h2>Punto de encuentro</h2>
+                </div>
+            </div>
+        </form>
+    </main>
+    <footer class="footer">
+        <div class="container-footer">
+            <div class="footer__payment">
+                <img src="./assets/paypal.svg" alt="Formas de pago">
+            </div>
+            <div class="footer__info">
+                <h4>¡Vender en BooKKolibri es fácil y seguro!</h4>
+                <p class="footer__info_A">Si surgiera algún inconveniente, nuestro equipo de soporte te ayudará con gusto. </p>
+                <p class="footer__info_B">Copyright © 2024 BookKolibri. Todos los derechos reservados. SA “BooKKolibri”, Calle Falsa 123, Cuenca, Ecuador <a href="#">Términos y Condiciones</a>, <a href="#">Aviso de Privacidad</a></p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
