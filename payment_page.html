@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="CSS/reset.css">
+    <link rel="stylesheet" href="CSS/payment_page.css">
+</head>
+<body>
+    <header class="header">
+        <img src="./assets/g1.svg" alt="Logo" height="50" class="header__logo">
+        <ul class="header__process__list">
+            <li class="header__process__list__item">
+                <div class="rounded_number">1</div>
+                <p>Carrito</p>
+                <!-- Linea de separación blanca vectorial -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <line x1="-40" y1="12" x2="50" y2="12"></line>
+                
+            </li>
+            <li class="header__process__list__item">
+                <div class="rounded_number">2</div>
+                <p>Información</p>
+                <!-- Linea de separación blanca vectorial -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <line x1="-40" y1="12" x2="50" y2="12"></line>
+                
+            </li>
+            <li class="header__process__list__item">
+                <div class="rounded_number">3</div>
+                <p>Pago</p>
+            </li>
+        </ul>
+    </header>
+
+    <form>
+        <div id="page_structure">
+            <div id="payment_methods">
+                <ul id="payment_methods_column">
+                    <li>
+                        <button id="payment-dlocal_credit_card" type="button" class="radioLabel jws6Mp QOcvtj selected">
+                            <div class="payment_img">
+                                <img src="https://assets.eneba.games/payments/v1/color/dlocal_credit_card.svg" alt="Tarjeta de crédito">
+                            </div>
+                            <div>
+                                <h4>Tarjeta de crédito</h4>
+                                <p>Elige entre una variedad de pagos con Tarjeta de Crédito.</p>
+                            </div>
+                            <!-- chevronUp Indica que esta seleccionado -->
+                            <span class="radio chevronUp">  
+                                ::after
+                            </span>
+                        </button>
+                        <!-- wCMobA -->
+                        <div class="payment_info">
+                            <button class="auxbton" type="button">
+                                <span>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg" class="" style="max-width: 16px; min-width: 16px; height: auto;">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M11.655 3.29049C11.9513 2.9982 11.9547 2.52095 11.6625 2.22453C11.3703 1.9281 10.8933 1.92476 10.597 2.21705L1.22442 11.4633C1.08084 11.6049 1 11.7983 1 12C1 12.2017 1.08084 12.3951 1.22442 12.5367L10.597 21.783C10.8933 22.0752 11.3703 22.0719 11.6625 21.7755C11.9547 21.4791 11.9513 21.0018 11.655 20.7095L3.59054 12.7538H22.2457C22.6618 12.7538 22.9991 12.4163 22.9991 12C22.9991 11.5837 22.6618 11.2462 22.2457 11.2462H3.59057L11.655 3.29049Z"
+                                            fill="currentColor"></path>
+                                    </svg>
+                                </span>Tarjeta de crédito
+                            </button>
+                            <div class="uN43s8"></div>
+                            <div class="payment_info__structure">
+                                <div class id="credit_card_form">
+                                    <div class="credit_card_data">
+                                        <div class="credit_card_data__front">
+                                            <div class="error_message"></div>
+                                            <label for="card-field" class="card_label">
+                                                <span class="card_field_span">Número de tarjeta</span>
+                                                <input type="text" id="card-field" class="card_field" placeholder="1234 5678 9012 3456">  
+                                            </label>
+                                            <label for="card-holder-field">
+                                                <span class="card_field_span">Nombre del titular de la tarjeta </span>
+                                                <input type="text" id="card-holder-field" class="card_field" placeholder="Juan Perez">
+                                            </label>
+                                            <label for="card-expiration-field">
+                                                <span class="card_expiration_date">Fecha de caducidad</span>
+                                                <input type="text" id="card-expiration-field" class="card_field" placeholder="MM/AA">
+                                            </label>
+
+                                        </div>
+
+                                        <div class="credit_card_data__back">
+                                            <label for="card-cvv-field">
+                                                <span class="card_field_span">CVV</span>
+                                                <input type="text" id="card-cvv-field" class="card_field" placeholder="123">
+                                            </label>
+
+
+
+                                        </div>
+
+                                        <div class="payment_is_safe_text">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.22 21.88" class="" style="width: auto; height: 18px;">
+                                                <path fill="#fff" d="M16.8 9.36a1.38 1.38 0 00-1.02-.41h-.47V6.7a6.44 6.44 0 00-1.98-4.73 6.64 6.64 0 00-9.44 0A6.44 6.44 0 001.9 6.7v2.25h-.48A1.43 1.43 0 000 10.39v10.05a1.43 1.43 0 001.43 1.44h14.35a1.43 1.43 0 001.44-1.44V10.38a1.38 1.38 0 00-.42-1.02zm-4.37-.41H4.78V6.7a3.83 3.83 0 017.65 0z">
+                                                </path>
+                                            </svg>
+                                            <p>El pago es seguro y está protegido por encriptación SSL</p>
+                                        </div>
+                                            
+                                    </div>
+                                    <!-- vKtn7h -->
+                                    <div class="client_id">
+                                        <div class="R7Wpgg">
+                                            <div class="a88M_B">
+                                                <label for="extra-field" class="W7lBtp">Identificación personal (CI)</label>
+                                                <span class="NWxAyd">*</span>
+                                            </div>
+                                        </div>
+                                        <div class="client_id_line">
+                                            <input type="text" id="extra-field" required="" class="input_id_cliente" autocomplete="off" data-hj-suppress="true">
+                                        </div>
+                                    </div>
+
+                                    <div> 
+                                        <hr class="line">
+                                        <h3 id = "fact_direc">Dirección de facturación</h3>
+                                        <div class="billing_address">
+                                            <div class="UdnpKl">
+                                                <label for="country" class="LoM1Ps">País/Región</label>
+                                                <span class="yJocoA">*</span>
+                                            </div>
+                                            <div class="billing_address_line">
+                                                <select id="country" class="input_billing_address" required="" data-hj-suppress="true">
+                                                    <option value="AF">Afganistán</option>
+                                                    <option value="AL">Albania</option>
+                                                    <option value="DE">Alemania</option>
+                                                    <option value="AD">Andorra</option>
+                                                    <option value="AO">Angola</option>
+                                                    <option value="AI">Anguila</option>
+                                                    <option value="AQ">Antártida</option>
+                                                    <option value="AG">Antigua y Barbuda</option>
+                                                    <option value="AN">Antillas Holandesas</option>
+                                                    <option value="SA">Arabia Saudí</option>
+                                                    <option value="DZ">Argelia</option>
+                                                    <option value="AR">Argentina</option>
+                                                    <option value="AM">Armenia</option>
+                                                    <option value="AW">Aruba</option>
+                                                    <option value="AU">Australia</option>
+                                                    <option value="AT">Austria</option>
+                                                    <option value="AZ">Azerbaiyán</option>
+                                                    <option value="BS">Bahamas</option>
+                                                    <option value="BH">Bahrein</option>
+                                                    <option value="BD">Bangladesh</option>
+                                                    <option value="BB">Barbados</option>
+                                                    <option value="BE">Bélgica</option>
+                                                    <option value="BZ">Belice</option>
+                                                    <option value="BJ">Benin</option>
+                                                    <option value="BM">Bermudas</option>
+                                                    <option value="BY">Bielorrusia</option>
+                                                    <option value="MM">Birmania</option>
+                                                    <option value="BO">Bolivia</option>
+                                                    <option value="BA">Bosnia y Herzegovina</option>
+                                                    <option value="BW">Botswana</option>
+                                                    <option value="BR">Brasil</option>
+                                                    <option value="BN">Brunei</option>
+                                                    <option value="BG">Bulgaria</option>
+                                                    <option value="BF">Burkina Faso</option>
+                                                    <option value="BI">Burundi</option>
+                                                    <option value="BT">Bután
+                                                    </option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="billing_address">
+                                            <div class="UdnpKl">
+                                                <label for="address" class="LoM1Ps">Ciudad</label>
+                                                <span class="yJocoA">*</span>
+                                            </div>
+                                            <div class="billing_address_line">
+                                                <input type="text" id="city" class="input_billing_address" required="" data-hj-suppress="true">
+                                            </div>
+                                        </div>
+                                        <div class="billing_address">
+                                            <div class="UdnpKl">
+                                                <label for="address" class="LoM1Ps">Dirección</label>
+                                                <span class="yJocoA">*</span>
+                                            </div>
+                                            <div class="billing_address_line">
+                                                <input type="text" id="address" class="input_billing_address" required="" data-hj-suppress="true">
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                        
+                                </div>
+                                    
+
+                            </div>
+
+
+
+                        </div>
+
+                    </li>
+                    <li>
+                        <button id="payment-braintree_paypal" type="button" class="radioLabel jws6Mp QOcvtj">
+                            <div class="payment_img">
+                                <img src="https://assets.eneba.games/payments/v1/color/braintree_paypal.svg" alt="PayPal">
+                            </div>
+                            <div>
+                                <h4>PayPal</h4>
+                            </div>
+                            <!-- chevronUp Indica que esta seleccionado -->
+                            <span class="radio chevronUp">  
+                                ::after
+                            </span>
+                        </button>
+                        <div class="payment_info">
+                            <button class="auxbton" type="button">
+                                <span>
+                                    <svg width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" xmlns="http://www.w3.org/2000/svg" class=""
+                                        style="max-width: 16px; min-width: 16px; height: auto;">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M11.655 3.29049C11.9513 2.9982 11.9547 2.52095 11.6625 2.22453C11.3703 1.9281 10.8933 1.92476 10.597 2.21705L1.22442 11.4633C1.08084 11.6049 1 11.7983 1 12C1 12.2017 1.08084 12.3951 1.22442 12.5367L10.597 21.783C10.8933 22.0752 11.3703 22.0719 11.6625 21.7755C11.9547 21.4791 11.9513 21.0018 11.655 20.7095L3.59054 12.7538H22.2457C22.6618 12.7538 22.9991 12.4163 22.9991 12C22.9991 11.5837 22.6618 11.2462 22.2457 11.2462H3.59057L11.655 3.29049Z"
+                                            fill="currentColor">
+                                        </path>
+                                    </svg>
+                                </span>PayPal</button>
+                            <div class="uN43s8"></div>
+                            <div class="payment_info__structure"></div>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+
+            <!-- OBhmV_ -->
+            <div class="payment_summary_container">
+                <div class="payment_summary">
+                    <ul class="purcharsed_products">
+                        <li class="product">
+                            <div class="product_store">
+                                <div class="product_store_info">
+                                    <div>
+                                        <img src="./assets/logotest.png" alt="Logo de la tienda" class="store_logo">
+                                    </div>
+                                    <div class="store_name_container">
+                                        <div class="store_name_info">
+                                            <span class="store_name" tabindex="-1">
+                                                Book Store Sample
+                                            </span>
+                                        </div>
+                                        <div class="LevzSC"></div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <img src="./assets/samplePurcharse 1.png" alt="Imagen del producto" class="product_image">
+                            <span class="product_name">Luna de Pluton</span>
+                            <div>
+                                <span class="product_status">Libro usado</span>
+                            </div>
+                            <div class="product_price">
+                                <div class="add_or_red_prods">
+                                    <button class="boton_prod reduce" disabled type="button">
+                                        <span>-</span>
+                                    </button>
+                                    <span class="quantity">1</span>
+                                    <button class="boton_prod" disabled type="button">
+                                        <span>+</span>
+                                    </button>
+                                </div>
+                                <div class="product_price_text">
+                                    <strong>
+                                        <span class="price">15,88&nbsp;US$</span>
+                                    </strong>
+                                </div>
+                            </div>
+                            <button class="remove_product" type="button">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5px" class=""
+                                        style="max-width: 16px; min-width: 16px; height: auto;">
+                                        <g>
+                                            <line x1="1" y1="5" x2="23" y2="5" fill="none" stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round"></line>
+                                            <path d="M14.25,1H9.75a1.5,1.5,0,0,0-1.5,1.5V5h7.5V2.5A1.5,1.5,0,0,0,14.25,1Z" fill="none" stroke="currentColor"
+                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                            <line x1="9.75" y1="17.75" x2="9.75" y2="10.25" fill="none" stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round"></line>
+                                            <line x1="14.25" y1="17.75" x2="14.25" y2="10.25" fill="none" stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round"></line>
+                                            <path d="M18.86,21.62A1.49,1.49,0,0,1,17.37,23H6.63a1.49,1.49,0,0,1-1.49-1.38L3.75,5h16.5Z" fill="none"
+                                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </g>
+                                    </svg>
+                                </span>
+                            </button>
+
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="payment_summary__total">
+                        <li>
+                            "Subtotal"
+                            <strong>
+                                <span class="price">15,88&nbsp;US$</span>
+                            </strong>
+                            
+                        </li>
+                        <li>
+                            "Tarifa de servicio"
+                            <strong>
+                                <span class="price">1,50&nbsp;US$</span>
+                            </strong>
+                        </li>
+                        <li></li>
+                    </ul>      
+                
+                    <div class="payment_total">
+                        "Total"
+                        ":"
+                        <div class="total_price">
+                            <strong>
+                                <span class="price">17,38&nbsp;US$</span>
+                            </strong>
+                        </div>
+                    </div>
+                    <div class="payment_button_container">
+                        <button class="payment_button" type="submit">
+                            <span>Realizar pago</span>
+                        </button>
+                    </div>
+
+                    <div class="payment_summary__terms">
+                        <p>Al hacer clic en "Realizar pago", aceptas los Términos y Condicionesy la Política de Privacidad de BooKKolibri.</p>
+                    </div>
+
+                </div>
+                
+                
+            </div>
+
+        </div>
+    </form>
+</body>
+</html>
