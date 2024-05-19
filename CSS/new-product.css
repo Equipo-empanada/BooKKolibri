@@ -31,16 +31,15 @@ h2{
     grid-template-areas: 
     "h2 h2 h2"
     "titulo titulo titulo"
-    "img img txtArea"
-    "img img txtArea"
-    "img img txtArea"
-    "btn-cargar btn-cargar txtArea";
+    "img txtArea txtArea"
+    "img txtArea txtArea"
+    "img txtArea txtArea"
+    "img txtArea txtArea";
     grid-area: desc;
     margin-right: 3%;
     background: var(--navbar-color);
     border-radius: 5px;
     box-shadow: -12px 12px 2px 1px var(--azul-oscuro);
-
 }
 
 .precio-libro{
@@ -94,23 +93,16 @@ h2{
 }
 .container-img{
     grid-area: img;
-    width: 100%;
+    width: 24.472rem;
     height: 22rem;
-    border: 1px black solid;
     margin: 1% 1% 1% 1%;
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     /* margin-left: 25%; */
-}
-.img-carga{
-    height: 45%;
-    width: 45%;
-    background-color: white;
-    margin: 1% 1% 1% 1%;
 }
 
 #idTituloLibro{
@@ -125,9 +117,6 @@ h2{
     grid-area: txtArea;
     margin: 1% 1% 1% 10%; 
     resize: none;
-}
-.btn-cargar-img{
-    grid-area: btn-cargar;
 }
 /*ELEMENTO DE  .precio-libro*/
 .precio{
@@ -179,18 +168,138 @@ h2{
 }
 
 .etiquetas{
-    border: black solid 1px;
     width: 47%;
     height: auto;
     margin-right: 3%;
+    display: flex;
+    background: linear-gradient(227deg, #161c21, #1A4265);
+    border-radius: 5px;
+    box-shadow: -12px 12px 2px 1px var(--azul-oscuro);
+    padding: 2%;
 }
 .punto-encuentro{
     border: black solid 1px;
     width: 47%;
     height: auto;
 }
+/*Estilos de etiquetas*/
+.container-etiquetas-checkbox{
+    margin-top: 5%;
+    color: var(--text-color-light);
+}
 
+.etiquetas {
+    width: 100%;
+}
 
+.container-etiquetas-checkbox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.etiqueta-checkbox-pair {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-basis: calc(50% - 1rem); /* Ajusta el ancho para dos columnas con espacio */
+}
+input[type="checkbox"]:checked {
+    accent-color: green;
+}
+
+hr{
+    width: 100%;
+    margin-right: 25%;
+    border: 1px solid black;
+    height: 5px;
+    border-radius: 5px;
+    background: #6c757d;
+}
+
+/*Cargar fotos*/
+.img-carga{
+    height: 45%;
+    width: 45%;
+    /* background-color: white; */
+    margin: 1% 1% 1% 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 4px dashed #fff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.input-img{
+    display: none;
+}
+
+/*Media Query*/
+@media screen and (max-width: 1024px) {
+    .container-main{
+        display: grid;
+        grid-template-areas: 
+        "desc desc"
+        "precio precio"
+        "datos datos";
+        /* background-color: var(--azul-oscuro); */
+        margin: 3% 1% 5% 3%;
+    }
+    .precio-libro{
+        margin-top: 5%;
+        margin-bottom: 5%;
+    }
+    .descripcion-libro{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    #idTituloLibro{
+        height: 5%;
+        margin-top:3%;
+        margin-bottom: 3%;
+        margin-right: 5%;
+        margin-left: 5%;
+    }
+    #idDescripLibro{
+        height: 326px;
+        width: 300px;
+        margin: 1% 1% 1% 10%; 
+        resize: none;
+    }
+    .subcontainer-main{
+        display: flex;
+        flex-direction: column;
+    }
+    .punto-encuentro{
+        border: black solid 1px;
+        width: 100%;
+        height: auto;
+        margin-top: 7%;
+    }
+    .etiquetas{
+        width: 100%;
+        height: auto;
+    }
+    .container-img{
+        width: 100%;
+        height: 22rem;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+        /* overflow-y: scroll; */
+        /* margin-left: 25%; */
+    }
+    .etiqueta-checkbox-pair {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
 
 
 

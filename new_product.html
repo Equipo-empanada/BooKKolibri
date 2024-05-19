@@ -21,13 +21,29 @@
                     <h2 id="titulo-dev-descrip">Nueva Publicación</h2>
                     <input type="text" id="idTituloLibro" class="txt-descripcion" placeholder="Titulo de la públicación">
                     <div class="container-img">
-                        <div class="img-carga" id="img1"></div>
-                        <div class="img-carga" id="img2"></div>
-                        <div class="img-carga" id="img2"></div>
-                        <div class="img-carga" id="img2"></div>
+
+                        <div class="img-carga" id="img1">
+                            <span class="preview" id="preview1"><img id="icon1" src="./assets/icon-camera.svg" alt="icon-camera"></span>
+                        </div>
+                        <input type="file" id="add-photo1" name="img1" class="input-img">
+
+                        <div class="img-carga" id="img2">
+                            <span class="preview" id="preview2"><img id="icon2" src="./assets/icon-camera.svg" alt="icon-camera"></span>
+                        </div>
+                        <input type="file" id="add-photo2" name="img2" class="input-img">
+
+                        <div class="img-carga" id="img3">
+                            <span class="preview" id="preview3"><img id="icon3" src="./assets/icon-camera.svg" alt="icon-camera"></span>
+                        </div>
+                        <input type="file" id="add-photo3" name="img3" class="input-img">
+
+                        <div class="img-carga" id="img4">
+                            <span class="preview" id="preview4"><img id="icon4" src="./assets/icon-camera.svg" alt="icon-camera"></span>
+                        </div>
+                        <input type="file" id="add-photo4" name="img4" class="input-img">
+
                     </div>
                     <textarea id="idDescripLibro" class="txt-descripcion" placeholder="Ingrese la descripción aquí.&#10;Máximo 150 caracteres." maxlength="150"></textarea>
-                    <button class="btn-cargar-img" id="btnCargarImg">Cargar Imagen</button>
                 </div>
                 <div class="precio-libro">
                     
@@ -76,15 +92,123 @@
             <div class="subcontainer-main">
                 <div class="etiquetas">
                     <h2>Etiquetas</h2>
-                    <div class="labels-etq">
-                        <label for="ficcion">Ficción</label>
-                    </div>
-                    <div class="checkbox-etq">
-                        <input type="checkbox" name="" id="">
+                    <div class="container-etiquetas-checkbox">
+                        <hr>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="educativos">
+                            <label for="educativos" class="label-etiqueta">Educativos</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="filosofia">
+                            <label for="filosofia" class="label-etiqueta">Filosofía</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="artes">
+                            <label for="artes" class="label-etiqueta">Artes</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="ciencia">
+                            <label for="ciencia" class="label-etiqueta">Ciencia</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="medicina">
+                            <label for="medicina" class="label-etiqueta">Medicina</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="ingenieria">
+                            <label for="ingenieria" class="label-etiqueta">Ingeniería</label><br>
+                        </div>
+                        <hr>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="tecnologia">
+                            <label for="tecnologia" class="label-etiqueta">Tecnología</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="politica">
+                            <label for="politica" class="label-etiqueta">Política</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="economia">
+                            <label for="economia" class="label-etiqueta">Economía</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="historia">
+                            <label for="historia" class="label-etiqueta">Historia</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="biografia">
+                            <label for="biografia" class="label-etiqueta">Biografía</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="religioso">
+                            <label for="religioso" class="label-etiqueta">Textos Religiosos</label><br>
+                        </div>
+                        <hr>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="salud">
+                            <label for="salud" class="label-etiqueta">Salud y Bienestar</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="cocina">
+                            <label for="cocina" class="label-etiqueta">Cocina y gastronomía</label><br>
+                        </div>
+                        <hr>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="ficcion">
+                            <label for="ficcion" class="label-etiqueta">Ficción</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="misterio">
+                            <label for="misterio" class="label-etiqueta">Misterio</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="thriller">
+                            <label for="thriller" class="label-etiqueta">Thriller</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="horror">
+                            <label for="horror" class="label-etiqueta">Horror</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="fantasia">
+                            <label for="fantasia" class="label-etiqueta">Fantasía</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="juvenil">
+                            <label for="juvenil" class="label-etiqueta">Juvenil</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="romance">
+                            <label for="romance" class="label-etiqueta">Romance</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="belleza">
+                            <label for="belleza" class="label-etiqueta">Belleza</label><br>
+                        </div>
+                        <hr>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="comics_manga">
+                            <label for="comics_manga" class="label-etiqueta">Cómics/Manga</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="humor">
+                            <label for="humor" class="label-etiqueta">Humor</label><br>
+                        </div>
+                        <hr>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="autoayuda">
+                            <label for="autoayuda" class="label-etiqueta">Autoayuda</label><br>
+                        </div>
+                        <div class="etiqueta-checkbox-pair">
+                            <input type="checkbox" id="negocios">
+                            <label for="negocios" class="label-etiqueta">Negocios</label><br>
+                        </div>
+                        <hr>
                     </div>
                 </div>
                 <div class="punto-encuentro">
                     <h2>Punto de encuentro</h2>
+                    <iframe id="google-maps" frameborder="0"></iframe>
                 </div>
             </div>
         </form>
@@ -101,5 +225,6 @@
             </div>
         </div>
     </footer>
+    <script src="./JS/new_photo.js"></script>
 </body>
 </html>
