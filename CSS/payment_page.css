@@ -10,7 +10,7 @@
     --border-color: #C3B392; /* Un marrón suave para los bordes */
     --azul-oscuro: #1A4265;
     --remove-btn-color: #F69C7B;
-    --gradient-color: linear-gradient(135deg, #4C6A92, #F5A178);
+    --gradient-color: linear-gradient(135deg, #1A4265, #91b6d6, #C3B392);
     --suggested-item-color:#61706D;
     --footer-color: #ac804a;
 }
@@ -23,6 +23,7 @@ a, button {
     text-decoration: none;
     cursor: pointer;
     color: inherit;
+    border: none;
 }
 
 
@@ -51,6 +52,21 @@ div {
 
 body{
     width: 100%;
+}
+
+h4{
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+p{
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+h3{
+    font-size: 1rem;
+    font-weight: 800;
 }
 
 
@@ -250,20 +266,27 @@ body{
     grid-gap: 10px;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     margin-bottom: 15px;
+    padding-top:  15px;
 }
 
-.credit_card_data__front{
+.credit_card_data__front {
     display: grid;
     grid-gap: 20px;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 1fr; /* Una columna por defecto */
+    grid-template-rows: auto auto auto;
     min-height: 190px;
     background: rgba(0, 0, 0, .4);
     border-radius: 10px;
-    /* evolover los elementos */
-
     padding: 20px;
     position: relative;
 }
+
+@media (min-width: 600px) {
+    .credit_card_data__front {
+        grid-template-columns: 3fr 1fr; /* Solo aplicar el grid original en pantallas más grandes */
+    }
+}
+
 
 .credit_card_data__back{
     display: flex;
@@ -274,6 +297,10 @@ body{
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) 15%, rgba(0, 0, 0, 0.7) 15%, rgba(0, 0, 0, 0.7) 35%, rgba(0, 0, 0, 0.4) 35%);
 }
 
+.credit_card_data__back label{
+    padding-right: 10px;
+}
+
 .payment_is_safe_text{
     grid-column: 1 / -1;
     font-size: 1.4rem;
@@ -282,29 +309,47 @@ body{
 }
 
 
+.credit_card_data__front__logo{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.credit_card_data__front__logo img{
+    width: 25%;
+    height: 25%;
+    border-radius: 4px;
+}
+
+
+
 .error_message {
     grid-column: span 2;
     height: 25px;
     margin-bottom: -5px;
-    font-size: 0;
+    font-size: 1.2rem;
+    color: var(--background-color);
 }
 
-.card_field_span{
+.card_field_span,
+.card_expiration_date {
     font-weight: 600;
     font-size: 0.8rem;
     line-height: 1;
-    margin-bottom: 15px;
+    margin-bottom: 5px; /* Ajuste de margen inferior */
     display: block;
     color: #dcd8e6;
     transition: color 150ms ease-in-out;
 }
 
-.card_field{
+
+.card_field {
     border-bottom: 1px solid rgba(255, 255, 255, .2);
     transition: border-color 150ms ease-in-out, color 150ms ease-in-out;
+    width: 100%; /* Asegura que el ancho del input sea del 100% */
 }
-
-.card-holder-field{
+.card-holder-field {
     font-size: 1.6rem;
     font-weight: 400;
     font-size: 1.4rem;
@@ -314,20 +359,14 @@ body{
     background: none;
     height: 25px;
     border: none;
-    width: 100%;
+    width: 100%; /* Asegura que el ancho del input sea del 100% */
     border-bottom: 1px solid rgba(255, 255, 255, .1);
     transition: border-color 150ms ease-in-out;
     padding: 0;
 }
 
-.card_expiration_date{
-    font-weight: 600;
-    font-size: 0.8rem;
-    line-height: 1;
-    margin-bottom: 15px;
-    display: block;
-    color: #dcd8e6;
-    transition: color 150ms ease-in-out;
+#card-expiration-field {
+    max-width: 80px; /* Limita el ancho máximo del campo de fecha */
 }
 
 .card-cvv-field{
@@ -366,7 +405,7 @@ body{
     font-weight: 800;
     font-size: 1.4rem;
     line-height: 1.8rem;
-    color: #b3aac9;
+    color: var(--text-color);
 }
 
 .client_id_line{
@@ -464,13 +503,19 @@ body{
 
 @media (min-width: 601px) {
     .payment_summary_container {
-        background-image: var(--gradient-color);
-        margin: 0 15px 40px;
+        
         flex: 1 1 380px;
         position: sticky;
         top: 20px;
     }
 }
+
+.payment_summary_container {
+    background-image: var(--gradient-color);
+    margin: 0 15px 40px;
+}
+
+
 
 @media (min-width: 601px) {
     .purcharsed_products {
@@ -616,7 +661,7 @@ body{
     position: absolute;
     right: 30px;
     top: 10px;
-    color: rgba(255, 255, 255, .7);
+    color: var(--text-color-light);
 }
 
 @media (max-width: 924px) {
@@ -673,7 +718,7 @@ body{
 }
 
 .payment_button{
-    background: var(--gradient-color);
+    background: var(--navbar-color);
     border-radius: 4px;
     color: #fff;
     font-weight: 800;

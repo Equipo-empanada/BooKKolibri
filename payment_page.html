@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Payment page</title>
     <link rel="stylesheet" href="CSS/reset.css">
     <link rel="stylesheet" href="CSS/payment_page.css">
 </head>
@@ -69,7 +69,14 @@
                                 <div class id="credit_card_form">
                                     <div class="credit_card_data">
                                         <div class="credit_card_data__front">
-                                            <div class="error_message"></div>
+                                            <div class="error_message">
+                                                <p>Tarjeta de Crédito</p>
+                                            </div>
+                                            <div class="credit_card_data__front__logo">
+                                                <img src="https://assets.eneba.games/payments/v1/color/visa.svg" alt="Visa" class="credit_card_logo">
+                                                <img src="https://assets.eneba.games/payments/v1/color/mastercard.svg" alt="Mastercard" class="credit_card_logo">
+                                                <img src="https://assets.eneba.games/payments/v1/color/diners.svg" alt="Diners Club" class="credit_card_logo">
+                                            </div>
                                             <label for="card-field" class="card_label">
                                                 <span class="card_field_span">Número de tarjeta</span>
                                                 <input type="text" id="card-field" class="card_field" placeholder="1234 5678 9012 3456">  
@@ -100,7 +107,7 @@
                                                 <path fill="#fff" d="M16.8 9.36a1.38 1.38 0 00-1.02-.41h-.47V6.7a6.44 6.44 0 00-1.98-4.73 6.64 6.64 0 00-9.44 0A6.44 6.44 0 001.9 6.7v2.25h-.48A1.43 1.43 0 000 10.39v10.05a1.43 1.43 0 001.43 1.44h14.35a1.43 1.43 0 001.44-1.44V10.38a1.38 1.38 0 00-.42-1.02zm-4.37-.41H4.78V6.7a3.83 3.83 0 017.65 0z">
                                                 </path>
                                             </svg>
-                                            <p>El pago es seguro y está protegido por encriptación SSL</p>
+                                            <p>El pago es seguro y está protegido por encriptación</p>
                                         </div>
                                             
                                     </div>
@@ -302,14 +309,14 @@
                     </ul>
                     <ul class="payment_summary__total">
                         <li>
-                            "Subtotal"
+                            Subtotal
                             <strong>
                                 <span class="price">15,88&nbsp;US$</span>
                             </strong>
                             
                         </li>
                         <li>
-                            "Tarifa de servicio"
+                            Tarifa de servicio
                             <strong>
                                 <span class="price">1,50&nbsp;US$</span>
                             </strong>
@@ -318,8 +325,8 @@
                     </ul>      
                 
                     <div class="payment_total">
-                        "Total"
-                        ":"
+                        Total
+                        :
                         <div class="total_price">
                             <strong>
                                 <span class="price">17,38&nbsp;US$</span>
