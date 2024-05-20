@@ -33,7 +33,7 @@ function messageToSeller() {
 }
 
 function makePurcharse() {
-    location.href = "./purchase_pase.html";
+    location.href = "./purchase_page.html";
 }
 //Document Ready
 function init() {
