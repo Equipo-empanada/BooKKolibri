@@ -60,6 +60,22 @@ div {
     unicode-bidi: isolate;
 }
 
+a{
+    text-decoration: none;
+    color: var(--background-color);
+
+}
+
+#login_signup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 94.18px;
+    gap: 20px;
+    padding: 0 50px;
+}
+
+
 .navbar,
 .navbar-expand-lg,
 .navbar-dark,

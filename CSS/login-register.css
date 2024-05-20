@@ -28,13 +28,25 @@ h3{
     font-style: oblique;
     color: var(--border-color);
 }
+
+/* body{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+} */
+
+
+
+
+
 /*Organización de los contenedores de elementos header, main, footer*/
-.login .register{
+.login, .register{
     width: 100vw;
     height: 100vh;
     display:flex;
     flex-direction:column;
-    justify-content:space-between;
+    justify-content:space-between; 
     /* align-items: flex-start; */
 }
 /*---------------------------------------*/
