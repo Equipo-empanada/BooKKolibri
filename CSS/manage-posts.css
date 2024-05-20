@@ -26,6 +26,31 @@ h2{
     font-size: 1.5rem;
 }
 
+.navMenu {
+    display: flex;
+    padding: 20px 0 20px;
+    background-color: var(--background-color);
+}
+
+.navMenu>li {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.navMenu>li::after {
+    content: "●";
+    font-size: 10px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 5px;
+    color: var(--border-color);
+}
+
+.navMenu>li:last-child {
+    color: var(--text-color)
+}
+
 .main-container{
     margin-bottom: 1%;
 }
