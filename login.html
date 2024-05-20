@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./CSS/reset.css">
+    <link rel="stylesheet" href="./CSS/main.css">
+    <link rel="stylesheet" href="./CSS/login-register.css">
+    <title>BookKolibri - Login</title>
+</head>
+<body class="body-login">
+    <div class="login">
+        <header class="header__plain"> 
+            <a href="#">  <!--CAMBIAR POR INDEX -->
+                <img src="./assets/g1.svg" alt="Logo" height="75" class="header__logo">
+            </a>
+        </header>
+        <main class="main">
+            <div class="main-container">
+                <h1 class="saludo">¡Hola! <br>¡Qué gusto verte!</h1>
+                <div class="bloque-session">
+                    <div class="bloque-cabecera">
+                        <h2>Iniciar Sesión</h2>
+                        <h3>¿Nuevo Usuario?
+                            <a href="./register.html">Crear una cuenta</a>
+                        </h3>
+                    </div>
+                    <div class="bloque-logo">
+                        <img src="./assets/g2.svg" alt="Logo">
+                    </div>
+                    <form action="#" class="bloque-datos-usuario">
+                        <div class="datos-usuario">
+                            <input type="email" class="credenciales" name="email" id="user-email" placeholder="Email" required><br>
+                            <input type="password" class="credenciales" name="password" id="user-password" placeholder="Constraseña" required><br>
+                            <button type="submit" class="btn-iniciar-sesion" value="inicio-sesion" id="btnIniciar-sesion">Iniciar Sesión</button>
+                        </div>
+                    </form>
+                    <hr>
+                    <div class="google">
+                        <a href="#" id="google-login">
+                            <img src="./assets/google_logo.svg" alt="google" id="google-logo">Continuar con Google
+                        </a>
+                    </div>
+                    <div class="bloque-redes">
+                        <img src="./assets/facebook_logo.svg" alt="facebook">
+                        <img src="./assets/instagram_logo.svg" alt="instagram">
+                        <img src="./assets/whatsapp_logo.svg" alt="whatsapp">
+                        <img src="./assets/X_logo.svg" alt="">
+                        
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="contenido_pie">
+                <a href="#" target="_blank" class="txt_pie">Terminos y Condiciones</a>
+                <a href="#" target="_blank" class="txt_pie">Aviso de Privacidad</a>
+                <a href="#" target="_blank" class="txt_pie">Soporte</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

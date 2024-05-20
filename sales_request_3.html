@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./CSS/reset.css">
+    <link rel="stylesheet" href="./CSS/main.css">
+    <link rel="stylesheet" href="./CSS/sales_request.css">
+    <title>BookKolibri - Solicitud</title>
+</head>
+<body>
+    <header class="header">
+        <img src="./assets/g1.svg" alt="Logo" height="50" class="header__logo">
+        <ul class="header__process__list">
+            <li class="header__process__list__item">
+                <div class="rounded_number">&check;</div>
+                <p class="label-pag">Información Básica</p>
+                <!-- Linea de separación blanca vectorial -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <line x1="-40" y1="12" x2="50" y2="12"></line>
+                </svg>
+            </li>
+            <li class="header__process__list__item">
+                <div class="rounded_number">&check;</div>
+                <p class="label-pag">Referencias Comerciales</p>
+                <!-- Linea de separación blanca vectorial -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <line x1="-40" y1="12" x2="50" y2="12"></line>
+                </svg>
+            </li>
+            <li class="header__process__list__item">
+                <div class="rounded_number">3</div>
+                <p class="label-pag">Documentos</p>
+            </li>
+        </ul>
+    </header>
+    <main>
+        <h1>Documentos Legales</h1>
+        <form class="formulario">
+            <h2>Subir Archivos</h2>
+            <label for="cedula">Documento de Identidad</label>
+            <div class="div-file" id="div-cedula">
+                <label class="label-file">+ Subir archivo aquí</label><br>
+                <label class="sub-label">Formatos permitidos: .jpg .jpeg .png .pdf</label>
+            </div>
+            <input type="file" class="input-file" id="cedula">
+
+            <label for="domicilio">Comprobante de Domicilio (Empresa)</label>
+            <div class="div-file" id="div-domicilio">
+                <label class="label-file">+ Subir archivo aquí</label><br>
+                <label class="sub-label">Formatos permitidos: .jpg .jpeg .png .pdf</label>
+            </div>
+            <input type="file" class="input-file" id="domicilio">
+
+            <label for="permiso">Permiso Comercial</label>
+            <div class="div-file" id="div-permiso">
+                <label class="label-file">+ Subir archivo aquí</label><br>
+                <label class="sub-label">Formatos permitidos: .jpg .jpeg .png .pdf</label>
+            </div>
+            <input type="file" class="input-file" id="permiso">
+            <div class="nav-btn">
+                <button type="button" class="btn-atras" id="atr_2">Atrás</button>
+                <button type="submit" class="btn-siguiente" id="enviar_form">Enviar Solicitud</button>            
+            </div>
+        </form>
+    </main>
+    <script src="./JS/events_sales_request_3.js"></script>
+</body>
+</html>

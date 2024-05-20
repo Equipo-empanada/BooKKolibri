@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./CSS/reset.css">
+    <link rel="stylesheet" href="./CSS/main.css">
+    <link rel="stylesheet" href="./CSS/manage-posts.css">
+    <title>Libros-Públicados</title>
+</head>
+<body>
+    <header class="header">
+        <a href="#">
+            <img src="./assets/g1.svg" alt="Logo" height="75" class="header__logo">
+        </a>
+    </header>
+    <main class="main-container">
+        <div class="titulo">
+            <h1>Administra tus Publicaciones</h1>
+            <h2 class="sub-titulo">Filtros</h2>
+        </div>
+        <div class="container-encabezado">
+            <div class="buscador">
+                <input type="text" placeholder="Buscar Por Titulo...">
+                <button type="submit">Buscar</button>
+            </div>
+            <div class="filtros">
+                <select id="generos-select">
+                    <option value="0">Género</option>
+                    <option value="educativos">Educativos</option>
+                    <option value="filosofia">Filosofía</option>
+                    <option value="artes">Artes</option>
+                    <option value="ciencia">Ciencia</option>
+                    <option value="medicina">Medicina</option>
+                    <option value="ingenieria">Ingeniería</option>
+                    <option value="tecnologia">Tecnología</option>
+                    <option value="politica">Política</option>
+                    <option value="economia">Economía</option>
+                    <option value="historia">Historia</option>
+                    <option value="biografia">Biografía</option>
+                    <option value="religioso">Textos Religiosos</option>
+                    <option value="salud">Salud y Bienestar</option>
+                    <option value="cocina">Cocina y gastronomía</option>
+                    <option value="ficcion">Ficción</option>
+                    <option value="misterio">Misterio</option>
+                    <option value="thriller">Thriller</option>
+                    <option value="horror">Horror</option>
+                    <option value="fantasia">Fantasía</option>
+                    <option value="juvenil">Juvenil</option>
+                    <option value="romance">Romance</option>
+                    <option value="belleza">Belleza</option>
+                </select>
+                
+                <select name="idioma" id="filterIdioma" class="filter-idioma">
+                    <option value="0">Idioma</option>
+                    <option value="esp">Español</option>
+                    <option value="ing">Inglés</option>
+                    <option value="fran">Francés</option>
+                    <option value="rus">Ruso</option>
+                    <option value="otr">Otro</option>
+                </select> 
+            </div>
+            <div class="acciones">
+                <!-- Botones para agregar nuevas publicaciones y otras acciones -->
+                <button id="add-post" type="button">Nueva Publicación</button>
+            </div>
+        </div>
+        <div class="container-tabla">
+            <table class="contenido-tabla">
+                <thead>
+                    <tr>
+                        <th>Acciones</th> <!-- Aca va puede marcar si quiere eliminar o editar -->
+                        <th>Titulo</th>
+                        <th>Autor</th>
+                        <th>Género</th>
+                        <th>Imágen</th>
+                    </tr>
+                </thead>
+                <tbody class="tabla-body">
+                    <tr>
+                        <td>
+                            <img class="btn-tabla editar-post" src="./assets/icon_edit.svg" alt="editar">
+                            <img class="btn-tabla delete-post" src="./assets/icon_trash.svg" alt="delete">
+                        <td>El cuervo (1845)</td>
+                        <td>Edgar Allan Poe</td>
+                        <td>Fantasía<br>Horror</td>
+                        <td><img src="./assets/libro_cuervo.svg" alt="libro"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img class="btn-tabla editar-post" src="./assets/icon_edit.svg" alt="editar">
+                            <img class="btn-tabla delete-post" src="./assets/icon_trash.svg" alt="delete">
+                        <td>El cuervo (1845)</td>
+                        <td>Edgar Allan Poe</td>
+                        <td>Fantasía<br>Horror</td>
+                        <td><img src="./assets/libro_cuervo.svg" alt="libro"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img class="btn-tabla editar-post" src="./assets/icon_edit.svg" alt="editar">
+                            <img class="btn-tabla delete-post" src="./assets/icon_trash.svg" alt="delete">
+                        <td>El cuervo (1845)</td>
+                        <td>Edgar Allan Poe</td>
+                        <td>Fantasía<br>Horror</td>
+                        <td><img src="./assets/libro_cuervo.svg" alt="libro"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img class="btn-tabla editar-post" src="./assets/icon_edit.svg" alt="editar">
+                            <img class="btn-tabla delete-post" src="./assets/icon_trash.svg" alt="delete">
+                        <td>El cuervo (1845)</td>
+                        <td>Edgar Allan Poe</td>
+                        <td>Fantasía<br>Horror</td>
+                        <td><img src="./assets/libro_cuervo.svg" alt="libro"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img class="btn-tabla editar-post" src="./assets/icon_edit.svg" alt="editar">
+                            <img class="btn-tabla delete-post" src="./assets/icon_trash.svg" alt="delete">
+                        <td>El cuervo (1845)</td>
+                        <td>Edgar Allan Poe</td>
+                        <td>Fantasía<br>Horror</td>
+                        <td><img src="./assets/libro_cuervo.svg" alt="libro"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img class="btn-tabla editar-post" src="./assets/icon_edit.svg" alt="editar">
+                            <img class="btn-tabla delete-post" src="./assets/icon_trash.svg" alt="delete">
+                        <td>El cuervo (1845)</td>
+                        <td>Edgar Allan Poe</td>
+                        <td>Fantasía<br>Horror</td>
+                        <td><img src="./assets/libro_cuervo.svg" alt="libro"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <footer>
+        <div class="footer__info">
+            <h4>¡Comprar en BooKKolibri es fácil y seguro!</h4>
+            <p class="footer__info_A">Si surgiera algún inconveniente, nuestro equipo de soporte te ayudará con gusto.
+            </p>
+            <p class="footer__info_B">Copyright © 2024 BookKolibri. Todos los derechos reservados. SA “BooKKolibri”,
+                Calle Falsa 123, Cuenca, Ecuador Términos y Condiciones, Aviso de Privacidad</p>
+        </div>
+    </footer>
+    <script src="./JS/events_manage_post.js"></script>
+</body>
+</html>
