@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+body{
+    width: 100vw;
+    height: 100vh;
+}
+
+h1{
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    box-sizing: border-box;
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+h2{
+    font-family: 'Fira Sans', sans-serif;
+    letter-spacing: 1px;
+    font-weight: 800;
+    font-size: 1.5rem;
+}
+
+.main-container{
+    margin-bottom: 1%;
+}
+.container-encabezado{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+}
+/* Buscador */
+.buscador {
+    display: flex;
+    align-items: center;
+}
+
+.buscador input[type="text"] {
+    font-family: 'Fira Sans', sans-serif;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+/* ------------------------------------------- */
+/* Botón Buscar */
+.buscador button[type="submit"] {
+    padding: 10px 20px;
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 1rem;
+    background-color: var(--azul-oscuro);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.buscador button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+.filtros select {
+    padding: 10px;
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+/* --------------------------------------------- */
+/* Boton Nueva Publicación */
+.acciones button[type="button"] {
+    padding: 10px 20px;
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 1rem;
+    background-color: var(--azul-oscuro);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.acciones button[type="button"]:hover {
+    background-color: #218838;
+}
+/*---------------------------------------------*/
+/*Estilos para la tabla*/
+.container-tabla {
+    margin-top: 2%;
+    overflow-x: auto;
+    background-color: aliceblue;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding-left: 2%;
+    padding-right: 2px;
+}
+
+.contenido-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    
+}
+
+.contenido-tabla th,
+.contenido-tabla td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.contenido-tabla th {
+    background-color: var(--azul-oscuro);
+    color: white;
+}
+
+.contenido-tabla td {
+    font-size: 1rem;
+}
+
+.contenido-tabla tr:hover {
+    background-color: #ccdff2;
+}
+
+.btn-tabla{
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.tabla-body{
+    overflow-y: scroll;
+}
+
+/*Media Query*/
+@media screen and (max-width: 1024px){
+    .container-encabezado{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 15px;
+    }
+}

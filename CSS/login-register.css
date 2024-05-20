@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+a{
+    color:white;
+}
+p{
+    color: white;
+}
+h1{
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    box-sizing: border-box;
+    font-family: 'Fira Sans', sans-serif;
+}
+h2{
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 2rem;
+    color: var(--border-color);
+}
+h3{
+    font-family: Inter;
+    font-size: 1rem;
+    font-style: oblique;
+    color: var(--border-color);
+}
+/*Organización de los contenedores de elementos header, main, footer*/
+.login .register{
+    width: 100vw;
+    height: 100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    /* align-items: flex-start; */
+}
+/*---------------------------------------*/
+/*Organización de los elemento del main*/
+.main-container{
+    display: grid;
+    /* width: 100%;
+    height: 75%; */
+    padding-left: 10%;
+    grid-template-areas: "saludo bloque_session";
+    grid-template-columns: 50% 40%;
+    /* margin-top: 10px; */
+    /* margin-bottom: 20px; */
+
+}
+.saludo{
+    grid-area: saludo;
+    align-self: center;
+    justify-self: left;
+    font-weight: 800; 
+    font-size: 4rem;
+    line-height: 1;
+    padding-right: 20%;
+}
+
+.bloque-session{
+    grid-area: bloque_session;
+    background-image: linear-gradient(135deg, #161c21, #1A4265);
+    /* background-color:var(--navbar-color); */
+    justify-self:right;
+    /* margin:0 auto; */
+    /* margin-bottom: 50px; */
+    max-width:380px;
+    min-height:245px;
+    min-width:280px;
+    margin-top: 1.5%;
+    padding:30px 40px;
+    width:100%;
+    border: 5px black solid;
+}
+
+.bloque-cabecera{
+    /* margin: 0px 20% 0px 10%; */
+    margin-right: 20%;
+}
+
+.bloque-logo{
+    margin: 0px 30% 0px 30%;
+    padding: 20px 0px 20px 0px;
+    /* margin-left: 30%;
+    margin-right: 30%; */
+}
+.datos-usuario{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.credenciales{
+    height: 1.75rem; 
+    width: 18.75rem;
+}
+.btn-iniciar-sesion{
+    width: 18.75rem;
+    height: 2.25rem;
+    border: black solid;
+    background-color: var(--border-color);
+    font-weight: bold;
+}
+.google{
+    border: black solid;
+    margin: 2% 14% 2% 14%;
+    padding: 2% 0% 2% 12%;
+    background-color: #fff;
+    align-items: center;
+}
+#google-login{
+    color: black;
+    text-decoration: double;
+}
+#google-register{
+    color: black;
+    text-decoration: double;
+}
+#google-logo{
+    margin-right: 3%;
+}
+.bloque-redes{
+    display: flex;
+    border: black solid 2px;
+    justify-content: space-around;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    margin-left: 14%;
+    margin-right: 14%;
+}
+/*Estilo exclusivos para el registro */
+.txt-info{
+    margin: 4%;
+    color: white;
+    /* color: var(--text-color); */
+    /* border: 1px black solid; */
+    font-size: small;
+    font-family: Inter;
+    font-style: normal;
+    text-align: justify;
+    padding: 0% 10% 0% 10%;
+    
+}
+.btn-crear-cuenta{
+    width: 18.75rem;
+    height: 2.25rem;
+    border: black solid;
+    background-color: var(--border-color);
+    font-weight: bold;
+}
+.mensaje-instrucciones{
+    padding-top: 3%;
+    margin-left: 15%;
+}
+/*Organización de los elementos del footter*/
+.footer{
+    margin-top: 2%;
+}
+.footer a{
+    color: var(--text-color);
+}
+.pie_pagina{
+    padding: 20px 10px;
+    padding-top: 20px;
+    padding-right: 10px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    text-align: center;
+}
+
+.contenido_pie{
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    grid-auto-flow: column;
+    grid-gap: 20px;
+
+}
+.txt_pie .mensaje-instrucciones{
+    font-size: small;
+    font-weight: 800;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    color: var(--text-color);
+    align-self: flex-start;
+}
+
+/*Media Query*/
+@media screen and (max-width: 1024px){
+    .saludo{
+        display: none;
+    }
+    .main-container{
+        display: flex;
+        align-items: center;
+        width: auto;
+    }
+    .contenido_pie{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
