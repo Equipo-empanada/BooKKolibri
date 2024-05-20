@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Icon -->
+    <link rel="icon" href="./assets/logo_icon.svg" type="image/svg">
     <link rel="stylesheet" href="./CSS/reset.css">
     <link rel="stylesheet" href="./CSS/main.css">
     <link rel="stylesheet" href="./CSS/login-register.css">
@@ -11,7 +13,7 @@
 <body class="body-login">
     <div class="login">
         <header class="header__plain"> 
-            <a href="#">  <!--CAMBIAR POR INDEX -->
+            <a href="./home.html">  <!--CAMBIAR POR INDEX -->
                 <img src="./assets/g1.svg" alt="Logo" height="75" class="header__logo">
             </a>
         </header>
@@ -30,9 +32,9 @@
                     </div>
                     <form action="#" class="bloque-datos-usuario">
                         <div class="datos-usuario">
-                            <input type="email" class="credenciales" name="email" id="user-email" placeholder="Email" required><br>
-                            <input type="password" class="credenciales" name="password" id="user-password" placeholder="Constraseña" required><br>
-                            <button type="submit" class="btn-iniciar-sesion" value="inicio-sesion" id="btnIniciar-sesion">Iniciar Sesión</button>
+                            <input type="email" class="credenciales" name="email" id="user_email" placeholder="Email" required><br>
+                            <input type="password" class="credenciales" name="password" id="user_password" placeholder="Constraseña" required><br>
+                            <button type="button" class="btn-iniciar-sesion" value="inicio-sesion" id="btnIniciar_sesion">Iniciar Sesión</button>
                         </div>
                     </form>
                     <hr>
@@ -59,5 +61,7 @@
             </div>
         </footer>
     </div>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="./JS/login.js"></script>
 </body>
 </html>

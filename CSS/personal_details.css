@@ -15,6 +15,7 @@
 :root {
     --background-color: #F3E4D7;
     --text-color: #333333;
+    --text-color-light: #f5f5f5;
     --navbar-color: linear-gradient(135deg, #161c21, #1A4265);
     /* Azul profundo para la barra de navegación */
     --border-color: #C3B392;
@@ -23,6 +24,7 @@
     --gradient-color: linear-gradient(135deg, #4C6A92, #F5A178);
     --suggested-item-color: #61706D;
     --footer-color: #ac804a;
+    --azul-oscuro: #1A4265;
 }
 
 /* *, *::before, *::after {
@@ -38,8 +40,17 @@ html {
     font-family: 'Fira Sans', sans-serif;
 }
 
+html, body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
 main {
     background-color: var(--background-color);
+    height: 60%;
+    
 }
 
 header {
@@ -71,6 +82,11 @@ h1 {
     margin-bottom: 20px;
     letter-spacing: 1px;
     text-transform: uppercase;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .navbar,
@@ -124,8 +140,6 @@ h1 {
 }
 
 #main_container {
-
-    display: block;
     /* flex-wrap: wrap; */
     align-items: flex-start;
     /* Alinea los elementos al inicio */
@@ -137,6 +151,7 @@ h1 {
     gap: 20px;
     padding-bottom: 30px;
     background-color: var(--background-color);
+    height: 100%;
 
 }
 
@@ -183,6 +198,7 @@ textarea,
     width: 100%;
     -webkit-appearance: none;
     -webkit-border-radius: 0;
+    border-radius: 0;
     min-height: 36px;
     background: #fff;
     border: 1px solid #a09aac;
@@ -206,19 +222,19 @@ textarea,
     margin: 20px auto 20px 10px;
     width: 40%;
     padding: 15px;
-    background-color: var(--navbar-color);
-    color: var(--text-color);
+    background-color: var(--azul-oscuro);
+    color: var(--text-color-light);
     border: 1px solid var(--text-color);
+    font-weight: 600;
 }
 
 /* Footer */
 footer {
-    font: 1.6rem / 1.5 "metropolis", Arial, Helvetica, sans-serif;
-    -webkit-font-smoothing: antialiased;
+    flex:2;
     background: var(--footer-color);
     color: #fff;
     overflow-x: hidden;
-
+    overflow-y: hidden;
 }
 
 .footer__payment {

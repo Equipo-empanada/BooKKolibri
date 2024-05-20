@@ -21,3 +21,35 @@ var product_state;
 var product_description;
 var product_price;
 var seller_name;
+
+//Botones
+var message_to_seller;
+var purchase_button;
+var make_offer;
+
+//Funciones
+function messageToSeller() {
+    location.href = "./message_page.html";
+}
+
+function makePurcharse() {
+    location.href = "./purchase_page.html";
+}
+//Document Ready
+function init() {
+
+    message_to_seller = document.getElementById("message_to_seller");
+    purchase_button = document.getElementById("make_purcharse");
+    make_offer = document.getElementById("make_offer");
+    
+    //Listeners
+    message_to_seller.addEventListener("click", messageToSeller);
+    purchase_button.addEventListener("click", makePurcharse);
+    make_offer.addEventListener("click", makePurcharse);
+
+}
+
+//Load
+document.addEventListener("DOMContentLoaded", init);
+
+

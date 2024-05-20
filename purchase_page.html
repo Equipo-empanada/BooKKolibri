@@ -11,7 +11,16 @@
 </head>
 <body>
     <header class="header">
-        <img src="./assets/g1.svg" alt="Logo" height="50" class="header__logo">
+        <a href="./item_sell_page.html" class="header__back">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </a>
+        <a href="./home.html" class="header__home">
+            <img src="./assets/g1.svg" alt="Logo" height="50" class="header__logo">
+        </a>
+        
         <ul class="header__process__list">
             <li class="header__process__list__item">
                 <div class="rounded_number">1</div>
@@ -40,7 +49,7 @@
             <div id ="carrito">
                 <h2>Mi carrito</h2>
                 <div class="carrito__item">
-                    <img src="./assets/image 1.png" alt="Producto 1" class="carrito__item__img">
+                    <img src="./assets/purcharseSample.png" alt="Producto 1" class="carrito__item__img">
                     <div class="carrito__item__info">
                         <div class="carrito__item__info__store">
                             <img src="./assets/logotest.png" alt="Logo">
@@ -63,7 +72,7 @@
                         </defs>
                     </svg>
                     <div class="carrito__item__info__product">
-                        <p>IT By Stephen King</p>
+                        <p>Luna de pluton</p>
                         
                     </div>
                     <div class="carrito__item__book_status">
@@ -244,5 +253,6 @@
         </div>
     </footer>
     <script src="./JS/chatbot.js"></script>
+    <script src="./JS/purchase_page.js"></script>
 </body>
 </html>
