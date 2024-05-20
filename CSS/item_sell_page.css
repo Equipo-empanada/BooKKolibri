@@ -502,7 +502,7 @@ h3 {
     flex-wrap: wrap;
 }
 
-.message_to_seller{
+#message_to_seller{
     font: inherit;
     color: var(--border-color);
     background: none;
@@ -519,7 +519,7 @@ h3 {
     border: none;
 }
 
-.make_offer{
+#make_offer{
     white-space: nowrap;
     line-height: 1.4;
     text-align: left;
@@ -540,7 +540,7 @@ h3 {
 
 
 
-.make_purcharse{
+#make_purcharse{
     padding-left: 20px;
     padding-right: 20px;
     margin: 15px 0 10px 0;
