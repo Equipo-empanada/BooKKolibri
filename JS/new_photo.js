@@ -1,3 +1,4 @@
+/*script para cargar imagenes para crear nuevo producto*/
 const imgenesCarga = document.getElementsByClassName("img-carga");
 const inputImg = document.getElementsByClassName("input-img");
 const spanPreview = document.getElementsByClassName("preview");

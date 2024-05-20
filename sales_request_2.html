@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./CSS/reset.css">
+    <link rel="stylesheet" href="./CSS/main.css">
+    <link rel="stylesheet" href="./CSS/sales_request.css">
+    <title>BookKolibri - Solicitud</title>
+</head>
+<body>
+    <header class="header">
+        <img src="./assets/g1.svg" alt="Logo" height="50" class="header__logo">
+        <ul class="header__process__list">
+            <li class="header__process__list__item">
+                <div class="rounded_number">&check;</div>
+                <p class="label-pag">Información Básica</p>
+                <!-- Linea de separación blanca vectorial -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <line x1="-40" y1="12" x2="50" y2="12"></line>
+                </svg>
+            </li>
+            <li class="header__process__list__item">
+                <div class="rounded_number">2</div>
+                <p class="label-pag">Referencias Comerciales</p>
+                <!-- Linea de separación blanca vectorial -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                    <line x1="-40" y1="12" x2="50" y2="12"></line>
+                </svg>
+            </li>
+            <li class="header__process__list__item">
+                <div class="rounded_number">3</div>
+                <p class="label-pag">Documentos</p>
+            </li>
+        </ul>
+    </header>
+    <main>
+        <h1>Referencias Comerciales</h1>
+        <form class="formulario">
+            <h2>Detalles Del Proveedor</h2>
+            <label for="nom-proveedor">Nombre del proveedor (Nombre Comercial)*</label>
+            <input type="text" class="input-form" id="nom-provedor">
+            <label for="ciudad-proveedor">Ciudad*</label>
+            <input type="text" class="input-form" id="ciudad-proveedor">
+            <label for="cod-postal-proveedor">Código Postal*</label>
+            <input type="text" class="input-form" id="cod-postal-proveedor">
+            <div class="nav-btn">
+                <button type="button" class="btn-atras" id="atr_1">Atrás</button>
+                <button type="button" class="btn-siguiente" id="sig_2">Siguiente</button>            
+            </div>
+        </form>
+    </main>
+    <script src="./JS/events_sales_request_2.js"></script>
+</body>
+</html>

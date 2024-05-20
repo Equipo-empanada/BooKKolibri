@@ -163,7 +163,7 @@ h2{
 
 .subcontainer-main{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin: 1% 5% 5% 5%;
 }
 
@@ -178,9 +178,24 @@ h2{
     padding: 2%;
 }
 .punto-encuentro{
-    border: black solid 1px;
-    width: 47%;
+    margin-top: 5%;
+    padding: 3%;
+    border-radius: 5px;
+    box-shadow: -12px 12px 2px 1px var(--azul-oscuro);
+    background: linear-gradient(227deg, #161c21, #1A4265);
+    width: 100%;
     height: auto;
+}
+#info{
+    color: var(--text-color-light);
+}
+h3{
+    color: var(--text-color-light);
+}
+#map {
+    height: 450px;
+    width: 100%;
+    border: 0;
 }
 /*Estilos de etiquetas*/
 .container-etiquetas-checkbox{

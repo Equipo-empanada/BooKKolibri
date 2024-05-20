@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="./CSS/reset.css">
     <link rel="stylesheet" href="./CSS/main.css">
     <link rel="stylesheet" href="./CSS/new-product.css">
-    <title>BookKolibri - Nuevo Producto</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <title>BookKolibri - Producto</title>
 </head>
 <body class="body-newProduct">
     <header class="header">
@@ -18,7 +20,7 @@
         <form action="#" class="form-producto">
             <div class="container-main">
                 <div class="descripcion-libro">
-                    <h2 id="titulo-dev-descrip">Nueva Publicación</h2>
+                    <h2 id="titulo-dev-descrip">Publicación</h2>
                     <input type="text" id="idTituloLibro" class="txt-descripcion" placeholder="Titulo de la públicación">
                     <div class="container-img">
 
@@ -208,7 +210,9 @@
                 </div>
                 <div class="punto-encuentro">
                     <h2>Punto de encuentro</h2>
-                    <iframe id="google-maps" frameborder="0"></iframe>
+                    <h3>Click en el mapa para añadir un marcador y obtener las coordenadas:</h3>
+                    <div id="map"></div>
+                    <div id="info"></div>
                 </div>
             </div>
         </form>
@@ -225,6 +229,9 @@
             </div>
         </div>
     </footer>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="./JS/maps.js"></script>
     <script src="./JS/new_photo.js"></script>
 </body>
 </html>
