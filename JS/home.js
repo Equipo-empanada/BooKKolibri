@@ -9,6 +9,16 @@ var purchaseButton;
 var suggestedItemsContainer;
 var prom_items_container;
 var change_items_container;
+var profilePic;
+
+
+
+const userDetail = {
+    name: "Juan Perez",
+    pictureSource: "./assets/icon.jpg"
+
+};
+
 
 const suggestedItems = [
     {
@@ -299,6 +309,10 @@ function fillChangeItems(items, container) {
 }
 
 
+function putUserPic(){
+    profilePic.innerHTML = `<img src="${userDetail.pictureSource}" alt="Profile Picture" height="50" width="50" class="profile_pic">`;
+}
+
     
 
 function init(){
@@ -306,7 +320,8 @@ function init(){
     suggestedItemsContainer = document.getElementById("suggested_items_container");
     prom_items_container = document.getElementById("prom_items_container");
     change_items_container = document.getElementById("change_items_container");
-
+    profilePic = document.getElementById("profile_pic");
+    putUserPic();
     fillSuggestedItems(suggestedItems);
     fillPromItems(suggestedItems, prom_items_container);
     fillChangeItems(suggestedItems, change_items_container);
