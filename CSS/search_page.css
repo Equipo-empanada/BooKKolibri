@@ -26,10 +26,57 @@ body {
     background-color: var(--suggested-item-color);
     color: var(--text-color-light);
     border: 1px solid var(--border-color);
+    min-height: 400px; /* Altura fija para todas las tarjetas */
+    height: 610px; /* Altura fija para todas las tarjetas */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
+
+@media (max-width: 576px) {
+    .struct .card-body {
+        min-height: 2000px; /* Ajusta la altura mínima en pantallas pequeñas */
+        padding-bottom: 200px;
+        margin-bottom: 200px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .card {
+        min-height: 300px; /* Ajusta la altura mínima en pantallas muy grandes */
+    }
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    margin-bottom: 10px;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-top: auto;
+}
 .btn-cart {
     background-color: var(--azul-oscuro);
+    color: var(--text-color-light);
+}
+
+.btn-cart:hover {
+    background-color: var(--footer-color);
     color: var(--text-color-light);
 }
 

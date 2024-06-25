@@ -103,15 +103,15 @@ function putResults(){
     results_container.innerHTML = "";
     results.forEach((result, index) => {
         results_container.innerHTML += `
-        <div class="col-md-3">
+        <div class="col-md-3" id="struct">
                     <div class="card mb-4">
                         <img src="${result.image.src}" class="card-img-top" alt="${result.info.title.main}" >
                         <div class="card-body">
                             <h5 class="card-title">${result.info.title.main}</h5>
-                            <p class="card-text">Autor: ${result.info.title.author}</p>
-                            <p class="card-text">Estado: ${result.info.status}</p>
+                            <p class="card-text"><strong>Autor:</strong> ${result.info.title.author}</p>
+                            <p class="card-text"><strong>Estado:</strong> ${result.info.status}</p>
                             <p class="card-text">${result.price}</p>
-                            <p class="card-text">Disponibles: ${result.stock} </p>
+                            <p class="card-text"><strong>Disponibles:</strong> ${result.stock} </p>
                             <button class="btn btn-cart">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 12"
                                     style="max-width: 10px; min-width: 10px; height: auto;">
