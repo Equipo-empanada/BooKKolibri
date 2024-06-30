@@ -163,7 +163,7 @@ h2{
 .precio{
     margin: 2%;
 }
-.precio-input{
+#precio-input{
     width: 100%;
     max-width: 200px;
     margin-left: 1%;
@@ -176,7 +176,7 @@ h2{
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.precio-input:focus {
+#precio-input:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     outline: none;
@@ -294,6 +294,37 @@ hr{
 #map { height: 600px; }
 #locations { margin-top: 10px; }
 .location-item { cursor: pointer; color: blue; text-decoration: underline; }
+
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.publish-button {
+    background-color: #1A4265; /* Ajusta según tu paleta de colores */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.publish-button:hover {
+    background-color: #162c44; /* Ajusta según tu paleta de colores */
+    transform: translateY(-2px);
+}
+
+.publish-button:active {
+    background-color: #0e1b2a; /* Ajusta según tu paleta de colores */
+    transform: translateY(1px);
+}
 
 /*Media Query*/
 @media screen and (max-width: 1024px) {
