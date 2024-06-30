@@ -4,14 +4,11 @@ Script for the search page
 */
 
 //Variables del DOM
-var profilePic;
+
 var results_container;
 
 
-const userDetail = {
-    name: "Juan Perez",
-    pictureSource: "./assets/icon.jpg"
-}
+
 
 const results = [
     {
@@ -95,9 +92,9 @@ const results = [
 
 //Funciones
 
-function putUserPic(){
-    profilePic.innerHTML = `<img src="${userDetail.pictureSource}" alt="Profile Picture" height="50" width="50" class="profile_pic">`;
-}
+// function putUserPic(){
+//     profilePic.innerHTML = `<img src="${userDetail.pictureSource}" alt="Profile Picture" height="50" width="50" class="profile_pic">`;
+// }
 
 function putResults(){
     results_container.innerHTML = "";
@@ -132,7 +129,7 @@ function putResults(){
 function init(){
     profilePic = document.getElementById("profile_pic");
     results_container = document.getElementById("results_container");
-    putUserPic();
+    // putUserPic();
     putResults();
 }
 
