@@ -23,6 +23,63 @@ var post_location;
 var btnSubmit;
 
 
+// Función para mostrar un cuadro de alerta con SweetAlert
+function showAlert(message, element) {
+    Swal.fire({
+        title: 'Error!',
+        text: message,
+        icon: 'error',
+        confirmButtonText: 'OK'
+    }).then(() => {
+        element.focus();
+    });
+}
+
+// Validaciones de los campos del formulario
+function validateForm() {
+    if (post_title.value.trim() === "") {
+        showAlert('Por favor, ingrese el título del libro.', post_title);
+        return false;
+    }
+    if (post_description.value.trim() === "") {
+        showAlert('Por favor, ingrese la descripción del libro.', post_description);
+        return false;
+    }
+    if (post_price.value.trim() === "") {
+        showAlert('Por favor, ingrese el precio del libro.', post_price);
+        return false;
+    }
+    const category = getSelectedRadioText(post_category);
+    if (!category) {
+        showAlert('Por favor, seleccione una categoría.', post_category);
+        return false;
+    }
+    if (post_launch_year.value.trim() === "") {
+        showAlert('Por favor, ingrese el año de lanzamiento.', post_launch_year);
+        return false;
+    }
+    if (post_publisher.value.trim() === "") {
+        showAlert('Por favor, ingrese la editorial.', post_publisher);
+        return false;
+    }
+    if (post_author.value.trim() === "") {
+        showAlert('Por favor, ingrese el autor.', post_author);
+        return false;
+    }
+    if (post_state.value === "0") {
+        showAlert('Por favor, seleccione el estado del libro.', post_state);
+        return false;
+    }
+    if (post_language.value === "0") {
+        showAlert('Por favor, seleccione el idioma del libro.', post_language);
+        return false;
+    }
+    if (post_location.textContent.trim() === "") {
+        showAlert('Por favor, ingrese la ubicación.', post_location);
+        return false;
+    }
+    return true;
+}
 
 
 function generarPreview(num_id) {
@@ -117,7 +174,15 @@ function submitPost(datas) {
 
 }
 
-
+function getSelectedRadioText(radioGroup) {
+    const radios = radioGroup.querySelectorAll('input[type="radio"]');
+    for (const radio of radios) {
+        if (radio.checked) {
+            return radio.parentElement.textContent.trim();
+        }
+    }
+    return null;
+}
 
 
 // Init
@@ -139,45 +204,37 @@ function init() {
     btnSubmit = document.getElementsByClassName("publish-button")[0];
 
 
-    function getSelectedRadioText(radioGroup) {
-        const radios = radioGroup.querySelectorAll('input[type="radio"]');
-        for (const radio of radios) {
-            if (radio.checked) {
-                return radio.parentElement.textContent.trim();
-            }
-        }
-        return null;
-    }
+
 
     // Event listeners
     btnSubmit.addEventListener("click", () => {
 
         //Latitud: -2.898702664035092, Longitud: -78.99129560295367
-        const lat = post_location.textContent.split(",")[0].split(":")[1];
-        const lng = post_location.textContent.split(",")[1].split(":")[1];
-        catchTags();
-        const postData = {
-            title: post_title.value,
-            description: post_description.value,
-            img_srcs: img_srcs,
-            price: post_price.value,
-            category: getSelectedRadioText(post_category),
-            launch_year: post_launch_year.value,
-            publisher: post_publisher.value,
-            author: post_author.value,
-            state: post_state.value,
-            language: post_language.value,
-            location: {
-                lat: lat,
-                lng: lng
-            },
-            tags_selected: tags_selected,
-        };
+        if (validateForm()) {
+            const lat = post_location.textContent.split(",")[0].split(":")[1];
+            const lng = post_location.textContent.split(",")[1].split(":")[1];
+            catchTags();
+            const postData = {
+                title: post_title.value,
+                description: post_description.value,
+                img_srcs: img_srcs,
+                price: post_price.value,
+                category: getSelectedRadioText(post_category),
+                launch_year: post_launch_year.value,
+                publisher: post_publisher.value,
+                author: post_author.value,
+                state: post_state.value,
+                language: post_language.value,
+                location: {
+                    lat: lat,
+                    lng: lng
+                },
+                tags_selected: tags_selected,
+            };
 
-        console.log(postData); // For debugging purposes
-
-        
-        submitPost(postData);
+            console.log(postData); // For debugging purposes
+            submitPost(postData);
+        }
     });
 
     
