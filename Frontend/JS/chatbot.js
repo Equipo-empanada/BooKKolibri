@@ -265,7 +265,7 @@ class Chatbox {
                         </div>
                     </div>
                     <div class="chatbox__button">
-                        <button><img src="../assets/chatbox-icon.svg" /></button>
+                        <button><img src="./assets/chatbox-icon.svg" /></button>
                     </div>
                 </div>
             </div>

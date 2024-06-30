@@ -14,7 +14,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const headerHTML = `
     <header class="header">
         <div class="container d-flex align-items-center justify-content-between">
-            <img src="./assets/g1.svg" alt="Logo" height="50" class="header__logo">
+            <a href="./home.html" class="header__logo">
+                <img src="./assets/g1.svg" alt="Logo" height="50">
+            </a>
+            
             <div class="flex-grow-1 mx-3">
                 <div class="input-group search-bar">
                     <input type="text" class="form-control" placeholder="Buscar">
