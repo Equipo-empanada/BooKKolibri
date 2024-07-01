@@ -138,7 +138,7 @@ def managePosts():
 
 
 
-
+# API
 @app.route('/')
 def index_get():
     return render_template('base.html')
@@ -171,7 +171,24 @@ def addBook():
     
     return jsonify({"message": "Book added successfully!"}), 201
     
-
+@app.route('/posts', methods=['GET'])
+def getBooks():
+    books = Libro.query.all()
+    books_list = []
+    for book in books:
+        books_list.append({
+            'id': book.id_libro,
+            'title': book.titulo,
+            'description': book.descripcion,
+            'price': str(book.precio),
+            'author': book.autor,
+            'language': book.idioma,
+            'launch_year': book.fec_lamzamiento,
+            'publisher': book.editorial,
+            'state': book.estado,
+            'category': book.categoria
+        })
+    return jsonify(books_list)
 
 if __name__ == '__main__':
     app.run(debug=True)
