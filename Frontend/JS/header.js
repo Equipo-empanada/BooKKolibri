@@ -1,13 +1,8 @@
-/*
-    This file is used to put the header of the website.
-
-*/
-
 var profilePic;
 
 const userDetail = {
     name: "Juan Perez",
-    pictureSource: "./assets/icon.jpg"
+    pictureSource: "../Frontend/assets/icon.jpg"  // Ruta relativa a la carpeta estática
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -15,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
     <header class="header">
         <div class="container d-flex align-items-center justify-content-between">
             <a href="./home.html" class="header__logo">
-                <img src="./assets/g1.svg" alt="Logo" height="50">
+                <img src="../Frontend/assets/g1.svg" alt="Logo" height="50">
             </a>
             
             <div class="flex-grow-1 mx-3">

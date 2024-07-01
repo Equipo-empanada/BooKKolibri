@@ -4,24 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Icon -->
-    <link rel="icon" href="./assets/logo_icon.svg" type="image/svg">
-    <link rel="stylesheet" href="./CSS/reset.css">
-    <link rel="stylesheet" href="./CSS/main.css">
-    <link rel="stylesheet" href="./CSS/new-product.css">
+    <link rel="icon" href="{{ url_for('static', filename='assets/logo_icon.svg') }}" type="image/svg">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/new-product.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <title>BookKolibri - Producto</title>
 </head>
 <body class="body-newProduct">
     <header class="header">
-        <a href="./manage_posts.html" class="header__back">
+        <a href="{{ url_for('static', filename='manage_posts.html') }}" class="header__back">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
         </a>
-        <a href="./home.html" class="header__home">
-            <img src="./assets/g1.svg" alt="Logo" height="50" class="header__logo">
+        <a href="{{ url_for('static', filename='home.html') }}" class="header__home">
+            <img src="{{ url_for('static', filename='assets/g1.svg') }}" alt="Logo" height="50" class="header__logo">
         </a>
     </header>
     <main class="main-container">
@@ -33,22 +33,22 @@
                     <div class="container-img">
 
                         <div class="img-carga" id="img1">
-                            <span class="preview" id="preview1"><img id="icon1" src="./assets/icon-camera.svg" alt="icon-camera"></span>
+                            <span class="preview" id="preview1"><img id="icon1" src="{{ url_for('static', filename='assets/icon-camera.svg') }}" alt="icon-camera"></span>
                         </div>
                         <input type="file" id="add-photo1" name="img1" class="input-img">
 
                         <div class="img-carga" id="img2">
-                            <span class="preview" id="preview2"><img id="icon2" src="./assets/icon-camera.svg" alt="icon-camera"></span>
+                            <span class="preview" id="preview2"><img id="icon2" src="{{ url_for('static', filename='assets/icon-camera.svg') }}" alt="icon-camera"></span>
                         </div>
                         <input type="file" id="add-photo2" name="img2" class="input-img">
 
                         <div class="img-carga" id="img3">
-                            <span class="preview" id="preview3"><img id="icon3" src="./assets/icon-camera.svg" alt="icon-camera"></span>
+                            <span class="preview" id="preview3"><img id="icon3" src="{{ url_for('static', filename='assets/icon-camera.svg') }}" alt="icon-camera"></span>
                         </div>
                         <input type="file" id="add-photo3" name="img3" class="input-img">
 
                         <div class="img-carga" id="img4">
-                            <span class="preview" id="preview4"><img id="icon4" src="./assets/icon-camera.svg" alt="icon-camera"></span>
+                            <span class="preview" id="preview4"><img id="icon4" src="{{ url_for('static', filename='assets/icon-camera.svg') }}" alt="icon-camera"></span>
                         </div>
                         <input type="file" id="add-photo4" name="img4" class="input-img">
 
@@ -238,7 +238,7 @@
     <footer class="footer">
         <div class="container-footer">
             <div class="footer__payment">
-                <img src="./assets/paypal.svg" alt="Formas de pago">
+                <img src="{{ url_for('static', filename='assets/paypal.svg') }}" alt="Formas de pago">
             </div>
             <div class="footer__info">
                 <h4>¡Vender en BooKKolibri es fácil y seguro!</h4>
@@ -250,7 +250,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-    <script src="./JS/maps.js"></script>
-    <script src="./JS/new_product.js"></script>
+    <script src="{{ url_for('static', filename='JS/maps.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/new_product.js') }}"></script>
 </body>
 </html>

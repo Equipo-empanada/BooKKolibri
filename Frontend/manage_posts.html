@@ -2,32 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="./assets/logo_icon.svg" type="image/svg">
+    <link rel="icon" href="{{ url_for('static', filename='assets/logo_icon.svg') }}" type="image/svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.3/darkly/bootstrap.min.css"
     integrity="sha512-HDszXqSUU0om4Yj5dZOUNmtwXGWDa5ppESlX98yzbBS+z+3HQ8a/7kcdI1dv+jKq+1V5b01eYurE7+yFjw6Rdg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
-
-
-    <link rel="stylesheet" href="./CSS/reset.css">
-    <link rel="stylesheet" href="./CSS/header.css">
-    <link rel="stylesheet" href="./CSS/manage-posts.css">
-    <link rel="stylesheet" href="./CSS/main.css"> <!-- Cargar después de Bootstrap para sobrescribir estilos -->
+    <script src="{{ url_for('static', filename='JS/header.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='JS/chatbot.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/manage-posts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.css') }}"> <!-- Cargar después de Bootstrap para sobrescribir estilos -->
 
     <title>Libros-Públicados</title>
 </head>
 <body>
     <main class="main-container">
         <ul class="navMenu">
-            <li><a class="link" href="./my_info.html">Mi Información</a></li>
+            <li><a class="link" href="{{ url_for('static', filename='my_info.html') }}">Mi Información</a></li>
             <li>Mis publicaciones</li>
         </ul>
         <div class="titulo">
             <h1>Administra tus Publicaciones</h1>
-            
         </div>
         <div class="container-encabezado">
             <h2 class="sub-titulo">Filtros</h2>
@@ -50,7 +49,7 @@
             </div>
         </div>
         <div class="table-container">
-            <table class="tabla">
+            <table id="tabla">
                 <thead>
                     <tr>
                         <th>Acciones</th>
@@ -61,26 +60,26 @@
                     </tr>
                 </thead>
                 <tbody class="tabla-body">
-                    <tr>
+                    <!-- <tr>
                         <td>
-                            <img class="btn-tabla editar-post" src="./assets/icon_edit.svg" alt="editar">
-                            <img class="btn-tabla delete-post" src="./assets/icon_trash.svg" alt="delete">
+                            <img class="btn-tabla editar-post" src="{{ url_for('static', filename='assets/icon_edit.svg') }}" alt="editar">
+                            <img class="btn-tabla delete-post" src="{{ url_for('static', filename='assets/icon_trash.svg') }}" alt="delete">
                         </td>
                         <td>El cuervo (1845)</td>
                         <td>Edgar Allan Poe</td>
                         <td>Fantasía<br>Horror</td>
-                        <td><img src="./assets/libro_cuervo.svg" alt="libro"></td>
+                        <td><img src="{{ url_for('static', filename='assets/libro_cuervo.svg') }}" alt="libro"></td>
                     </tr>
                     <tr>
                         <td>
-                            <img class="btn-tabla editar-post" src="./assets/icon_edit.svg" alt="editar">
-                            <img class="btn-tabla delete-post" src="./assets/icon_trash.svg" alt="delete">
+                            <img class="btn-tabla editar-post" src="{{ url_for('static', filename='assets/icon_edit.svg') }}" alt="editar">
+                            <img class="btn-tabla delete-post" src="{{ url_for('static', filename='assets/icon_trash.svg') }}" alt="delete">
                         </td>
                         <td>El cuervo (1845)</td>
                         <td>Edgar Allan Poe</td>
                         <td>Fantasía<br>Horror</td>
-                        <td><img src="./assets/libro_cuervo.svg" alt="libro"></td>
-                    </tr>
+                        <td><img src="{{ url_for('static', filename='assets/libro_cuervo.svg') }}" alt="libro"></td>
+                    </tr> -->
                     <!-- Más filas -->
                 </tbody>
             </table>
@@ -95,12 +94,11 @@
                 Calle Falsa 123, Cuenca, Ecuador Términos y Condiciones, Aviso de Privacidad</p>
         </div>
     </footer>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
-    <script src="./JS/chatbot.js"></script>
-    <script src="./JS/header.js"></script>
-    <script src="./JS/events_manage_post.js"></script>
+    <script src="{{ url_for('static', filename='JS/events_manage_post.js') }}"></script>
 </body>
 </html>

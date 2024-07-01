@@ -147,30 +147,38 @@ function catchTags() {
 
 function submitPost(datas) {
 
-    // //Get inner text of the location
-    // var location = post_location.innerText;
-    // //Get the lat and lng of the location
-    // var location_lat = location.split(",")[0].split(":")[1];
-    // var location_lng = location.split(",")[1].split(":")[1];
-    // var post_data = {
-    //     title: post_title.value,
-    //     price: post_price.value,
-    //     description: post_description.value,
-    //     category: post_category.value,
-    //     launch_year: post_launch_year.value,
-    //     publisher: post_publisher.value,
-    //     state: post_state.value,
-    //     languge: post_language.value,
-    //     tags_selected: tags_selected,
-    //     location: {
-    //         lat: location_lat,
-    //         lng: location_lng
-    //     },
-    //     img_srcs: img_srcs
-    // };
+    const url = 'http://localhost:5000/addBook';
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+    });
 
-    // console.log("Post data:");
-    // console.log(post_data);
+    fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(datas)
+    })
+    .then(response => {
+        if (response.ok) {
+            Swal.fire({
+                title: 'Producto publicado',
+                text: 'El producto ha sido publicado exitosamente.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.href = 'manage_posts.html';
+            });
+        } else {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Ha ocurrido un error al publicar el producto.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 
 }
 
