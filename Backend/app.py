@@ -5,6 +5,7 @@ import json
 import os
 import models
 from datetime import datetime
+from werkzeug.utils import secure_filename
 
 #Templates folder
 template_dir = os.path.abspath('../Frontend')
@@ -12,6 +13,7 @@ static_dir = os.path.abspath('../Frontend')
 
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres.asjubxyoqpiyuxewoxwg:empanada.123@aws-0-us-west-1.pooler.supabase.com:6543/postgres'
+app.config['UPLOAD_FOLDER'] = './static/uploads'
 db = SQLAlchemy(app)
 
 class Libro(db.Model):
@@ -75,7 +77,7 @@ class Publicacion(db.Model):
     usuario = db.relationship('Usuario', backref=db.backref('publicaciones', lazy=True))
 
 class ImagenLibro(db.Model):
-    __tablename__ = 'imagen_libro'
+    __tablename__ = 'imagenlibro'
     id_imagen = db.Column(db.Integer, primary_key=True, autoincrement=True)
     imagen = db.Column(db.LargeBinary, nullable=False)
     id_libro = db.Column(db.Integer, db.ForeignKey('libro.id_libro'), nullable=False)
@@ -116,15 +118,15 @@ class Chat(db.Model):
 class Etiqueta(db.Model):
     __tablename__ = 'etiqueta'
     id_etiqueta = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    nom_etiqueta = db.Column(db.String(50), nullable=False)
+    nometiqueta = db.Column(db.String(50), nullable=False)
     descripcion = db.Column(db.Text, nullable=True)
 
 class EtiquetaLibro(db.Model):
-    __tablename__ = 'etiqueta_libro'
+    __tablename__ = 'etiquetalibro'
     id_etiqueta = db.Column(db.Integer, db.ForeignKey('etiqueta.id_etiqueta'), primary_key=True)
     id_libro = db.Column(db.Integer, db.ForeignKey('libro.id_libro'), primary_key=True)
-    etiqueta = db.relationship('Etiqueta', backref=db.backref('etiqueta_libros', lazy=True))
-    libro = db.relationship('Libro', backref=db.backref('etiqueta_libros', lazy=True))
+    etiqueta = db.relationship('Etiqueta', backref=db.backref('etiquetalibros', lazy=True))
+    libro = db.relationship('Libro', backref=db.backref('etiquetalibros', lazy=True))
 
 
 # Render templates
@@ -151,25 +153,80 @@ def predict():
     print(message)
     return jsonify(message)
 
-@app.route('/addBook', methods=['POST', 'OPTIONS'])
+@app.route('/addBook', methods=['POST'])
 def addBook():
-    data = request.get_json()
+    data = request.form
+    files = request.files
+    usuario_id = data.get('usuario_id')  # Suponiendo que se pasa el ID del usuario que hace la publicación
+    tags_selected = json.loads(data.get('tags_selected', '[]'))  # Lista de etiquetas seleccionadas
+
+    # Guardar el libro
     new_book = Libro(
-    titulo=data.get('title'),
-    descripcion=data.get('description'),
-    precio=data.get('price'),
-    autor=data.get('author'),
-    idioma=data.get('language'),
-    fec_lamzamiento=datetime.strptime(data.get('launch_year'), "%Y"),
-    editorial=data.get('publisher'),
-    estado=data.get('state'),
-    categoria=data.get('category')
+        titulo=data.get('title'),
+        descripcion=data.get('description'),
+        precio=data.get('price'),
+        autor=data.get('author'),
+        idioma=data.get('language'),
+        fec_lamzamiento=datetime.strptime(data.get('launch_year'), "%Y"),
+        editorial=data.get('publisher'),
+        estado=data.get('state'),
+        categoria=data.get('category')
     )
-    
+
     db.session.add(new_book)
     db.session.commit()
-    
+
+    # Guardar la publicación
+    new_publication = Publicacion(
+        tipo_publicacion='Libro',  # Ajustar según el tipo de publicación
+        latitud=data.get('location_lat'),
+        longitud=data.get('location_lng'),
+        fecha=datetime.utcnow(),
+        activo=True,
+        id_libro=new_book.id_libro,
+        id_usuario=usuario_id
+    )
+
+    db.session.add(new_publication)
+    db.session.commit()
+
+    # Guardar las imágenes
+    for key in files:
+        file = files[key]
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+            new_image = ImagenLibro(
+                imagen=file.read(),
+                id_libro=new_book.id_libro,
+                descripcion=filename
+            )
+            db.session.add(new_image)
+
+    # Guardar las etiquetas
+    for tag_name in tags_selected:
+        
+        #Check if the tag exists
+        etiqueta = Etiqueta.query.filter_by(nometiqueta=tag_name).first()
+        if not etiqueta:
+            etiqueta = Etiqueta(nometiqueta=tag_name)
+            db.session.add(etiqueta)
+            db.session.commit()
+
+        etiqueta_libro = EtiquetaLibro(
+            id_libro=new_book.id_libro,
+            id_etiqueta=etiqueta.id_etiqueta
+        )
+        db.session.add(etiqueta_libro)
+
+    db.session.commit()
+
     return jsonify({"message": "Book added successfully!"}), 201
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
     
 @app.route('/posts', methods=['GET'])
 def getBooks():
@@ -186,7 +243,7 @@ def getBooks():
             'launch_year': book.fec_lamzamiento,
             'publisher': book.editorial,
             'state': book.estado,
-            'category': book.categoria
+            'category': book.categoria,
         })
     return jsonify(books_list)
 

@@ -145,17 +145,34 @@ function catchTags() {
 
 // Submit post
 
-function submitPost(datas) {
-
+function submitPost() {
     const url = 'http://localhost:5000/addBook';
-    const headers = new Headers({
-        'Content-Type': 'application/json',
+    const formData = new FormData();
+    
+    //User
+    // formData.append('user_id', localStorage.getItem('user_id')); // Dev later
+
+    formData.append('user_id', "2");
+    formData.append('title', post_title.value);
+    formData.append('description', post_description.value);
+    formData.append('price', post_price.value);
+    formData.append('category', getSelectedRadioText(post_category));
+    formData.append('launch_year', post_launch_year.value);
+    formData.append('publisher', post_publisher.value);
+    formData.append('author', post_author.value);
+    formData.append('state', post_state.value);
+    formData.append('language', post_language.value);
+    formData.append('location_lat', post_location.textContent.split(",")[0].split(":")[1].trim());
+    formData.append('location_lng', post_location.textContent.split(",")[1].split(":")[1].trim());
+    formData.append('tags_selected', JSON.stringify(tags_selected));
+
+    img_srcs.forEach((img, index) => {
+        formData.append(`image_${index}`, img);
     });
 
     fetch(url, {
         method: 'POST',
-        headers: headers,
-        body: JSON.stringify(datas)
+        body: formData
     })
     .then(response => {
         if (response.ok) {
@@ -165,9 +182,12 @@ function submitPost(datas) {
                 icon: 'success',
                 confirmButtonText: 'OK'
             }).then(() => {
-                window.location.href = 'manage_posts.html';
+                window.location.href = 'manage_posts';
             });
         } else {
+            // Set null the variables
+            tags_selected = [];
+
             Swal.fire({
                 title: 'Error!',
                 text: 'Ha ocurrido un error al publicar el producto.',
@@ -179,7 +199,6 @@ function submitPost(datas) {
     .catch(error => {
         console.error('Error:', error);
     });
-
 }
 
 function getSelectedRadioText(radioGroup) {
@@ -259,8 +278,6 @@ function init() {
 
         });
     });
-
-
 
 }
 
