@@ -276,6 +276,9 @@ def deleteBook():
         
         #Eliminar el libro si no tiene otras publicaciones
         if not book.publicaciones:
+            # Eliminar todas las referencias en etiqueta_libro
+            EtiquetaLibro.query.filter_by(id_libro=book.id_libro).delete()
+            db.session.commit()
             db.session.delete(book)
             db.session.commit()
 
