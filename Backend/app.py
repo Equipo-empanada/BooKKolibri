@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, jsonify
+from flask import Flask, request, jsonify, render_template, jsonify, url_for
 from chat import get_response
 from flask_sqlalchemy import SQLAlchemy
 import json
@@ -6,6 +6,8 @@ import os
 import models
 from datetime import datetime
 from werkzeug.utils import secure_filename
+from PIL import Image
+
 
 #Templates folder
 template_dir = os.path.abspath('../Frontend')
@@ -13,7 +15,7 @@ static_dir = os.path.abspath('../Frontend')
 
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres.asjubxyoqpiyuxewoxwg:empanada.123@aws-0-us-west-1.pooler.supabase.com:6543/postgres'
-app.config['UPLOAD_FOLDER'] = './static/uploads'
+app.config['UPLOAD_FOLDER'] = '../Frontend/static/uploads'
 db = SQLAlchemy(app)
 
 class Libro(db.Model):
@@ -190,24 +192,27 @@ def addBook():
     db.session.add(new_publication)
     db.session.commit()
 
-    # Guardar las imágenes
+   # Guardar las imágenes
     for key in files:
         file = files[key]
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
+            
+            # Cambiar el tamaño de la imagen a 150x150 pixeles
+            image = Image.open(file)
+            image = image.resize((150, 150))
+            image.save(file_path)
+
             new_image = ImagenLibro(
                 imagen=file.read(),
                 id_libro=new_book.id_libro,
                 descripcion=filename
             )
             db.session.add(new_image)
-
     # Guardar las etiquetas
     for tag_name in tags_selected:
-        
-        #Check if the tag exists
+        # Verificar si la etiqueta ya existe
         etiqueta = Etiqueta.query.filter_by(nometiqueta=tag_name).first()
         if not etiqueta:
             etiqueta = Etiqueta(nometiqueta=tag_name)
@@ -233,6 +238,10 @@ def getBooks():
     books = Libro.query.all()
     books_list = []
     for book in books:
+        # Obtener la primera imagen del libro
+        first_image = book.imagenes[0].descripcion if book.imagenes else None
+        image_url = url_for('static', filename=f'static/uploads/{first_image}') if first_image else "https://via.placeholder.com/150"
+        
         books_list.append({
             'id': book.id_libro,
             'title': book.titulo,
@@ -243,9 +252,11 @@ def getBooks():
             'launch_year': book.fec_lamzamiento,
             'publisher': book.editorial,
             'state': book.estado,
-            'category': book.categoria,
+            'tags': [tag.etiqueta.nometiqueta for tag in book.etiquetalibros],
+            'image_src': image_url  # Incluir la URL de la imagen en la respuesta
         })
     return jsonify(books_list)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -6,23 +6,6 @@ var tabla_body;
 
 var posts = [];
 
-const testItems = [	{
-    "id": 1,
-    "title": "Producto 1",
-    "author": "Descripcion del producto 1",
-    "genre": "Genero 1",
-    "image_src": "https://via.placeholder.com/150",
-  },
-  {
-    "id": 2,
-    "title": "Producto prueba 2",
-    "author": "Descripcion del producto ",
-    "genre": "Genero 1",
-    "image_src": "https://via.placeholder.com/150",
-  },
-  
-
-];
 
 function getBooks(){
     fetch("http://localhost:5000/posts")
@@ -62,26 +45,30 @@ function deletePost(){
 }
 
 
-function loadItems(){
-  
-    posts.forEach(item => {
-        const row = document.createElement("tr");
-        row.classList.add("tabla-row");
-        row.setAttribute("data-id", item.id);
-        row.innerHTML = `
-            <td>
-                <img class="btn-tabla editar-post" src="../Frontend/assets/icon_edit.svg" alt="editar">
-                <img class="btn-tabla delete-post" src="../Frontend/assets/icon_trash.svg" alt="delete">
-            </td>
-            <td>${item.title}</td>
-            <td>${item.author}</td>
-            <td>${item.category}</td>
-            <td><img src="https://via.placeholder.com/150" alt="Imagen del producto"></td>
-            
-        `;
-        tabla_body.appendChild(row);
-    });
+function loadItems() {
+  tabla_body.innerHTML = ''; // Limpiar la tabla antes de agregar filas nuevas
+  posts.forEach(item => {
+      const row = document.createElement("tr");
+      row.classList.add("tabla-row");
+      row.setAttribute("data-id", item.id);
+
+      // Utilizar la imagen obtenida del servidor o una de reserva si no existe
+      const imageUrl = item.image_src || "https://via.placeholder.com/150";
+
+      row.innerHTML = `
+          <td>
+              <img class="btn-tabla editar-post" src="../Frontend/assets/icon_edit.svg" alt="editar">
+              <img class="btn-tabla delete-post" src="../Frontend/assets/icon_trash.svg" alt="delete">
+          </td>
+          <td>${item.title}</td>
+          <td>${item.author}</td>
+          <td>${item.category}</td>
+          <td><img src="${imageUrl}" alt="Imagen del producto"></td>
+      `;
+      tabla_body.appendChild(row);
+  });
 }
+
 
 function init(){
     editarPost = document.getElementsByClassName("editar-post");
