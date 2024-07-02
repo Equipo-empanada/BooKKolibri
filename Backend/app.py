@@ -59,7 +59,7 @@ class Pedido(db.Model):
     id_pedido = db.Column(db.Integer, primary_key=True, autoincrement=True)
     fecha = db.Column(db.Date, nullable=False)
     cantidad = db.Column(db.Integer, nullable=False)
-    tipo_transaccion = db.Column(db.String(50), nullable=False)
+    tipotransaccion = db.Column(db.String(50), nullable=False)
     id_libro = db.Column(db.Integer, db.ForeignKey('libro.id_libro'), nullable=False)
     id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario'), nullable=False)
     libro = db.relationship('Libro', backref=db.backref('pedidos', lazy=True))
@@ -86,16 +86,16 @@ class ImagenLibro(db.Model):
     descripcion = db.Column(db.String(255), nullable=True)
     libro = db.relationship('Libro', backref=db.backref('imagenes', lazy=True))
 
-class Resena(db.Model):
-    __tablename__ = 'resena'
-    id_resena = db.Column(db.Integer, primary_key=True, autoincrement=True)
+class Reseña(db.Model):
+    __tablename__ = 'reseña'
+    id_reseña = db.Column(db.Integer, primary_key=True, autoincrement=True)
     titulo = db.Column(db.String(100), nullable=False)
     contenido = db.Column(db.Text, nullable=False)
     puntuacion = db.Column(db.Integer, nullable=False)
     id_publicacion = db.Column(db.Integer, db.ForeignKey('publicacion.id_publicacion'), nullable=False)
     id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario'), nullable=False)
-    publicacion = db.relationship('Publicacion', backref=db.backref('resenas', lazy=True))
-    usuario = db.relationship('Usuario', backref=db.backref('resenas', lazy=True))
+    publicacion = db.relationship('Publicacion', backref=db.backref('reseñas', lazy=True))
+    usuario = db.relationship('Usuario', backref=db.backref('reseñas', lazy=True))
 
 class Mensaje(db.Model):
     __tablename__ = 'mensaje'
@@ -109,8 +109,8 @@ class Mensaje(db.Model):
 class Chat(db.Model):
     __tablename__ = 'chat'
     id_chat = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    fecha_inicio = db.Column(db.DateTime, nullable=False)
-    fecha_fin = db.Column(db.DateTime, nullable=True)
+    fechainicio = db.Column(db.DateTime, nullable=False)
+    fechafin = db.Column(db.DateTime, nullable=True)
     activo = db.Column(db.Boolean, nullable=False)
     id_publicacion = db.Column(db.Integer, db.ForeignKey('publicacion.id_publicacion'), nullable=False)
     id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario'), nullable=False)
@@ -192,14 +192,14 @@ def addBook():
     db.session.add(new_publication)
     db.session.commit()
 
-   # Guardar las imágenes
+    # Guardar las imágenes
     for key in files:
         file = files[key]
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             
-            # Cambiar el tamaño de la imagen a 150x150 pixeles
+            # Cambiar el tamaño de la imagen a 150x150 píxeles
             image = Image.open(file)
             image = image.resize((150, 150))
             image.save(file_path)
@@ -210,6 +210,7 @@ def addBook():
                 descripcion=filename
             )
             db.session.add(new_image)
+
     # Guardar las etiquetas
     for tag_name in tags_selected:
         # Verificar si la etiqueta ya existe
@@ -235,10 +236,10 @@ def allowed_file(filename):
     
 @app.route('/posts', methods=['GET'])
 def getBooks():
-    books = Libro.query.all()
+    publicaciones = Publicacion.query.all()
     books_list = []
-    for book in books:
-        # Obtener la primera imagen del libro
+    for publicacion in publicaciones:
+        book = publicacion.libro
         first_image = book.imagenes[0].descripcion if book.imagenes else None
         image_url = url_for('static', filename=f'static/uploads/{first_image}') if first_image else "https://via.placeholder.com/150"
         
@@ -253,9 +254,33 @@ def getBooks():
             'publisher': book.editorial,
             'state': book.estado,
             'tags': [tag.etiqueta.nometiqueta for tag in book.etiquetalibros],
-            'image_src': image_url  # Incluir la URL de la imagen en la respuesta
+            'image_src': image_url,  # Incluir la URL de la imagen en la respuesta
+            'publication_id': publicacion.id_publicacion,
+            'lat': publicacion.latitud,
+            'lng': publicacion.longitud,
+            'fecha': publicacion.fecha,
+            'activo': publicacion.activo
         })
     return jsonify(books_list)
+
+
+
+@app.route('/posts', methods=['DELETE'])
+def deleteBook():
+    publicacion_id = request.args.get('publication_id')
+    publicacion = Publicacion.query.get(publicacion_id)
+    if publicacion:
+        book = publicacion.libro
+        db.session.delete(publicacion)
+        db.session.commit()
+        
+        #Eliminar el libro si no tiene otras publicaciones
+        if not book.publicaciones:
+            db.session.delete(book)
+            db.session.commit()
+
+        return jsonify({"message": "Publication and associated book deleted successfully!"}), 200
+    return jsonify({"message": "Publication not found!"}), 404
 
 
 if __name__ == '__main__':

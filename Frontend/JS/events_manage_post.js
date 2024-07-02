@@ -14,6 +14,20 @@ function getBooks(){
         posts = data;
         console.log(posts);
         loadItems();
+         //Listeners de botones
+              //Delete post
+              deletePostBton = document.getElementsByClassName("btn-tabla delete-post");
+              const deletePostItem = Array.from(deletePostBton);
+              deletePostItem.forEach(item => {
+                item.addEventListener('click',deletePost);
+              });
+              //Edit post
+              const postEdit = Array.from(editarPost);
+              postEdit.forEach(post => {
+                  post.addEventListener('click',function(){
+                      window.location.href = "new_product";
+                  });
+              });
     })
     .catch(error => console.log(error));
 
@@ -33,6 +47,16 @@ function deletePost(){
       .then((willDelete) => {
         if (willDelete) {
           //Remove the post from the database
+          const id = this.parentElement.parentElement.getAttribute("data-id");
+          fetch(`http://localhost:5000/posts?publication_id=${id}`, {
+              method: 'DELETE',
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log(data);
+              getBooks();
+
+          })
 
           swal("Su publicación ha sido eliminada", {
             icon: "success",
@@ -50,7 +74,7 @@ function loadItems() {
   posts.forEach(item => {
       const row = document.createElement("tr");
       row.classList.add("tabla-row");
-      row.setAttribute("data-id", item.id);
+      row.setAttribute("data-id", item.publication_id);
 
       // Utilizar la imagen obtenida del servidor o una de reserva si no existe
       const imageUrl = item.image_src || "https://via.placeholder.com/150";
@@ -62,7 +86,7 @@ function loadItems() {
           </td>
           <td>${item.title}</td>
           <td>${item.author}</td>
-          <td>${item.category}</td>
+          <td>${item.tags}</td>
           <td><img src="${imageUrl}" alt="Imagen del producto"></td>
       `;
       tabla_body.appendChild(row);
@@ -73,26 +97,12 @@ function loadItems() {
 function init(){
     editarPost = document.getElementsByClassName("editar-post");
     nuevoPost = document.getElementById("add-post");
-    deletePostBton = document.getElementsByClassName("btn-tabla delete-post");
+    
     tabla = document.getElementById("tabla");
     tabla_body = document.getElementsByClassName("tabla-body")[0];
 
     getBooks();
-    const postEdit = Array.from(editarPost);
-    const deletePostItem = Array.from(deletePostBton);
-
     
-    deletePostItem.forEach(item => {
-        item.addEventListener('click',deletePost);
-    });
-
-
-    postEdit.forEach(post => {
-        post.addEventListener('click',function(){
-            window.location.href = "new_product";
-        });
-    });
-
     nuevoPost.addEventListener('click',function(){
         window.location.href = "new_product";
     });
