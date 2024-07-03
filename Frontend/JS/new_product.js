@@ -20,6 +20,8 @@ var tags_selected = [];
 var post_location;
 //Button
 var btnSubmit;
+var radioVenta;
+var radioIntercambio;
 
 
 // Función para mostrar un cuadro de alerta con SweetAlert
@@ -259,6 +261,8 @@ function init() {
     post_language = document.getElementById("inputIdioma");
     post_location = document.getElementById("info");
     btnSubmit = document.getElementsByClassName("publish-button")[0];
+    radioVenta = document.getElementById("radio-venta");
+    radioIntercambio = document.getElementById("radio-intercambio");
 
     // Event listeners
     btnSubmit.addEventListener("click", () => {
@@ -300,6 +304,23 @@ function init() {
             console.log(num_id);
             generarPreview(num_id);
         });
+    });
+
+    // Validación del input de precio
+    post_price.addEventListener("input", () => {
+        if (/^\d+$/.test(post_price.value)) {
+            radioVenta.checked = true;
+            post_price.disabled = false;
+        }
+    });
+
+    radioVenta.addEventListener("change", () => {
+        post_price.disabled = false;
+    });
+
+    radioIntercambio.addEventListener("change", () => {
+        post_price.value = "0";
+        post_price.disabled = true;
     });
 }
 
