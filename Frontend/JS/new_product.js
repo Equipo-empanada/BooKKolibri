@@ -8,7 +8,6 @@ var spanPreview;
 var post_title;
 var post_price;
 var post_description;
-var post_price;
 var post_category;
 var post_launch_year;
 var post_publisher;
@@ -33,6 +32,25 @@ function showAlert(message, element) {
     }).then(() => {
         element.focus();
     });
+}
+
+// Función para mostrar una animación de carga con SweetAlert
+function showLoading() {
+    Swal.fire({
+        title: 'Publicando...',
+        text: 'Por favor espera mientras se publica el producto',
+        icon: 'info',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+}
+
+// Ocultar animación de carga
+function hideLoading() {
+    Swal.close();
 }
 
 // Validaciones de los campos del formulario
@@ -170,11 +188,15 @@ function submitPost() {
         formData.append(`image_${index}`, img);
     });
 
+    showLoading();  // Mostrar animación de carga antes de enviar los datos
+
     fetch(url, {
         method: 'POST',
         body: formData
     })
     .then(response => {
+        hideLoading();  // Ocultar animación de carga al recibir la respuesta
+
         if (response.ok) {
             Swal.fire({
                 title: 'Producto publicado',
@@ -197,7 +219,15 @@ function submitPost() {
         }
     })
     .catch(error => {
+        hideLoading();  // Ocultar animación de carga en caso de error
+
         console.error('Error:', error);
+        Swal.fire({
+            title: 'Error!',
+            text: 'Ha ocurrido un error al publicar el producto.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
     });
 }
 
@@ -230,13 +260,9 @@ function init() {
     post_location = document.getElementById("info");
     btnSubmit = document.getElementsByClassName("publish-button")[0];
 
-
-
-
     // Event listeners
     btnSubmit.addEventListener("click", () => {
 
-        //Latitud: -2.898702664035092, Longitud: -78.99129560295367
         if (validateForm()) {
             const lat = post_location.textContent.split(",")[0].split(":")[1];
             const lng = post_location.textContent.split(",")[1].split(":")[1];
@@ -264,8 +290,6 @@ function init() {
         }
     });
 
-    
-
     // Convertir HTMLCollection a un array usando Array.from
     const imgenesCargaArray = Array.from(imgenesCarga);
 
@@ -275,10 +299,8 @@ function init() {
             num_id = clickedId.slice(-1);
             console.log(num_id);
             generarPreview(num_id);
-
         });
     });
-
 }
 
 document.addEventListener("DOMContentLoaded", init);

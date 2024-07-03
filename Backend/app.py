@@ -278,9 +278,12 @@ def deleteBook():
         if not book.publicaciones:
             # Eliminar todas las referencias en etiqueta_libro
             EtiquetaLibro.query.filter_by(id_libro=book.id_libro).delete()
+            # Eliminar todas las imágenes
+            ImagenLibro.query.filter_by(id_libro=book.id_libro).delete()
             db.session.commit()
             db.session.delete(book)
             db.session.commit()
+
 
         return jsonify({"message": "Publication and associated book deleted successfully!"}), 200
     return jsonify({"message": "Publication not found!"}), 404
