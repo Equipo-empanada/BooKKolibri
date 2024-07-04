@@ -20,6 +20,51 @@
     <title>Libros-Públicados</title>
 </head>
 <body>
+    <!-- Modal para editar publicación -->
+    <div class="modal fade" id="editPostModal" tabindex="-1" aria-labelledby="editPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPostModalLabel">Editar Publicación</h5>
+                    <button type="button" class="btn-close" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editPostForm">
+                        <div class="mb-3">
+                            <label for="editTitle" class="form-label">Título</label>
+                            <input type="text" class="form-control" id="editTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editAuthor" class="form-label">Autor</label>
+                            <input type="text" class="form-control" id="editAuthor" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editYear" class="form-label">Año</label>
+                            <input type="text" class="form-control" id="editYear" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPrice" class="form-label">Precio</label>
+                            <input type="text" class="form-control" id="editPrice" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editLanguage" class="form-label">Idioma</label>
+                            <input type="text" class="form-control" id="editLanguage" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPublisher" class="form-label">Editorial</label>
+                            <input type="text" class="form-control" id="editPublisher" required>
+                        </div>
+                        <input type="hidden" id="editPostId">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeEditModal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveChangesButton">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <main class="main-container">
         <ul class="navMenu">
             <li><a class="link" href="{{ url_for('static', filename='my_info.html') }}">Mi Información</a></li>

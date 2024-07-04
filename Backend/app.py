@@ -268,7 +268,7 @@ def getBooks():
 @app.route('/posts', methods=['DELETE'])
 def deleteBook():
     publicacion_id = request.args.get('publication_id')
-    publicacion = Publicacion.query.get(publicacion_id)
+    publicacion = db.session.get(Publicacion, publicacion_id)
     if publicacion:
         book = publicacion.libro
         db.session.delete(publicacion)
@@ -287,6 +287,59 @@ def deleteBook():
 
         return jsonify({"message": "Publication and associated book deleted successfully!"}), 200
     return jsonify({"message": "Publication not found!"}), 404
+
+
+# Get book by post id
+@app.route('/post', methods=['GET'])
+def getBook():
+    publicacion_id = request.args.get('publication_id')
+    publicacion = db.session.get(Publicacion, publicacion_id)
+    if publicacion:
+        book = publicacion.libro
+        first_image = book.imagenes[0].descripcion if book.imagenes else None
+        image_url = url_for('static', filename=f'static/uploads/{first_image}') if first_image else "https://via.placeholder.com/150"
+        
+        book_info = {
+            'id': book.id_libro,
+            'title': book.titulo,
+            'description': book.descripcion,
+            'price': str(book.precio),
+            'author': book.autor,
+            'language': book.idioma,
+            'launch_year': book.fec_lamzamiento,
+            'publisher': book.editorial,
+            'state': book.estado,
+            'tags': [tag.etiqueta.nometiqueta for tag in book.etiquetalibros],
+            'image_src': image_url,  # Incluir la URL de la imagen en la respuesta
+            'publication_id': publicacion.id_publicacion,
+            'lat': publicacion.latitud,
+            'lng': publicacion.longitud,
+            'fecha': publicacion.fecha,
+            'activo': publicacion.activo
+        }
+        return jsonify(book_info)
+    return jsonify({"message": "Publication not found!"}), 404
+
+
+@app.route('/edit_post', methods=['POST'])
+def editPost():
+    data = request.json
+    publicacion_id = data.get('publication_id')
+    publicacion = db.session.get(Publicacion, publicacion_id)
+    if publicacion:
+        book = publicacion.libro
+        book.titulo = data.get('title')
+        book.descripcion = data.get('description')
+        book.precio = data.get('price')
+        book.autor = data.get('author')
+        book.idioma = data.get('language')
+        book.fec_lamzamiento = data.get('year')
+        book.editorial = data.get('publisher')
+        db.session.commit()
+        return jsonify({"message": "Book updated successfully!"}), 200
+    return jsonify({"message": "Publication not found!"}), 404
+
+
 
 
 if __name__ == '__main__':

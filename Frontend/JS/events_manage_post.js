@@ -3,6 +3,7 @@ var nuevoPost;
 var deletePostBton;
 var tabla;
 var tabla_body;
+var editPostModal;
 
 var posts = [];
 
@@ -100,6 +101,11 @@ function loadItems() {
         // Utilizar la imagen obtenida del servidor o una de reserva si no existe
         const imageUrl = item.image_src || "https://via.placeholder.com/150";
 
+        //Desplegar las etiquetas de la publicacion
+        let tagsHtml = '';
+        if (Array.isArray(item.tags) && item.tags.length) {
+            tagsHtml = '<ul>' + item.tags.map(tag => `<li>${tag}</li>`).join('') + '</ul>';
+        }
         row.innerHTML = `
             <td>
                 <img class="btn-tabla editar-post" src="../Frontend/assets/icon_edit.svg" alt="editar">
@@ -107,7 +113,7 @@ function loadItems() {
             </td>
             <td>${item.title}</td>
             <td>${item.author}</td>
-            <td>${item.tags}</td>
+            <td>${tagsHtml}</td>
             <td><img src="${imageUrl}" alt="Imagen del producto"></td>
         `;
         tabla_body.appendChild(row);
@@ -125,8 +131,72 @@ function attachEventListeners() {
     editarPost = document.getElementsByClassName("editar-post");
     const postEdit = Array.from(editarPost);
     postEdit.forEach(post => {
-        post.addEventListener('click', function() {
-            window.location.href = "new_product";
+        post.addEventListener('click', function(event) {
+            const row = event.target.closest('tr');
+            const id = row.getAttribute("data-id");
+
+            // Hacer una solicitud al endpoint para obtener los datos del libro
+            fetch(`http://localhost:5000/post?publication_id=${id}`)
+                .then(response => response.json())
+                .then(postData => {
+                    // Rellenar el formulario del modal con los datos de la publicación
+                    document.getElementById('editTitle').value = postData.title;
+                    document.getElementById('editAuthor').value = postData.author;
+                    document.getElementById('editYear').value = postData.launch_year;
+                    document.getElementById('editPrice').value = postData.price;
+                    document.getElementById('editLanguage').value = postData.language;
+                    document.getElementById('editPublisher').value = postData.publisher;
+                    document.getElementById('editPostId').value = postData.publication_id;
+
+                    // Mostrar el modal de edición
+                    editPostModal= new bootstrap.Modal(document.getElementById('editPostModal'));
+                    editPostModal.show();
+                })
+                .catch(error => {
+                    console.log(error);
+                    swal("Error", "No se pudieron cargar los datos de la publicación", "error");
+                });
+        });
+    });
+}
+
+// Guardar cambios de la publicación
+function saveChanges() {
+    const id = document.getElementById('editPostId').value;
+    const updatedPost = {
+        publication_id: id,
+        title: document.getElementById('editTitle').value,
+        author: document.getElementById('editAuthor').value,
+        year: document.getElementById('editYear').value,
+        price: document.getElementById('editPrice').value,
+        language: document.getElementById('editLanguage').value,
+        publisher: document.getElementById('editPublisher').value,
+    };
+
+    fetch(`http://localhost:5000/edit_post`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedPost),
+    })
+    .then(response => {
+        if (response.ok) {
+            swal("Publicación actualizada", {
+                icon: "success",
+            });
+            editPostModal.hide();
+            getBooks();  // Volver a cargar los libros después de actualizar
+        } else {
+            swal("Error, no se pudo actualizar la publicación", {
+                icon: "error",
+            });
+        }
+    })
+    .catch(error => {
+        console.log(error);
+        swal("Error, no se pudo actualizar la publicación", {
+            icon: "error",
         });
     });
 }
@@ -140,6 +210,18 @@ function init() {
 
     nuevoPost.addEventListener('click', function() {
         window.location.href = "new_product";
+    });
+
+    // Event listener para el botón de guardar cambios en el modal
+    document.getElementById("saveChangesButton").addEventListener("click", saveChanges);
+
+    // Event listener para el botón de cerrar el modal
+    document.getElementById("closeEditModal").addEventListener("click", function() {
+        editPostModal.hide();
+    });
+
+    document.getElementById("close").addEventListener("click", function() {
+        editPostModal.hide();
     });
 }
 
