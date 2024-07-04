@@ -28,6 +28,21 @@ const results = [
     },
     {
         image: {
+            src: "./assets/purcharseSampleHome.png",
+            alt: "Producto 1"
+        },
+        info: {
+            title: {
+                main: "Luna de Pluton",
+                author: "Dross"
+            },
+            status: "Usado"
+        },
+        price: "15,00 US$",
+        stock: 3
+    },
+    {
+        image: {
             src: "./assets/image 5.png",
             alt: "Producto 2"
         },

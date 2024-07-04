@@ -1,20 +1,18 @@
-/*
-    This file is used to put the header of the website.
-
-*/
-
 var profilePic;
 
 const userDetail = {
     name: "Juan Perez",
-    pictureSource: "./assets/icon.jpg"
+    pictureSource: "../Frontend/assets/icon.jpg"  // Ruta relativa a la carpeta estática
 }
 
 document.addEventListener("DOMContentLoaded", function() {
     const headerHTML = `
     <header class="header">
         <div class="container d-flex align-items-center justify-content-between">
-            <img src="./assets/g1.svg" alt="Logo" height="50" class="header__logo">
+            <a href="/" class="header__logo">
+                <img src="../Frontend/assets/g1.svg" alt="Logo" height="50">
+            </a>
+            
             <div class="flex-grow-1 mx-3">
                 <div class="input-group search-bar">
                     <input type="text" class="form-control" placeholder="Buscar">
@@ -35,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <button class="btn btn-cart ms-2" type="button">
                     <i class="fas fa-shopping-cart"></i>
                 </button>
-                <a id="profile_pic" href="./my_info.html" class="ms-2">
+                <a id="profile_pic" href="./my_info" class="ms-2">
                     <!-- Add profile picture here -->
                     <img src="${userDetail.pictureSource}" alt="Profile Picture" height="50" width="50" class="profile_pic">
                 </a>

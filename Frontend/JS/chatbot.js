@@ -249,7 +249,7 @@ class Chatbox {
                     <div class="chatbox__support">
                         <div class="chatbox__header">
                             <div class="chatbox__image--header">
-                                <img src="./assets/logochat.jpg" alt="image">
+                                <img src="../Frontend/assets/logochat.jpg" alt="image">
                             </div>
                             <div class="chatbox__content--header">
                                 <h4 class="chatbox__heading--header">Web Chat</h4>
@@ -265,7 +265,7 @@ class Chatbox {
                         </div>
                     </div>
                     <div class="chatbox__button">
-                        <button><img src="../assets/chatbox-icon.svg" /></button>
+                        <button><img src="../Frontend/assets/chatbox-icon.svg" /></button>
                     </div>
                 </div>
             </div>
@@ -309,7 +309,7 @@ class Chatbox {
         let msg1 = { name: "User", message: text1 };
         this.messages.push(msg1);
 
-        fetch('http://127.0.0.1:5000/predict', {
+        fetch('http://localhost:5000/predict', {
             method: 'POST',
             body: JSON.stringify({ message: text1 }),
             mode: 'cors',

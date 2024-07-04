@@ -1,0 +1,84 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": [
+        "Hola",
+        "Hey",
+        "Como estas?",
+        "Hay alguien ahi?",
+        "Buenos dias",
+        "Buenas tardes"
+      ],
+      "responses": [
+        "¡Hola! :-)",
+        "Hola, gracias por visitarnos",
+        "Hola, ¿en que puedo ayudarte?",
+        "Hola, ¿como puedo asistirte?"
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["Adios", "Hasta luego", "Nos vemos"],
+      "responses": [
+        "Hasta luego, gracias por visitarnos",
+        "Que tengas un buen dia",
+        "¡Adios! Vuelve pronto."
+      ]
+    },
+    {
+      "tag": "thanks",
+      "patterns": ["Gracias", "Muchas gracias", "Eso es util", "¡Mil gracias!"],
+      "responses": ["¡Feliz de ayudar!", "¡A cualquier hora!", "¡Un placer!"]
+    },
+    {
+      "tag": "items",
+      "patterns": [
+        "Que articulos tienen?",
+        "Que tipos de libros tienen?",
+        "Que venden?"
+      ],
+      "responses": [
+        "Vendemos una amplia variedad de libros nuevos y usados",
+        "Tenemos libros de ficcion, no ficcion, educativos y mas"
+      ]
+    },
+    {
+      "tag": "payments",
+      "patterns": [
+        "Aceptan tarjetas de credito?",
+        "Aceptan Mastercard?",
+        "Puedo pagar con Paypal?",
+        "Solo aceptan efectivo?"
+      ],
+      "responses": [
+        "Aceptamos VISA, Mastercard y Paypal",
+        "Aceptamos la mayoria de las principales tarjetas de credito, y Paypal"
+      ]
+    },
+    {
+      "tag": "delivery",
+      "patterns": [
+        "Cuanto tarda la entrega?",
+        "Cuanto tarda el envio?",
+        "Cuando recibire mi pedido?"
+      ],
+      "responses": [
+        "La entrega tarda de 2 a 4 dias",
+        "El envio tarda de 2 a 4 dias"
+      ]
+    },
+    {
+      "tag": "funny",
+      "patterns": [
+        "¡Cuentame un chiste!",
+        "¡Dime algo gracioso!",
+        "Sabes algun chiste?"
+      ],
+      "responses": [
+        "¿Por que el libro fue al hospital? ¡Porque se sentia muy mal!",
+        "¿Por que los libros nunca se quejan? ¡Porque siempre estan ocupados leyendo!"
+      ]
+    }
+  ]
+}

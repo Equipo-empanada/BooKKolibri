@@ -18,7 +18,7 @@ var profilePic;
 const suggestedItems = [
     {
         image: {
-            src: "./assets/purcharseSampleHome.png",
+            src: "../Frontend/assets/purcharseSampleHome.png",
             alt: "Producto 1"
         },
         info: {
@@ -33,7 +33,7 @@ const suggestedItems = [
     },
     {
         image: {
-            src: "./assets/image 5.png",
+            src: "../Frontend/assets/image 5.png",
             alt: "Producto 2"
         },
         info: {
@@ -47,7 +47,7 @@ const suggestedItems = [
     },
     {
         image: {
-            src: "./assets/image 6.png",
+            src: "../Frontend/assets/image 6.png",
             alt: "Producto 3"
         },
         info: {
@@ -61,7 +61,7 @@ const suggestedItems = [
     },
     {
         image: {
-            src: "./assets/image 7.png",
+            src: "../Frontend/assets/image 7.png",
             alt: "Producto 4"
         },
         info: {
@@ -75,7 +75,7 @@ const suggestedItems = [
     },
     {
         image: {
-            src: "./assets/image 8.png",
+            src: "../Frontend/assets/image 8.png",
             alt: "Producto 5"
         },
         info: {
@@ -97,7 +97,7 @@ const suggestedItems = [
 //Document Ready
 function purchaseItem(){
     console.log("Item Purchased");
-    location.href = "./item_sell_page.html";
+    location.href = "./item_sell_page";
 
 }
 
