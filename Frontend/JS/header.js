@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const headerHTML = `
     <header class="header">
         <div class="container d-flex align-items-center justify-content-between">
-            <a href="./home.html" class="header__logo">
+            <a href="/" class="header__logo">
                 <img src="../Frontend/assets/g1.svg" alt="Logo" height="50">
             </a>
             
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <button class="btn btn-cart ms-2" type="button">
                     <i class="fas fa-shopping-cart"></i>
                 </button>
-                <a id="profile_pic" href="./my_info.html" class="ms-2">
+                <a id="profile_pic" href="./my_info" class="ms-2">
                     <!-- Add profile picture here -->
                     <img src="${userDetail.pictureSource}" alt="Profile Picture" height="50" width="50" class="profile_pic">
                 </a>

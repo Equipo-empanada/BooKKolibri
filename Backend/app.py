@@ -133,6 +133,14 @@ class EtiquetaLibro(db.Model):
 
 
 # Render templates
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('home.html')
+
+@app.route('/my_info', methods=['GET'])
+def myInfo():
+    return render_template('my_info.html')
+
 @app.route('/new_product', methods=['GET'])
 def newProduct():
     return render_template('new_product.html')
@@ -141,12 +149,22 @@ def newProduct():
 def managePosts():
     return render_template('manage_posts.html')
 
+@app.route('/hello', methods=['GET'])
+def index_get():
+    return render_template('base.html')
+
+@app.route('/chat', methods=['GET'])
+def chat():
+    return render_template('chat.html')
+
+@app.route('/login', methods=['GET'])
+def login():
+    return render_template('login.html')
+
 
 
 # API
-@app.route('/')
-def index_get():
-    return render_template('base.html')
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
