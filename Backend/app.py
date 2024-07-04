@@ -3,7 +3,7 @@ from chat import get_response
 from flask_sqlalchemy import SQLAlchemy
 import json
 import os
-import models
+
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from PIL import Image
@@ -18,6 +18,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres.asjubxyoqpiyuxewo
 app.config['UPLOAD_FOLDER'] = '../Frontend/static/uploads'
 db = SQLAlchemy(app)
 
+# Models definition DB
 class Libro(db.Model):
     __tablename__ = 'libro'
     id_libro = db.Column(db.Integer, primary_key=True, autoincrement=True)
