@@ -3,11 +3,6 @@
 *   @autor: Juanja
 *   @version: 1.0
 */
-
-
-// Sample JSON (Comes from the server)
-var response = { image: "./assets/purcharseSample.png", product_name: "Luna de pluton", seller_name: "Sergio18", price: 45.23, state: "Como nuevo", description: "Librazo. Lo vendo porque he completado el libro al 100%", tags: ["Acción", "Ciencia ficción"], seller_rating: 4.5, language: "Español", year: 2015, publisher: "Planeta", sampleImages: ["./assets/samplePurcharse 1.png", "./assets/samplePurcharse 2.png", "./assets/samplePurcharse 3.png"] };
-
 // Variables
 var product_img;
 var product_name;
@@ -33,8 +28,29 @@ function messageToSeller() {
 }
 
 function makePurcharse() {
-    location.href = "./purchase_page.html";
+    //Obtenemos el id del post en la url
+    let url = new URL(window.location.href);
+    let post_id = url.searchParams.get("id");
+    //Añadir al carrito
+    addShoppingCart(post_id);
+    location.href = "/purchase_page";
 }
+
+function addShoppingCart(post_id) {
+    //Añadir al carrito (local storage)
+    var shopping_cart = localStorage.getItem("shopping_cart");
+    if (shopping_cart == null) {
+        shopping_cart = [];
+    } else {
+        shopping_cart = JSON.parse(shopping_cart);
+    }
+    shopping_cart.push(post_id);
+    localStorage.setItem("shopping_cart", JSON.stringify(shopping_cart));
+    alert("Item added to shopping cart");
+
+}
+
+
 //Document Ready
 function init() {
 
