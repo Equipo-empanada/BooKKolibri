@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify, render_template, jsonify, url_for
+from flask_login import LoginManager, login_user, logout_user,login_required,current_user,UserMixin
 from chat import get_response
 from flask_sqlalchemy import SQLAlchemy
+#from flask_wtf.csrf import CSRFProtect
+from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 import json
 import os
@@ -20,7 +23,10 @@ static_dir = os.path.abspath('../Frontend')
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres.asjubxyoqpiyuxewoxwg:empanada.123@aws-0-us-west-1.pooler.supabase.com:6543/postgres'
 app.config['UPLOAD_FOLDER'] = '../Frontend/static/uploads'
+app.secret_key = 'empanada_viento'
+#csrf = CSRFProtect()
 db = SQLAlchemy(app)
+login_mannager_app = LoginManager(app) 
 
 # Models definition DB
 class Libro(db.Model):
@@ -37,7 +43,7 @@ class Libro(db.Model):
     descripcion = db.Column(db.Text, nullable=True)
     categoria = db.Column(db.Text, nullable=True)
 
-class Usuario(db.Model):
+class Usuario(db.Model,UserMixin):
     __tablename__ = 'usuario'
     id_usuario = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nombre = db.Column(db.String(50), nullable=False)
@@ -49,6 +55,8 @@ class Usuario(db.Model):
     cod_postal = db.Column(db.String(20), nullable=False)
     rol = db.Column(db.String(10), nullable=False)
     foto_perfil = db.Column(db.LargeBinary, nullable=True)
+    def get_id(self):
+        return str(self.id_usuario)
 
 class Tienda(db.Model):
     __tablename__ = 'tienda'
@@ -142,14 +150,17 @@ def index():
     return render_template('home.html')
 
 @app.route('/my_info', methods=['GET'])
+@login_required
 def myInfo():
     return render_template('my_info.html')
 
 @app.route('/new_product', methods=['GET'])
+@login_required
 def newProduct():
     return render_template('new_product.html')
 
 @app.route('/manage_posts', methods=['GET'])
+@login_required
 def managePosts():
     return render_template('manage_posts.html')
 
@@ -158,6 +169,7 @@ def index_get():
     return render_template('base.html')
 
 @app.route('/chat', methods=['GET'])
+@login_required
 def chat():
     return render_template('chat.html')
 
@@ -173,6 +185,7 @@ def register():
 
 
 @app.route('/predict', methods=['POST'])
+@login_required
 def predict():
     text = request.get_json().get('message')
     response = get_response(text)
@@ -181,6 +194,7 @@ def predict():
     return jsonify(message)
 
 @app.route('/addBook', methods=['POST'])
+@login_required
 def addBook():
     data = request.form
     files = request.files
@@ -260,6 +274,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
     
 @app.route('/posts', methods=['GET'])
+@login_required
 def getBooks():
     publicaciones = Publicacion.query.all()
     books_list = []
@@ -291,6 +306,7 @@ def getBooks():
 
 
 @app.route('/posts', methods=['DELETE'])
+@login_required
 def deleteBook():
     publicacion_id = request.args.get('publication_id')
     publicacion = db.session.get(Publicacion, publicacion_id)
@@ -316,6 +332,7 @@ def deleteBook():
 
 # Get book by post id
 @app.route('/post', methods=['GET'])
+@login_required
 def getBook():
     publicacion_id = request.args.get('publication_id')
     publicacion = db.session.get(Publicacion, publicacion_id)
@@ -347,6 +364,7 @@ def getBook():
 
 
 @app.route('/edit_post', methods=['POST'])
+@login_required
 def editPost():
     data = request.json
     publicacion_id = data.get('publication_id')
@@ -398,14 +416,53 @@ def sign_in():
     #Consulta y obtine si es que existe el usuario ingresado
     #persona = db.session.execute(db.select(Persona)).one()
     user = Usuario.query.filter_by(email=email_user).first()
-    print(type(user))
     if user:
         #Usuario identificado - Validación de password
         if check_password(user.contraseña,password_user):
+            login_user(user) #almecena como usuario logeado 
             return jsonify({'message': 'User authenticated successfully'})
         return jsonify({'message': 'Invalid password'}), 401
     return jsonify({'message':'Unregistered user'}), 404
+@app.route('/sign_out',methods=['GET'])
+def sign_out():
+    logout_user()
+    return jsonify({'message': 'logout'})
+#Mannage Session
 
+@login_mannager_app.user_loader
+def load_user(user_id):
+    sql_query = text("""
+        SELECT id_usuario, nombre, apellido, email, rol
+        FROM usuario 
+        WHERE id_usuario = :user_id
+    """)
+    
+    # Ejecutar la consulta y obtener la primera fila
+    result = db.session.execute(sql_query, {'user_id': user_id}).first()
+    
+    if result:
+        # Crear el objeto Usuario
+        user = Usuario(
+            id_usuario=result.id_usuario,
+            nombre=result.nombre,
+            apellido=result.apellido,
+            email=result.email,
+            rol=result.rol
+        )
+        return user
+    return None
+@app.route('/info_user', methods=['GET'])
+@login_required
+def get_current_user():
+    user_info = {
+        'id': current_user.id_usuario,
+        'nombre': current_user.nombre,
+        'apellido': current_user.apellido,
+        'email': current_user.email,
+        'rol': current_user.rol
+    }
+    return jsonify(user_info)
 
 if __name__ == '__main__':
+    #csrf.init_app(app)
     app.run(debug=True)
