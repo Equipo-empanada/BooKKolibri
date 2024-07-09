@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template, jsonify, url_for
 from chat import get_response
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 import json
 import os
 
@@ -8,6 +9,9 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 from PIL import Image
 
+#Utils
+from app_utils import check_password
+from app_utils import hash_password
 
 #Templates folder
 template_dir = os.path.abspath('../Frontend')
@@ -38,7 +42,7 @@ class Usuario(db.Model):
     id_usuario = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nombre = db.Column(db.String(50), nullable=False)
     apellido = db.Column(db.String(50), nullable=False)
-    correo_electronico = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
     contraseña = db.Column(db.String(255), nullable=False)
     fecha_nac = db.Column(db.DateTime, nullable=False)
     ciudad = db.Column(db.String(20), nullable=False)
@@ -160,7 +164,9 @@ def chat():
 @app.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
-
+@app.route('/register',methods=['GET'])
+def register():
+    return render_template('register.html')
 
 
 # API
@@ -358,7 +364,47 @@ def editPost():
         return jsonify({"message": "Book updated successfully!"}), 200
     return jsonify({"message": "Publication not found!"}), 404
 
+@app.route('/sing_up',methods=['POST'])
+def sign_up(): #Crea usuario
+    data = request.get_json()
+    #Agregar validaciones
+    new_user=Usuario(
+        nombre = data.get("name"),
+        apellido = data.get("last_name"),
+        email = data.get("email"),
+        contraseña = hash_password(data.get("password")),
+        fecha_nac = data.get("birthdate"),
+        ciudad = data.get("city"),
+        cod_postal = data.get("postalcode"),
+        rol = data.get("role")
+    ) #Rol debe tener un valor por defecto
+    if new_user.email:
+        if new_user.contraseña:
+            try:
+                db.session.add(new_user)
+                db.session.commit()
+                return jsonify({'message': 'User added successfully'})
+            except IntegrityError:
+                db.session.rollback()
+                return jsonify({'message': 'This email is already registered'})
+        return jsonify({'message':'No password'})
+    return jsonify({'message':'No email'})
 
+@app.route('/sign_in',methods = ['POST'])
+def sign_in():
+    data = request.get_json()  # Obtener datos del cuerpo de la solicitud
+    email_user = data.get('email_user')
+    password_user = data.get('password_user')
+    #Consulta y obtine si es que existe el usuario ingresado
+    #persona = db.session.execute(db.select(Persona)).one()
+    user = Usuario.query.filter_by(email=email_user).first()
+    print(type(user))
+    if user:
+        #Usuario identificado - Validación de password
+        if check_password(user.contraseña,password_user):
+            return jsonify({'message': 'User authenticated successfully'})
+        return jsonify({'message': 'Invalid password'}), 401
+    return jsonify({'message':'Unregistered user'}), 404
 
 
 if __name__ == '__main__':
