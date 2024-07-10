@@ -163,6 +163,7 @@ def login():
 
 # @app.route('/purchase_page', methods=['GET'])
 # def purchasePage():
+#     #consultamos 
 #     return render_template('purchase_page.html')
 
 @app.route('/item_sell_page', methods=['GET'])
