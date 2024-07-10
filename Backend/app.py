@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify, render_template, jsonify, url_for
+from flask_login import LoginManager, login_user, logout_user,login_required,current_user,UserMixin
 from chat import get_response
 from flask_sqlalchemy import SQLAlchemy
+#from flask_wtf.csrf import CSRFProtect
+from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError
 import json
 import os
 
@@ -8,6 +12,9 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 from PIL import Image
 
+#Utils
+from app_utils import check_password
+from app_utils import hash_password
 
 #Templates folder
 template_dir = os.path.abspath('../Frontend')
@@ -16,7 +23,10 @@ static_dir = os.path.abspath('../Frontend')
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres.asjubxyoqpiyuxewoxwg:empanada.123@aws-0-us-west-1.pooler.supabase.com:6543/postgres'
 app.config['UPLOAD_FOLDER'] = '../Frontend/static/uploads'
+app.secret_key = 'empanada_viento'
+#csrf = CSRFProtect()
 db = SQLAlchemy(app)
+login_mannager_app = LoginManager(app) 
 
 # Models definition DB
 class Libro(db.Model):
@@ -33,18 +43,20 @@ class Libro(db.Model):
     descripcion = db.Column(db.Text, nullable=True)
     categoria = db.Column(db.Text, nullable=True)
 
-class Usuario(db.Model):
+class Usuario(db.Model,UserMixin):
     __tablename__ = 'usuario'
     id_usuario = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nombre = db.Column(db.String(50), nullable=False)
     apellido = db.Column(db.String(50), nullable=False)
-    correo_electronico = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
     contraseña = db.Column(db.String(255), nullable=False)
     fecha_nac = db.Column(db.DateTime, nullable=False)
     ciudad = db.Column(db.String(20), nullable=False)
     cod_postal = db.Column(db.String(20), nullable=False)
     rol = db.Column(db.String(10), nullable=False)
     foto_perfil = db.Column(db.LargeBinary, nullable=True)
+    def get_id(self):
+        return str(self.id_usuario)
 
 class Tienda(db.Model):
     __tablename__ = 'tienda'
@@ -138,14 +150,17 @@ def index():
     return render_template('home.html')
 
 @app.route('/my_info', methods=['GET'])
+#@login_required
 def myInfo():
     return render_template('my_info.html')
 
 @app.route('/new_product', methods=['GET'])
+#@login_required
 def newProduct():
     return render_template('new_product.html')
 
 @app.route('/manage_posts', methods=['GET'])
+#@login_required
 def managePosts():
     return render_template('manage_posts.html')
 
@@ -154,19 +169,23 @@ def index_get():
     return render_template('base.html')
 
 @app.route('/chat', methods=['GET'])
+#@login_required
 def chat():
     return render_template('chat.html')
 
 @app.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
-
+@app.route('/register',methods=['GET'])
+def register():
+    return render_template('register.html')
 
 
 # API
 
 
 @app.route('/predict', methods=['POST'])
+#@login_required
 def predict():
     text = request.get_json().get('message')
     response = get_response(text)
@@ -175,6 +194,7 @@ def predict():
     return jsonify(message)
 
 @app.route('/addBook', methods=['POST'])
+#@login_required
 def addBook():
     data = request.form
     files = request.files
@@ -254,6 +274,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
     
 @app.route('/posts', methods=['GET'])
+#@login_required
 def getBooks():
     publicaciones = Publicacion.query.all()
     books_list = []
@@ -285,6 +306,7 @@ def getBooks():
 
 
 @app.route('/posts', methods=['DELETE'])
+#@login_required
 def deleteBook():
     publicacion_id = request.args.get('publication_id')
     publicacion = db.session.get(Publicacion, publicacion_id)
@@ -310,6 +332,7 @@ def deleteBook():
 
 # Get book by post id
 @app.route('/post', methods=['GET'])
+#@login_required
 def getBook():
     publicacion_id = request.args.get('publication_id')
     publicacion = db.session.get(Publicacion, publicacion_id)
@@ -341,6 +364,7 @@ def getBook():
 
 
 @app.route('/edit_post', methods=['POST'])
+#@login_required
 def editPost():
     data = request.json
     publicacion_id = data.get('publication_id')
@@ -358,8 +382,217 @@ def editPost():
         return jsonify({"message": "Book updated successfully!"}), 200
     return jsonify({"message": "Publication not found!"}), 404
 
+@app.route('/sing_up',methods=['POST'])
+def sign_up(): #Crea usuario
+    data = request.get_json()
+    #Agregar validaciones
+    new_user=Usuario(
+        nombre = data.get("name"),
+        apellido = data.get("last_name"),
+        email = data.get("email"),
+        contraseña = hash_password(data.get("password")),
+        fecha_nac = data.get("birthdate"),
+        ciudad = data.get("city"),
+        cod_postal = data.get("postalcode"),
+        rol = data.get("role")
+    ) #Rol debe tener un valor por defecto
+    if new_user.email:
+        if new_user.contraseña:
+            try:
+                db.session.add(new_user)
+                db.session.commit()
+                return jsonify({'message': 'User added successfully'})
+            except IntegrityError:
+                db.session.rollback()
+                return jsonify({'message': 'This email is already registered'})
+        return jsonify({'message':'No password'})
+    return jsonify({'message':'No email'})
 
+@app.route('/sign_in',methods = ['POST'])
+def sign_in():
+    data = request.get_json()  # Obtener datos del cuerpo de la solicitud
+    email_user = data.get('email_user')
+    password_user = data.get('password_user')
+    #Consulta y obtine si es que existe el usuario ingresado
+    #persona = db.session.execute(db.select(Persona)).one()
+    user = Usuario.query.filter_by(email=email_user).first()
+    if user:
+        #Usuario identificado - Validación de password
+        if check_password(user.contraseña,password_user):
+            login_user(user) #almecena como usuario logeado 
+            return jsonify({'message': 'User authenticated successfully'})
+        return jsonify({'message': 'Invalid password'}), 401
+    return jsonify({'message':'Unregistered user'}), 404
+
+@app.route('/sign_out',methods=['GET'])
+def sign_out():
+    logout_user()
+    return jsonify({'message': 'logout'})
+
+@app.route('/search/<title>',methods=['GET'])
+def search_title(title):
+    #Busqueda principal por titulo
+    if not title:
+        return jsonify({'alert':'title is required'})
+    title = title.upper()
+    #Definición de la consulta
+    query_resultados = db.session.query(
+        Publicacion.id_publicacion, Libro.id_libro,
+        Libro.titulo, Libro.autor, Libro.precio, Libro.estado,
+    ).join(
+        Publicacion, Publicacion.id_libro == Libro.id_libro
+    ).where(
+        Publicacion.activo == True,
+        db.func.upper(Libro.titulo).like(f'%{title}%')
+    ).all()
+    lista_resultados = []
+    for qr in query_resultados:
+        img = ImagenLibro.query.filter_by(id_libro=qr.id_libro).first()
+        img_desc = img.descripcion
+        img_url = url_for('static',filename=f'static/uploads/{img_desc}') if img_desc else "https://via.placeholder.com/150"
+        lista_resultados.append({
+            "id_publication": qr.id_publicacion,
+            'image': {
+                'src': img_url,
+                'alt': img_desc if img_desc else "Placeholder image"
+            },
+            'info': {
+                'title': {
+                    'main': qr.titulo,
+                    'author': qr.autor
+                },
+                'status': qr.estado
+            },
+            'price': f"{qr.precio:,.2f} US$"
+        })
+    return jsonify(lista_resultados)
+
+@app.route('/galery/<tipo>', methods=['GET'])
+def books_galery(tipo=None):#usar en home y en ver-mas
+    #/galery/tipo?limit
+    if not tipo:
+        return jsonify({"message": "type is required"})
+    
+    limit_results = request.args.get('limit', type=int)
+    
+    query_sales = db.session.query(
+        Publicacion.id_publicacion, Libro.id_libro,
+        Libro.titulo, Libro.autor, Libro.precio, Libro.estado,
+    ).join(
+        Publicacion, Publicacion.id_libro == Libro.id_libro
+    ).filter(
+        Publicacion.activo == True,
+        db.func.upper(Publicacion.tipo_publicacion) == tipo.upper()
+    )
+    
+    if limit_results:
+        query_sales = query_sales.limit(limit_results)
+    
+    query_sales = query_sales.all()
+    
+    lista_resultados = []
+    for libro in query_sales:
+        img = ImagenLibro.query.filter_by(id_libro=libro.id_libro).first()
+        img_desc = img.descripcion if img else None
+        img_url = url_for('static', filename=f'uploads/{img_desc}') if img_desc else "https://via.placeholder.com/150"
+
+        lista_resultados.append({
+            "id_publication": libro.id_publicacion,
+            "image": {
+                "src": img_url,
+                "alt": img.descripcion if img else "Placeholder"
+            },
+            "info": {
+                "title": {
+                    "main": libro.titulo,
+                    "author": libro.autor
+                },
+                "status": libro.estado
+            },
+            "price": f"{libro.precio:,.2f} US$",
+        })
+    
+    return jsonify(lista_resultados)
+
+@app.route('/search_label/<label>',methods=['GET'])
+def search_for_label(label=None):
+    if not label:
+        return jsonify({"message":"label is required"})
+    query_books = db.session.query(
+        Publicacion.id_publicacion, Libro.id_libro,
+        Libro.titulo, Libro.autor, Libro.precio, Libro.estado
+    ).join(
+        Publicacion, Publicacion.id_libro == Libro.id_libro
+    ).join(
+        EtiquetaLibro, Libro.id_libro == EtiquetaLibro.id_libro
+    ).join(
+        Etiqueta, Etiqueta.id_etiqueta == EtiquetaLibro.id_etiqueta
+    ).filter(
+        Etiqueta.nometiqueta == label.lower()
+    ).all()
+
+    lista_resultados = []
+    for libro in query_books:
+        img = ImagenLibro.query.filter_by(id_libro=libro.id_libro).first()
+        img_desc = img.descripcion if img else None
+        img_url = url_for('static', filename=f'uploads/{img_desc}') if img_desc else "https://via.placeholder.com/150"
+
+        lista_resultados.append({
+            "id_publication": libro.id_publicacion,
+            "image": {
+                "src": img_url,
+                "alt": img.descripcion if img else "Placeholder"
+            },
+            "info": {
+                "title": {
+                    "main": libro.titulo,
+                    "author": libro.autor
+                },
+                "status": libro.estado
+            },
+            "price": f"{libro.precio:,.2f} US$",
+        })
+    
+    return jsonify(lista_resultados)
+    
+
+#Mannage Session
+@login_mannager_app.user_loader
+def load_user(user_id):
+    sql_query = text("""
+        SELECT id_usuario, nombre, apellido, email, rol
+        FROM usuario 
+        WHERE id_usuario = :user_id
+    """)
+    
+    # Ejecutar la consulta y obtener la primera fila
+    result = db.session.execute(sql_query, {'user_id': user_id}).first()
+    
+    if result:
+        # Crear el objeto Usuario
+        user = Usuario(
+            id_usuario=result.id_usuario,
+            nombre=result.nombre,
+            apellido=result.apellido,
+            email=result.email,
+            rol=result.rol
+        )
+        return user
+    return None
+
+@app.route('/info_user', methods=['GET'])
+@login_required
+def get_current_user():
+    user_info = {
+        'id': current_user.id_usuario,
+        'nombre': current_user.nombre,
+        'apellido': current_user.apellido,
+        'email': current_user.email,
+        'rol': current_user.rol
+    }
+    return jsonify(user_info)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    #csrf.init_app(app)
+    app.run(debug=True,host='0.0.0.0', port=5000)
