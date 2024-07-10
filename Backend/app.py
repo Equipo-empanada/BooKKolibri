@@ -150,17 +150,17 @@ def index():
     return render_template('home.html')
 
 @app.route('/my_info', methods=['GET'])
-@login_required
+#@login_required
 def myInfo():
     return render_template('my_info.html')
 
 @app.route('/new_product', methods=['GET'])
-@login_required
+#@login_required
 def newProduct():
     return render_template('new_product.html')
 
 @app.route('/manage_posts', methods=['GET'])
-@login_required
+#@login_required
 def managePosts():
     return render_template('manage_posts.html')
 
@@ -169,7 +169,7 @@ def index_get():
     return render_template('base.html')
 
 @app.route('/chat', methods=['GET'])
-@login_required
+#@login_required
 def chat():
     return render_template('chat.html')
 
@@ -185,7 +185,7 @@ def register():
 
 
 @app.route('/predict', methods=['POST'])
-@login_required
+#@login_required
 def predict():
     text = request.get_json().get('message')
     response = get_response(text)
@@ -194,7 +194,7 @@ def predict():
     return jsonify(message)
 
 @app.route('/addBook', methods=['POST'])
-@login_required
+#@login_required
 def addBook():
     data = request.form
     files = request.files
@@ -274,7 +274,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
     
 @app.route('/posts', methods=['GET'])
-@login_required
+#@login_required
 def getBooks():
     publicaciones = Publicacion.query.all()
     books_list = []
@@ -306,7 +306,7 @@ def getBooks():
 
 
 @app.route('/posts', methods=['DELETE'])
-@login_required
+#@login_required
 def deleteBook():
     publicacion_id = request.args.get('publication_id')
     publicacion = db.session.get(Publicacion, publicacion_id)
@@ -332,7 +332,7 @@ def deleteBook():
 
 # Get book by post id
 @app.route('/post', methods=['GET'])
-@login_required
+#@login_required
 def getBook():
     publicacion_id = request.args.get('publication_id')
     publicacion = db.session.get(Publicacion, publicacion_id)
@@ -364,7 +364,7 @@ def getBook():
 
 
 @app.route('/edit_post', methods=['POST'])
-@login_required
+#@login_required
 def editPost():
     data = request.json
     publicacion_id = data.get('publication_id')
@@ -423,12 +423,99 @@ def sign_in():
             return jsonify({'message': 'User authenticated successfully'})
         return jsonify({'message': 'Invalid password'}), 401
     return jsonify({'message':'Unregistered user'}), 404
+
 @app.route('/sign_out',methods=['GET'])
 def sign_out():
     logout_user()
     return jsonify({'message': 'logout'})
-#Mannage Session
 
+@app.route('/search/<title>',methods=['GET'])
+def search_title(title):
+    #Busqueda principal por titulo
+    if not title:
+        return jsonify({'alert':'title is required'})
+    title = title.upper()
+    #Definición de la consulta
+    query_resultados = db.session.query(
+        Publicacion.id_publicacion, Libro.id_libro,
+        Libro.titulo, Libro.autor, Libro.precio, Libro.estado,
+    ).join(
+        Publicacion, Publicacion.id_libro == Libro.id_libro
+    ).where(
+        Publicacion.activo == True,
+        db.func.upper(Libro.titulo).like(f'%{title}%')
+    ).all()
+    lista_resultados = []
+    for qr in query_resultados:
+        img = ImagenLibro.query.filter_by(id_libro=qr.id_libro).first()
+        img_desc = img.descripcion
+        img_url = url_for('static',filename=f'static/uploads/{img_desc}') if img_desc else "https://via.placeholder.com/150"
+        lista_resultados.append({
+            "id_publication": qr.id_publicacion,
+            'image': {
+                'src': img_url,
+                'alt': img_desc if img_desc else "Placeholder image"
+            },
+            'info': {
+                'title': {
+                    'main': qr.titulo,
+                    'author': qr.autor
+                },
+                'status': qr.estado
+            },
+            'price': f"{qr.precio:,.2f} US$"
+        })
+    return jsonify(lista_resultados)
+
+@app.route('/galery/<tipo>', methods=['GET'])
+def books_galery(tipo=None):#usar en home y en ver-mas
+    #/galery/tipo?limit
+    if not tipo:
+        return jsonify({"message": "type is required"})
+    
+    limit_results = request.args.get('limit', type=int)
+    
+    query_sales = db.session.query(
+        Publicacion.id_publicacion, Libro.id_libro,
+        Libro.titulo, Libro.autor, Libro.precio, Libro.estado,
+    ).join(
+        Publicacion, Publicacion.id_libro == Libro.id_libro
+    ).filter(
+        Publicacion.activo == True,
+        db.func.upper(Publicacion.tipo_publicacion) == tipo.upper()
+    )
+    
+    if limit_results:
+        query_sales = query_sales.limit(limit_results)
+    
+    query_sales = query_sales.all()
+    
+    lista_resultados = []
+    for libro in query_sales:
+        img = ImagenLibro.query.filter_by(id_libro=libro.id_libro).first()
+        img_desc = img.descripcion if img else None
+        img_url = url_for('static', filename=f'uploads/{img_desc}') if img_desc else "https://via.placeholder.com/150"
+
+        lista_resultados.append({
+            "id_publication": libro.id_publicacion,
+            "image": {
+                "src": img_url,
+                "alt": img.descripcion if img else "Placeholder"
+            },
+            "info": {
+                "title": {
+                    "main": libro.titulo,
+                    "author": libro.autor
+                },
+                "status": libro.estado
+            },
+            "price": f"{libro.precio:,.2f} US$",
+        })
+    
+    return jsonify(lista_resultados)
+
+
+#Mannage Session
 @login_mannager_app.user_loader
 def load_user(user_id):
     sql_query = text("""
@@ -451,6 +538,7 @@ def load_user(user_id):
         )
         return user
     return None
+
 @app.route('/info_user', methods=['GET'])
 @login_required
 def get_current_user():
@@ -463,6 +551,7 @@ def get_current_user():
     }
     return jsonify(user_info)
 
+
 if __name__ == '__main__':
     #csrf.init_app(app)
-    app.run(debug=True)
+    app.run(debug=True,host='0.0.0.0', port=5000)
