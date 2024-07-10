@@ -519,7 +519,7 @@ def search_for_label(label=None):
     if not label:
         return jsonify({"message":"label is required"})
     query_books = db.session.query(
-        Publicacion.id_usuario, Libro.id_libro,
+        Publicacion.id_publicacion, Libro.id_libro,
         Libro.titulo, Libro.autor, Libro.precio, Libro.estado
     ).join(
         Publicacion, Publicacion.id_libro == Libro.id_libro
@@ -538,7 +538,7 @@ def search_for_label(label=None):
         img_url = url_for('static', filename=f'uploads/{img_desc}') if img_desc else "https://via.placeholder.com/150"
 
         lista_resultados.append({
-            "id_publication": libro.id_libro,
+            "id_publication": libro.id_publicacion,
             "image": {
                 "src": img_url,
                 "alt": img.descripcion if img else "Placeholder"
