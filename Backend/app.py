@@ -176,9 +176,7 @@ def chat():
 @app.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
-@app.route('/login', methods=['GET'])
-def login():
-    return render_template('login.html')
+
 
 @app.route('/item_sell_page', methods=['GET'])
 def purchasePage():
