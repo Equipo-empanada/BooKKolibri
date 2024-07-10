@@ -176,7 +176,34 @@ def chat():
 @app.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
-@app.route('/register',methods=['GET'])
+@app.route('/login', methods=['GET'])
+def login():
+    return render_template('login.html')
+
+@app.route('/item_sell_page', methods=['GET'])
+def purchasePage():
+    id_book = request.args.get('id')
+    print(id_book)
+    sample_book = {
+        'title': 'The Lord of the Rings: The Fellowship of the Ring',
+        'description': 'The first installment of the epic fantasy trilogy written by J.R.R. Tolkien.',
+        'price': '25.00',
+        'author': 'J.R.R. Tolkien',
+        'language': 'English',
+        'launch_year': '1954',
+        'publisher': 'Allen & Unwin',
+        'state': 'New',
+        'category': 'Fantasy',
+        'tags': ['Fantasy', 'Adventure', 'Epic'],
+        'image_src': ['https://via.placeholder.com/150','https://via.placeholder.com/200'],
+        'seller': 'John Doe',
+        'sell_books': '4',
+        'rating': '4.5',
+        'location': 'Mall del Sol, Guayaquil',
+    }
+    return render_template('item_sell_page.html', book=sample_book)
+
+@app.route('/register', methods=['GET'])
 def register():
     return render_template('register.html')
 
