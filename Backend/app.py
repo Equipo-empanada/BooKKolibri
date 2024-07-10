@@ -514,6 +514,47 @@ def books_galery(tipo=None):#usar en home y en ver-mas
     
     return jsonify(lista_resultados)
 
+@app.route('/search_label/<label>',methods=['GET'])
+def search_for_label(label=None):
+    if not label:
+        return jsonify({"message":"label is required"})
+    query_books = db.session.query(
+        Publicacion.id_usuario, Libro.id_libro,
+        Libro.titulo, Libro.autor, Libro.precio, Libro.estado
+    ).join(
+        Publicacion, Publicacion.id_libro == Libro.id_libro
+    ).join(
+        EtiquetaLibro, Libro.id_libro == EtiquetaLibro.id_libro
+    ).join(
+        Etiqueta, Etiqueta.id_etiqueta == EtiquetaLibro.id_etiqueta
+    ).filter(
+        Etiqueta.nometiqueta == label.lower()
+    ).all()
+
+    lista_resultados = []
+    for libro in query_books:
+        img = ImagenLibro.query.filter_by(id_libro=libro.id_libro).first()
+        img_desc = img.descripcion if img else None
+        img_url = url_for('static', filename=f'uploads/{img_desc}') if img_desc else "https://via.placeholder.com/150"
+
+        lista_resultados.append({
+            "id_publication": libro.id_libro,
+            "image": {
+                "src": img_url,
+                "alt": img.descripcion if img else "Placeholder"
+            },
+            "info": {
+                "title": {
+                    "main": libro.titulo,
+                    "author": libro.autor
+                },
+                "status": libro.estado
+            },
+            "price": f"{libro.precio:,.2f} US$",
+        })
+    
+    return jsonify(lista_resultados)
+    
 
 #Mannage Session
 @login_mannager_app.user_loader
