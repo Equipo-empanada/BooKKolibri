@@ -446,7 +446,7 @@ body{
 
 .suggested_items_container{
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    /* grid-template-columns: repeat(5, 1fr); */
     grid-gap: 15px;
     padding: 0 30px;
     min-height: 335px;
@@ -559,6 +559,11 @@ body{
     border: 1px solid;
     color: #fff;
     padding: 9px;
+
+    /* mouse hover: pointer; */
+    /* color al hacer hover  */
+    transition: color 150ms ease-in-out;
+    cursor: pointer;
 
 }
 

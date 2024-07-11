@@ -205,6 +205,10 @@ def purchasePage():
 def register():
     return render_template('register.html')
 
+@app.route('/purchase_page', methods=['GET'])
+def purchase_page():
+    return render_template('purchase_page.html')
+
 
 # API
 
@@ -521,6 +525,8 @@ def books_galery(tipo=None):#usar en home y en ver-mas
         img_desc = img.descripcion if img else None
         img_url = url_for('static', filename=f'uploads/{img_desc}') if img_desc else "https://via.placeholder.com/150"
 
+        #Replace /Frontend with ./
+        img_url = img_url.replace('/Frontend','../Frontend/static')
         lista_resultados.append({
             "id_publication": libro.id_publicacion,
             "image": {
