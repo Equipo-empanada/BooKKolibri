@@ -13,81 +13,79 @@ var profilePic;
 
 
 
-
-
-const suggestedItems = [
-    {
-        image: {
-            src: "../Frontend/assets/purcharseSampleHome.png",
-            alt: "Producto 1"
-        },
-        info: {
-            title: {
-                main: "Luna de Pluton",
-                author: "Dross"
-            },
-            status: "Usado"
-        },
-        price: "15,00 US$",
-        stock: 3
-    },
-    {
-        image: {
-            src: "../Frontend/assets/image 5.png",
-            alt: "Producto 2"
-        },
-        info: {
-            title: {
-                main: "JavaScript guide"
-            },
-            status: "NUEVO"
-        },
-        price: "15,00 US$",
-        stock: 3
-    },
-    {
-        image: {
-            src: "../Frontend/assets/image 6.png",
-            alt: "Producto 3"
-        },
-        info: {
-            title: {
-                main: "JavaScript The definitive guide"
-            },
-            status: "NUEVO"
-        },
-        price: "15,00 US$",
-        stock: 3
-    },
-    {
-        image: {
-            src: "../Frontend/assets/image 7.png",
-            alt: "Producto 4"
-        },
-        info: {
-            title: {
-                main: "JavaScript The guide"
-            },
-            status: "NUEVO"
-        },
-        price: "15,00 US$",
-        stock: 3
-    },
-    {
-        image: {
-            src: "../Frontend/assets/image 8.png",
-            alt: "Producto 5"
-        },
-        info: {
-            title: {
-                main: "JavaScript The definitive guide"
-            },
-            status: "NUEVO"
-        },
-        price: "15,00 US$",
-        stock: 3
-    }
-];
+// const suggestedItems = [
+//     {
+//         image: {
+//             src: "../Frontend/assets/purcharseSampleHome.png",
+//             alt: "Producto 1"
+//         },
+//         info: {
+//             title: {
+//                 main: "Luna de Pluton",
+//                 author: "Dross"
+//             },
+//             status: "Usado"
+//         },
+//         price: "15,00 US$",
+//         stock: 3
+//     },
+//     {
+//         image: {
+//             src: "../Frontend/assets/image 5.png",
+//             alt: "Producto 2"
+//         },
+//         info: {
+//             title: {
+//                 main: "JavaScript guide"
+//             },
+//             status: "NUEVO"
+//         },
+//         price: "15,00 US$",
+//         stock: 3
+//     },
+//     {
+//         image: {
+//             src: "../Frontend/assets/image 6.png",
+//             alt: "Producto 3"
+//         },
+//         info: {
+//             title: {
+//                 main: "JavaScript The definitive guide"
+//             },
+//             status: "NUEVO"
+//         },
+//         price: "15,00 US$",
+//         stock: 3
+//     },
+//     {
+//         image: {
+//             src: "../Frontend/assets/image 7.png",
+//             alt: "Producto 4"
+//         },
+//         info: {
+//             title: {
+//                 main: "JavaScript The guide"
+//             },
+//             status: "NUEVO"
+//         },
+//         price: "15,00 US$",
+//         stock: 3
+//     },
+//     {
+//         image: {
+//             src: "../Frontend/assets/image 8.png",
+//             alt: "Producto 5"
+//         },
+//         info: {
+//             title: {
+//                 main: "JavaScript The definitive guide"
+//             },
+//             status: "NUEVO"
+//         },
+//         price: "15,00 US$",
+//         stock: 3
+//     }
+// ];
 
 
 
@@ -95,9 +93,9 @@ const suggestedItems = [
 
 //Funciones
 //Document Ready
-function purchaseItem(){
+function purchaseItem(id){
     console.log("Item Purchased");
-    location.href = "./item_sell_page";
+    location.href = "./item_sell_page?id="+id;
 
 }
 
@@ -130,8 +128,8 @@ function fillSuggestedItems(items) {
             <div class="suggested_item__price">
                 <p>${item.price}</p>
             </div>
-            <p class="suggested_item__price_stock">Disponibles: ${item.stock}</p>
-            <button class="suggested_items_purcharse_btn" type="button"><span><svg
+            <p class="suggested_item__price_stock">Disponible!</p>
+            <button class="suggested_items_purcharse_btn" type="button" onclick="purchaseItem(${item.id_publication})"><span><svg
                                         xmlns="http://www.w3.org/2000/svg" width="12" height="14"
                                         viewBox="0 0 12 12" class=""
                                         style="max-width: 10px; min-width: 10px; height: auto;">
@@ -168,16 +166,15 @@ function fillSuggestedItems(items) {
 }
 
 
-function fillPromItems(items, container) {
+function fillPromItems(items) {
     console.log("fillPromItems")
     
-
     // Adjust grid columns based on the number of items
     const columns = Math.min(items.length, 5);
-    container.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+    prom_items_container.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
     console.log(`repeat(${columns}, 1fr)`)
     // Clear existing content
-    container.innerHTML = '';
+    prom_items_container.innerHTML = '';
 
     // Iterate over the items and create HTML for each
     items.forEach(item => {
@@ -197,8 +194,8 @@ function fillPromItems(items, container) {
             <div class="suggested_item__price">
                 <p>${item.price}</p>
             </div>
-            <p class="suggested_item__price_stock">Disponibles: ${item.stock}</p>
-            <button class="suggested_items_purcharse_btn" type="button"><span><svg
+            <p class="suggested_item__price_stock">Disponible!</p>
+            <button class="suggested_items_purcharse_btn" type="button" onclick="purchaseItem(${item.id_publication})"><span><svg
                                         xmlns="http://www.w3.org/2000/svg" width="12" height="14"
                                         viewBox="0 0 12 12" class=""
                                         style="max-width: 10px; min-width: 10px; height: auto;">
@@ -230,21 +227,21 @@ function fillPromItems(items, container) {
                                         </path>
                                     </svg></span></button>
         `;
-        container.appendChild(itemElement);
+        prom_items_container.appendChild(itemElement);
     });
 
 
 }
 
-function fillChangeItems(items, container) {
+function fillChangeItems(items) {
     console.log("fillChangeItems")
     
     // Adjust grid columns based on the number of items
     const columns = Math.min(items.length, 5);
-    container.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+    change_items_container.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
     console.log(`repeat(${columns}, 1fr)`)
     // Clear existing content
-    container.innerHTML = '';
+    change_items_container.innerHTML = '';
 
     // Iterate over the items and create HTML for each
     items.forEach(item => {
@@ -262,10 +259,10 @@ function fillChangeItems(items, container) {
                 <div class="suggested_item__info__status">${item.info.status}</div>
             </div>
             <div class="suggested_item__price">
-                <p>${item.price}</p>
+                <p>Para cambiar</p>
             </div>
-            <p class="suggested_item__price_stock">Disponibles: ${item.stock}</p>
-            <button class="suggested_items_purcharse_btn" type="button"><span><svg
+            <p class="suggested_item__price_stock">Disponible!!</p>
+            <button class="suggested_items_purcharse_btn" type="button" onclick="purchaseItem(${item.id_publication})"><span><svg
                                         xmlns="http://www.w3.org/2000/svg" width="12" height="14"
                                         viewBox="0 0 12 12" class=""
                                         style="max-width: 10px; min-width: 10px; height: auto;">
@@ -297,31 +294,59 @@ function fillChangeItems(items, container) {
                                         </path>
                                     </svg></span></button>
         `;
-        container.appendChild(itemElement);
+        change_items_container.appendChild(itemElement);
     });
 
 
 }
 
+function getSuggestedItems(){
+    fetch('http://localhost:5000/galery/Venta?limit=5')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        fillSuggestedItems(data);
+    });
+}
 
+function getPromItems(){
+    fetch('http://localhost:5000/galery/Venta?limit=5')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        fillPromItems(data);
+    });
+}
 
+function getChangeItems(){
+    fetch('http://localhost:5000/galery/Intercambio?limit=5')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        fillChangeItems(data);
+    });
+}
     
 
 function init(){
-    purchaseButton = document.getElementsByClassName("suggested_items_purcharse_btn");
+    // purchaseButton = document.getElementsByClassName("suggested_items_purcharse_btn");
     suggestedItemsContainer = document.getElementById("suggested_items_container");
     prom_items_container = document.getElementById("prom_items_container");
     change_items_container = document.getElementById("change_items_container");
     profilePic = document.getElementById("profile_pic");
-    fillSuggestedItems(suggestedItems);
-    fillPromItems(suggestedItems, prom_items_container);
-    fillChangeItems(suggestedItems, change_items_container);
+    
+    getSuggestedItems();
+    getPromItems(); 
+    getChangeItems();
+
+    // fillPromItems(suggestedItems, prom_items_container);
+    //fillChangeItems(suggestedItems, change_items_container);
 
 
 
-    for (var i = 0; i < purchaseButton.length; i++) {
-        purchaseButton[i].addEventListener("click", purchaseItem);
-    }
+    // for (var i = 0; i < purchaseButton.length; i++) {
+    //     purchaseButton[i].addEventListener("click", purchaseItem);
+    // }
     
 }
 
