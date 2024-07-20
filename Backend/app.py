@@ -214,7 +214,18 @@ def purchasePage():
         author = book.autor
         language = book.idioma
         launch_year = book.fec_lamzamiento[:4] if book.fec_lamzamiento else None
-        
+        post_date = post.fecha
+        #Cast to datetime
+        post_date = datetime.strptime(str(post_date), '%Y-%m-%d')
+        #Calcular la antiguedad de la publicación
+        days_since_post = (datetime.now() - post_date).days
+        if days_since_post < 1:
+            post_age = "Hoy"
+        elif days_since_post == 1:
+            post_age = "Ayer"
+        else:
+            post_age = f"hace {days_since_post} días"
+
         
         publisher = book.editorial
         state = book.estado
@@ -252,6 +263,7 @@ def purchasePage():
             'sell_books': 'sell_books',
             'rating': 'rating',
             'location': location,
+            'post_age': post_age
         }
         # print(id_book)
         # sample_book = {
