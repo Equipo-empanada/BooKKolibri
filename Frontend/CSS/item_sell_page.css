@@ -359,6 +359,7 @@ ol, ul, li {
     margin: -15px -20px -30px;
     max-width: calc(100% + 40px);
     display: block;
+    min-height: 325px;
 
 }
 
@@ -666,11 +667,16 @@ h3 {
     display: flex;
     font-weight: 400;
     font-size: 1rem;
+    gap: 35px;
     line-height: 1.5;
     color: var(--text-color);
     white-space: pre-wrap;
     margin-top: 3px;
     margin-bottom: 3px;
+}
+
+.offer_item_adds_state_location strong{
+    font-weight: 800;
 }
 
 .offer_item_btn{

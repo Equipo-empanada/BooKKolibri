@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template, jsonify, url_for
+import requests
 from flask_login import LoginManager, login_user, logout_user,login_required,current_user,UserMixin
 from chat import get_response
 from flask_sqlalchemy import SQLAlchemy
@@ -178,28 +179,99 @@ def login():
     return render_template('login.html')
 
 
+# API de  geolocalización
+def get_location_name(latitude, longitude):
+    url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={latitude}&lon={longitude}"
+    headers = {
+        'User-Agent': 'MiAplicacionGeocodificacion/1.0 (tuemail@ejemplo.com)'
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        if 'address' in data:
+            address = data['address']
+            return ', '.join([value for key, value in address.items() if value])
+        else:
+            return "No se encontró ninguna dirección para estas coordenadas."
+    elif response.status_code == 403:
+        return "Error 403: Acceso prohibido. Verifica que estás cumpliendo con los términos de uso de Nominatim."
+    else:
+        return f"Error en la solicitud: {response.status_code}"
+
+
+
 @app.route('/item_sell_page', methods=['GET'])
 def purchasePage():
-    id_book = request.args.get('id')
-    print(id_book)
-    sample_book = {
-        'title': 'The Lord of the Rings: The Fellowship of the Ring',
-        'description': 'The first installment of the epic fantasy trilogy written by J.R.R. Tolkien.',
-        'price': '25.00',
-        'author': 'J.R.R. Tolkien',
-        'language': 'English',
-        'launch_year': '1954',
-        'publisher': 'Allen & Unwin',
-        'state': 'New',
-        'category': 'Fantasy',
-        'tags': ['Fantasy', 'Adventure', 'Epic'],
-        'image_src': ['https://via.placeholder.com/150','https://via.placeholder.com/200'],
-        'seller': 'John Doe',
-        'sell_books': '4',
-        'rating': '4.5',
-        'location': 'Mall del Sol, Guayaquil',
-    }
-    return render_template('item_sell_page.html', book=sample_book)
+    id_post = request.args.get('id')
+    post = db.session.get(Publicacion, id_post)
+    if not post:
+        return jsonify({'message': 'Publication not found'}), 404
+    else:
+        book = post.libro
+        title = book.titulo
+        description = book.descripcion
+        price = book.precio
+        author = book.autor
+        language = book.idioma
+        launch_year = book.fec_lamzamiento[:4] if book.fec_lamzamiento else None
+        
+        
+        publisher = book.editorial
+        state = book.estado
+        tags = [tag.etiqueta.nometiqueta for tag in book.etiquetalibros]
+        #Consultamos la tabla intermedia para obtener las imagenes
+        img_mid = ImagenLibro.query.filter_by(id_libro=book.id_libro)
+        image_src = [url_for('static', filename=f'static/uploads/{img.descripcion}') for img in img_mid]
+
+        seller = 'Usuario prueba.'
+        # sell_books = sample_book.sell_books
+        # rating = sample_book.rating
+        location = get_location_name(post.latitud, post.longitud)
+
+        #mapeamos state 
+        if state == '1':
+            state = 'Nuevo'
+        elif state == '2':
+            state = 'Semi-nuevo'
+        else:
+            state = 'Usado'
+
+        book_json = {
+            'title': title,
+            'description': description,
+            'price': price,
+            'author': author,
+            'language': language,
+            'launch_year': launch_year,
+            'publisher': publisher,
+            'state': state,
+            'category': post.tipo_publicacion,
+            'tags': tags,
+            'image_src': image_src,
+            'seller': seller,
+            'sell_books': 'sell_books',
+            'rating': 'rating',
+            'location': location,
+        }
+        # print(id_book)
+        # sample_book = {
+        #     'title': 'The Lord of the Rings: The Fellowship of the Ring',
+        #     'description': 'The first installment of the epic fantasy trilogy written by J.R.R. Tolkien.',
+        #     'price': '25.00',
+        #     'author': 'J.R.R. Tolkien',
+        #     'language': 'English',
+        #     'launch_year': '1954',
+        #     'publisher': 'Allen & Unwin',
+        #     'state': 'New',
+        #     'category': 'Fantasy',
+        #     'tags': ['Fantasy', 'Adventure', 'Epic'],
+        #     'image_src': ['https://via.placeholder.com/150','https://via.placeholder.com/200'],
+        #     'seller': 'John Doe',
+        #     'sell_books': '4',
+        #     'rating': '4.5',
+        #     'location': 'Mall del Sol, Guayaquil',
+        # }
+        return render_template('item_sell_page.html', book=book_json)
 
 @app.route('/register', methods=['GET'])
 def register():
