@@ -27,10 +27,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>
             </div>
             <div id="login_signup" class="d-flex align-items-center">
-                <a href="./login.html">
+                <a href="./login">
                     <span id="login_text">Iniciar Sesión</span>
                 </a>
-                <a href="./register.html">
+                <a href="./register">
                     <span id="signup_text">Registrarse</span>
                 </a>
                 <div class="position-relative ms-2">
