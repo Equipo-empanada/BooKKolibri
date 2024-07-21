@@ -30,9 +30,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 <a href="./register.html">
                     <span id="signup_text">Registrarse</span>
                 </a>
-                <button class="btn btn-cart ms-2" type="button">
-                    <i class="fas fa-shopping-cart"></i>
-                </button>
+                <div class="position-relative ms-2">
+                    <button class="btn btn-cart" type="button" onclick='purcharse_page()'>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                            0
+                        </span>
+                    </button>
+                </div>
                 <a id="profile_pic" href="./my_info" class="ms-2">
                     <!-- Add profile picture here -->
                     <img src="${userDetail.pictureSource}" alt="Profile Picture" height="50" width="50" class="profile_pic">
@@ -82,4 +87,26 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
 
     document.querySelector("body").insertAdjacentHTML("afterbegin", headerHTML);
+
+    // Actualizar el conteo del carrito
+    updateCartCount();
 });
+
+// Función para actualizar el conteo del carrito
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('shopping_cart')) || [];
+    const cartCount = cart.length;
+
+    const cartCountElement = document.getElementById('cart-count');
+    if (cartCount > 0) {
+        cartCountElement.textContent = cartCount;
+        cartCountElement.style.display = 'inline-block';
+    } else {
+        cartCountElement.style.display = 'none';
+    }
+}
+
+// Redirigir a la página de compra
+function purcharse_page() {
+    window.location.href = "./purchase_page";
+}

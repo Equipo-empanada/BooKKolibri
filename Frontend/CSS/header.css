@@ -49,6 +49,7 @@
     justify-content: space-between;
     align-items: center;
     height: 94.18px;
+    min-height: 94.18px;
     /* padding-bottom: 40px; */
 }
 
