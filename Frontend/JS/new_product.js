@@ -163,6 +163,12 @@ function catchTags() {
 
 }
 
+function getSelectedRadioText() {
+    const selectedRadio = document.querySelector('input[name="radio-category"]:checked');
+    return selectedRadio ? selectedRadio.value : null;
+}
+
+
 // Submit post
 
 function submitPost() {
@@ -176,7 +182,7 @@ function submitPost() {
     formData.append('title', post_title.value);
     formData.append('description', post_description.value);
     formData.append('price', post_price.value);
-    formData.append('category', getSelectedRadioText(post_category));
+    formData.append('category', getSelectedRadioText());
     formData.append('launch_year', post_launch_year.value);
     formData.append('publisher', post_publisher.value);
     formData.append('author', post_author.value);
@@ -233,14 +239,9 @@ function submitPost() {
     });
 }
 
-function getSelectedRadioText(radioGroup) {
-    const radios = radioGroup.querySelectorAll('input[type="radio"]');
-    for (const radio of radios) {
-        if (radio.checked) {
-            return radio.parentElement.textContent.trim();
-        }
-    }
-    return null;
+function getSelectedRadioText() {
+    const selectedRadio = document.querySelector('input[name="radio-category"]:checked');
+    return selectedRadio ? selectedRadio.value : null;
 }
 
 
@@ -253,7 +254,6 @@ function init() {
     post_title = document.getElementById("idTituloLibro");
     post_description = document.getElementById("idDescripLibro");
     post_price = document.getElementById("precio-input");
-    post_category = document.getElementsByClassName("radio-group")[0];
     post_launch_year = document.getElementById("inputAnio");
     post_publisher = document.getElementById("inputEditorial");
     post_author = document.getElementById("inputAutores");

@@ -332,7 +332,7 @@ def addBook():
 
     # Guardar la publicación
     new_publication = Publicacion(
-        tipo_publicacion='Libro',  # Ajustar según el tipo de publicación
+        tipo_publicacion=data.get('category'),  # Ajustar según el tipo de publicación
         latitud=data.get('location_lat'),
         longitud=data.get('location_lng'),
         fecha=datetime.utcnow(),
