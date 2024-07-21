@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, jsonify, url_for
+from flask import Flask, request, jsonify, render_template, jsonify, url_for, redirect
 from flask_login import LoginManager, login_user, logout_user,login_required,current_user,UserMixin
 from chat import get_response
 from flask_sqlalchemy import SQLAlchemy
@@ -7,14 +7,20 @@ from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 import json
 import os
+import random
 
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from PIL import Image
 
+#socket
+from flask_socketio import SocketIO, send,emit, join_room, leave_room
+
+
 #Utils
 from app_utils import check_password
 from app_utils import hash_password
+from app_utils import generate_unique_code
 
 #Templates folder
 template_dir = os.path.abspath('../Frontend')
@@ -26,7 +32,8 @@ app.config['UPLOAD_FOLDER'] = '../Frontend/static/uploads'
 app.secret_key = 'empanada_viento'
 #csrf = CSRFProtect()
 db = SQLAlchemy(app)
-login_mannager_app = LoginManager(app) 
+login_mannager_app = LoginManager(app)
+socketIO = SocketIO(app)
 
 # Models definition DB
 class Libro(db.Model):
@@ -121,7 +128,7 @@ class Mensaje(db.Model):
 
 class Chat(db.Model):
     __tablename__ = 'chat'
-    id_chat = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id_chat = db.Column(db.Integer, primary_key=True) #número unico de la sala 
     fechainicio = db.Column(db.DateTime, nullable=False)
     fechafin = db.Column(db.DateTime, nullable=True)
     activo = db.Column(db.Boolean, nullable=False)
@@ -171,14 +178,12 @@ def index_get():
 @app.route('/chat', methods=['GET'])
 #@login_required
 def chat():
-    return render_template('chat.html')
+    return render_template('message_page.html')
 
 @app.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
-@app.route('/login', methods=['GET'])
-def login():
-    return render_template('login.html')
+
 
 @app.route('/item_sell_page', methods=['GET'])
 def purchasePage():
@@ -581,7 +586,67 @@ def search_for_label(label=None):
         })
     
     return jsonify(lista_resultados)
-    
+
+#Chat
+#data = ['room','receiver','message']
+#room -> id_chat
+@app.route('/create_chat/<id_publicacion>', methods=['POST'])
+@login_required
+def create_chat(id_publicacion): #Al dar click para enviar mensaje
+    rooms = Chat.query.all()
+    id_chats = []
+    for room in rooms:
+        #Primero comprobar que no exista un chat anterior
+        if str(room.id_publicacion) == str(id_publicacion):
+            return jsonify({'message: ':"chat_access"})
+        id_chats.append(room.id_chat)
+    print(id_chats)
+    chat_code = generate_unique_code(4,rooms=id_chats)
+    new_chat = Chat(id_chat=chat_code, fechainicio=datetime.now(), activo=True,id_publicacion=id_publicacion, id_usuario=current_user.id_usuario)
+    db.session.add(new_chat)
+    db.session.commit()
+    return jsonify({"message: ": "new_chat_created"})
+
+
+
+@app.route('/join_chat', methods=['POST'])
+@login_required
+def join_chat():
+    chat_code = request.form['chat_code'] 
+    chat = Chat.query.filter_by(id_chat=chat_code).first()
+    if chat and chat.activo:
+        chat.id_usuario = current_user.id_usuario
+        db.session.commit()
+    return redirect(url_for('index'))
+
+@socketIO.on('connect')
+def handle_connect():
+    return jsonify({"message: ":"Client connected"})
+
+@socketIO.on('disconnect')
+def handle_disconnect():
+    return jsonify({"message: ":"Client Disconect"})
+
+@socketIO.on('join')
+def on_join(data):
+    room = data['room']
+    join_room(room)
+    send(f'{current_user.nombre} has entered the room',to=room)
+
+@socketIO.on('leave')
+def on_leave(data):
+    room = data['room']
+    leave_room(room)
+    send(f'{data['username']} has left the room',to=room)
+
+@socketIO.on('message')
+def handle_message(data):
+    receiver = Usuario.query.filter_by(email=data['receiver'])
+    if receiver:
+        room = data['room']
+        message = Mensaje(texto=data['message'],id_chat=data['room'])
+        send(data['message'],to=room)
+
 
 #Mannage Session
 @login_mannager_app.user_loader
@@ -622,4 +687,5 @@ def get_current_user():
 
 if __name__ == '__main__':
     #csrf.init_app(app)
-    app.run(debug=True,host='0.0.0.0', port=5000)
+    socketIO.run(app,debug=True,host='0.0.0.0', port=5000)
+    #app.run(debug=True,host='0.0.0.0', port=5000)
