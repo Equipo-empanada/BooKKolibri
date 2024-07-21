@@ -4,6 +4,9 @@ var deletePostBton;
 var tabla;
 var tabla_body;
 var editPostModal;
+var searchInput;
+var genreSelect;
+var languageSelect;
 
 var posts = [];
 
@@ -34,6 +37,7 @@ function getBooks() {
             posts = data;
             console.log(posts);
             loadItems();
+            populateComboboxes();
             attachEventListeners();  // Añadir los listeners después de cargar los items
             hideLoading();  // Ocultar animación de carga después de cargar los datos
         })
@@ -91,9 +95,9 @@ function deletePost(event) {
 }
 
 // Cargar items en la tabla
-function loadItems() {
+function loadItems(filteredPosts = posts) {
     tabla_body.innerHTML = ''; // Limpiar la tabla antes de agregar filas nuevas
-    posts.forEach(item => {
+    filteredPosts.forEach(item => {
         const row = document.createElement("tr");
         row.classList.add("tabla-row");
         row.setAttribute("data-id", item.publication_id);
@@ -201,10 +205,65 @@ function saveChanges() {
     });
 }
 
+// Filtrar publicaciones por título
+function filterPostsByTitle() {
+    const searchTerm = searchInput.value.toLowerCase();
+    filterPosts();
+}
+
+// Filtrar publicaciones por género e idioma
+function filterPosts() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedGenre = genreSelect.value.toLowerCase();
+    const selectedLanguage = languageSelect.value.toLowerCase();
+
+    const filteredPosts = posts.filter(post => {
+        const matchesTitle = post.title.toLowerCase().includes(searchTerm);
+        const matchesGenre = selectedGenre === "0" || post.tags.some(tag => tag.toLowerCase() === selectedGenre);
+        const matchesLanguage = selectedLanguage === "0" || post.language.toLowerCase() === selectedLanguage;
+
+        return matchesTitle && matchesGenre && matchesLanguage;
+    });
+
+    loadItems(filteredPosts);
+}
+
+// Llenar comboboxes con categorías e idiomas
+function populateComboboxes() {
+    const genres = new Set();
+    const languages = new Set();
+
+    posts.forEach(post => {
+        post.tags.forEach(tag => genres.add(tag));
+        languages.add(post.language);
+    });
+
+    // Llenar combobox de géneros
+    genreSelect.innerHTML = '<option value="0">Género</option>';
+    genres.forEach(genre => {
+        const option = document.createElement('option');
+        option.value = genre;
+        option.textContent = genre;
+        genreSelect.appendChild(option);
+    });
+
+    // Llenar combobox de idiomas
+    languageSelect.innerHTML = '<option value="0">Idioma</option>';
+    languages.forEach(language => {
+        const option = document.createElement('option');
+        option.value = language;
+        option.textContent = language;
+        languageSelect.appendChild(option);
+    });
+}
+
 function init() {
     nuevoPost = document.getElementById("add-post");
     tabla = document.getElementById("tabla");
     tabla_body = document.getElementsByClassName("tabla-body")[0];
+    searchInput = document.querySelector('.buscador input[type="text"]');
+    genreSelect = document.getElementById('generos-select');
+    languageSelect = document.getElementById('filterIdioma');
 
     getBooks();  // Cargar los libros al iniciar
 
@@ -223,6 +282,13 @@ function init() {
     document.getElementById("close").addEventListener("click", function() {
         editPostModal.hide();
     });
+
+    // Event listener para la búsqueda en tiempo real
+    searchInput.addEventListener("input", filterPostsByTitle);
+
+    // Event listeners para los comboboxes
+    genreSelect.addEventListener("change", filterPosts);
+    languageSelect.addEventListener("change", filterPosts);
 }
 
 document.addEventListener("DOMContentLoaded", init);
