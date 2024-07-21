@@ -177,7 +177,9 @@ function fillPromItems(items) {
     console.log(`repeat(${columns}, 1fr)`)
     // Clear existing content
     prom_items_container.innerHTML = '';
-
+    //Sort items by price
+    items.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+    
     // Iterate over the items and create HTML for each
     items.forEach(item => {
         const itemElement = document.createElement('div');
