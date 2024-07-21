@@ -178,6 +178,9 @@ def chat():
 def login():
     return render_template('login.html')
 
+@app.route('/search_page', methods=['GET'])
+def searchPage():
+    return render_template('search_page.html')
 
 # API de  geolocalización
 def get_location_name(latitude, longitude):

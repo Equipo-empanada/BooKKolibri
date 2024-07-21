@@ -10,6 +10,7 @@ var suggestedItemsContainer;
 var prom_items_container;
 var change_items_container;
 var profilePic;
+var libros_venta_more;
 
 
 
@@ -326,7 +327,11 @@ function getChangeItems(){
         fillChangeItems(data);
     });
 }
-    
+
+//Mostrar todos los libros de venta
+function showAllLibrosVenta(){
+    location.href = "/search_page?mode=view_category&category=venta";
+}
 
 function init(){
     // purchaseButton = document.getElementsByClassName("suggested_items_purcharse_btn");
@@ -334,10 +339,15 @@ function init(){
     prom_items_container = document.getElementById("prom_items_container");
     change_items_container = document.getElementById("change_items_container");
     profilePic = document.getElementById("profile_pic");
+    libros_venta_more = document.getElementById("libros_venta_more"); //Boton para ver todos los libros de venta
     
     getSuggestedItems();
     getPromItems(); 
     getChangeItems();
+
+    //Listeners
+
+    libros_venta_more.addEventListener("click", showAllLibrosVenta);
 
     // fillPromItems(suggestedItems, prom_items_container);
     //fillChangeItems(suggestedItems, change_items_container);
