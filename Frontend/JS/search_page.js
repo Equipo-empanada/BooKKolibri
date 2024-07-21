@@ -53,6 +53,24 @@ function getAll(mode){
     });
 }
 
+function getSearchResults(search){
+    var url = "http://localhost:5000/search/"+search;
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            //"Authorization": "Bearer " + localStorage.getItem("token")
+        }
+    }).then(response => {
+        if (response.ok){
+            console.log("Libros obtenidas");
+            return response.json();
+        }else {
+            throw new Error("Error al obtener las ventas");
+        }
+    });
+}
+
 
 //Inicializacion
 function init(){
@@ -60,13 +78,18 @@ function init(){
     var url = new URL(window.location.href);
     var mode = url.searchParams.get("mode");
     var category = url.searchParams.get("category");
+    var search = url.searchParams.get("search");
     profilePic = document.getElementById("profile_pic");
     results_container = document.getElementById("results_container");
     // putUserPic();
 
     if (mode === "search"){
-        results = JSON.parse(localStorage.getItem("search_results"));
-        putResults(results);
+        getSearchResults(search).then(results => {
+            console.log(results);
+            putResults(results);
+        }).catch(error => {
+            console.log(error);
+        });
         //Caso ventas
     }else if (mode === "view_category" && category == 'venta'){
         console.log("entro a ventas");

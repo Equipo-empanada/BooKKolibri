@@ -1,4 +1,7 @@
 var profilePic;
+var search_bar;
+var search_button;
+
 
 const userDetail = {
     name: "Juan Perez",
@@ -17,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div class="input-group search-bar">
                     <input type="text" class="form-control" placeholder="Buscar">
                     <div class="input-group-append">
-                        <button class="btn" type="button">
+                        <button class="btn" type="button" id="search_button">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -90,6 +93,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Actualizar el conteo del carrito
     updateCartCount();
+
+    search_bar = document.getElementsByClassName('form-control')[0];
+    search_bar.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            window.location.href = './search_page?mode=search&search=' + search_bar.value;
+        }
+    });
+
+    search_button = document.getElementById('search_button');
+    search_button.addEventListener('click', function() {
+        window.location.href = './search_page?mode=search&search=' + search_bar.value;
+    });
+
+
 });
 
 // Función para actualizar el conteo del carrito
