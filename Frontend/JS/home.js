@@ -11,6 +11,7 @@ var prom_items_container;
 var change_items_container;
 var profilePic;
 var libros_venta_more;
+var libros_inter_more;
 
 
 
@@ -333,6 +334,10 @@ function showAllLibrosVenta(){
     location.href = "/search_page?mode=view_category&category=venta";
 }
 
+function showAllLibrosIntercambio(){
+    location.href = "/search_page?mode=view_category&category=intercambio";
+}
+
 function init(){
     // purchaseButton = document.getElementsByClassName("suggested_items_purcharse_btn");
     suggestedItemsContainer = document.getElementById("suggested_items_container");
@@ -340,6 +345,7 @@ function init(){
     change_items_container = document.getElementById("change_items_container");
     profilePic = document.getElementById("profile_pic");
     libros_venta_more = document.getElementById("libros_venta_more"); //Boton para ver todos los libros de venta
+    libros_inter_more = document.getElementById("libros_inter_more"); //Boton para ver todos los libros de intercambio
     
     getSuggestedItems();
     getPromItems(); 
@@ -348,6 +354,7 @@ function init(){
     //Listeners
 
     libros_venta_more.addEventListener("click", showAllLibrosVenta);
+    libros_inter_more.addEventListener("click", showAllLibrosIntercambio);
 
     // fillPromItems(suggestedItems, prom_items_container);
     //fillChangeItems(suggestedItems, change_items_container);
