@@ -37,6 +37,7 @@ app.secret_key = 'empanada_viento'
 #csrf = CSRFProtect()
 db = SQLAlchemy(app)
 login_mannager_app = LoginManager(app)
+login_mannager_app.login_view = 'login'
 socketIO = SocketIO(app)
 
 # Models definition DB
@@ -163,8 +164,9 @@ def index():
     return render_template('home.html')
 
 @app.route('/my_info', methods=['GET'])
-#@login_required
+@login_required
 def myInfo():
+    #Si el usuario no esta logeado, redirigir a la pagina de login
     return render_template('my_info.html')
 
 @app.route('/new_product', methods=['GET'])
