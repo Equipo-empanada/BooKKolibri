@@ -16,7 +16,7 @@
     
 <body>
     <header class="header">
-        <a href="{{ url_for('item_sell_page') }}" class="header__back">
+        <a href="{{ url_for('purchasePage') }}" class="header__back">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
@@ -215,7 +215,8 @@
                     <ul id="chat_messages">
                         <li id="chat_separator"></li>
                         <li id="chat_intro">
-                            <p id="info_conexion"></p>
+                            <input type="hidden" id="user_email" value='{{ user.email }}'>
+                            <p id="info_conexion">{{ user.nombre }} Connectado</p>
                         </li>
                         <ul id="messages_chat"></ul>
                     </ul>
@@ -243,20 +244,21 @@
                         <span>Conversaciones recientes</span>
                     </div>
                     <ul id = "recent_messages_list">
-                                    <!-- Lista de chats  -->
-                        {% for chat in chats %}
-                        <li>
-                            <a class="recent_message">
-                                <div class="recent_message_image">
-                                    <!-- <img src="./assets/purcharseSample.png" alt="product_img"> -->
+                        <!-- Lista de chats  -->
+                        <div class="row">
+                            {% for chat in chats %}
+                            <div class="col-md-12">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <input type="hidden" id="chat_code" value='{{ chat.id_chat }}'>
+                                        <h5 class="card-title">{{ chat.publicacion.libro.titulo }} </h5>
+                                        <p class="card-text">{{ chat.publicacion.usuario.nombre }} {{ chat.publicacion.usuario.apellido }}</p>
+                                        <a href="#" id="show_message" class="btn btn-primary" data-chat-code="{{ chat.id_chat }}" value="{{ chat.id_chat }}">Ver mensajes</a>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="card-text">Código de Sala: {{ chat.id_chat }}</p>
-                                </div>
-                            </a>
-                        </li>
-                        {% endfor %}                                 
-
+                            </div>
+                            {% endfor %}
+                        </div>
                     </ul>
                 </div>
                 

@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify, render_template, jsonify, url_for, re
 from flask_login import LoginManager, login_user, logout_user,login_required,current_user,UserMixin
 from chat import get_response
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 #from flask_wtf.csrf import CSRFProtect
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
@@ -11,7 +12,7 @@ import json
 import os
 
 from werkzeug.security import generate_password_hash, check_password_hash
-import random
+
 
 from datetime import datetime
 from werkzeug.utils import secure_filename
@@ -139,6 +140,7 @@ class Chat(db.Model):
     activo = db.Column(db.Boolean, nullable=False)
     id_publicacion = db.Column(db.Integer, db.ForeignKey('publicacion.id_publicacion'), nullable=False)
     id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario'), nullable=False)
+    publicador = db.Column(db.Integer, nullable=False)
     publicacion = db.relationship('Publicacion', backref=db.backref('chats', lazy=True))
     usuario = db.relationship('Usuario', backref=db.backref('chats', lazy=True))
 
@@ -184,11 +186,13 @@ def index_get():
 @app.route('/chat', methods=['GET'])
 @login_required
 def chat():
-    chat = Chat.query.filter_by(id_usuario=current_user.id_usuario).all()
+    chat = Chat.query.filter(or_(
+    Chat.id_usuario == current_user.id_usuario,
+    Chat.publicador == current_user.id_usuario
+    )).all()
     if not chat:
-        print("Chta not found")
-        return 'Chat not found'
-    return render_template('message_page.html', chats=chat)
+        return render_template('message_page.html',user=current_user,chats=chat)
+    return render_template('message_page.html', chats=chat,user=current_user)
 
 
 
@@ -757,8 +761,13 @@ def create_chat(id_publicacion): #Al dar click para enviar mensaje
             return jsonify({'message: ':"chat_access"})
         id_chats.append(room.id_chat)
     print(id_chats)
+    publicacion = Publicacion.query.filter_by(id_publicacion=id_publicacion).first()
     chat_code = generate_unique_code(4,rooms=id_chats)
-    new_chat = Chat(id_chat=chat_code, fechainicio=datetime.now(), activo=True,id_publicacion=id_publicacion, id_usuario=current_user.id_usuario)
+    new_chat = Chat(id_chat=chat_code, 
+                    fechainicio=datetime.now(),
+                    activo=True,id_publicacion=id_publicacion,
+                    id_usuario=current_user.id_usuario,
+                    publicador = publicacion.usuario.id_usuario)
     db.session.add(new_chat)
     db.session.commit()
     return jsonify({"message: ": "new_chat_created"})
@@ -775,7 +784,7 @@ def join_chat():
         db.session.commit()
     return redirect(url_for('index'))
 
-@app.route('/send_message', methods=['POST'])
+@app.route('/save_message', methods=['POST'])
 @login_required
 def send_message():
     messages = request.get_json()
@@ -786,8 +795,8 @@ def send_message():
         new_message = Mensaje(texto=text, fecha=datetime.now(), leido=False, id_chat=chat.id_chat)
         db.session.add(new_message)
         db.session.commit()
-        socketIO.emit('message', {'text': text, 'user': current_user.email, 'reciver': chat.id_publicacion}, room=chat_code)
-    return jsonify({"message": "Mensaje enviado"})
+        #socketIO.emit('message', {'text': text, 'user': current_user.email, 'reciver': chat.id_publicacion}, room=chat_code)
+    return jsonify({"message": "Mensaje guardado"})
 
 @app.route('/chat_message/<chat_code>') #Mensajes segun el chat 
 @login_required
@@ -797,7 +806,8 @@ def chat_messages(chat_code):
         "texto": m.texto,
         "fecha": m.fecha,
         "leido": m.leido,
-        "id_chat": m.id_chat
+        "id_chat": m.id_chat,
+        "usuario" : m.usuario
     } for m in messages]
     return jsonify(chat_messages)
     #return render_template('message_page.html', chats=chat, messages=messages)
@@ -823,12 +833,34 @@ def handle_connect():
 def handle_disconnect():
     send({"message": "Client disconnected"})
 
+'''
 @socketIO.on('message')
 def handle_message(data):
-    user_send = Usuario.query.filter_by(email=data['user']).first()
-    if user_send:
+    try:
+        print(f"Received data: {data}") 
+        send({'text': data['text'], 'user': data['user']}, broadcast=True)
+    except Exception as e:
+        print(f"Error handling message: {e}") 
+'''
+@socketIO.on('message')
+def handle_message(data):
+    try:
+        print(f"Received data: {data}")
         room = data['room']
-        send(data['text'], room=room,broadcast=True)
+        message_text = data['text']
+        user_email = data['user']
+        print(room)
+        # Guardar el mensaje en la base de datos
+        new_message = Mensaje(texto=message_text, fecha=datetime.now(), leido=False, id_chat=room,usuario=current_user.email)
+        db.session.add(new_message)
+        db.session.commit()
+        
+        # Enviar el mensaje solo a los miembros de la sala
+        emit('message', {'text': message_text, 'user': user_email}, room=room)
+    except Exception as e:
+        print(f"Error handling message: {e}")
+
+
 
 #Mannage Session
 
@@ -871,5 +903,5 @@ def get_current_user():
 
 if __name__ == '__main__':
     #csrf.init_app(app)
-    app.run(debug=True,host='0.0.0.0', port=5000)
-    #socketIO.run(app,debug=True,host='0.0.0.0', port=5000)
+    #app.run(debug=True,host='0.0.0.0', port=5000)
+    socketIO.run(app,debug=True,host='0.0.0.0', port=5000)
