@@ -166,8 +166,15 @@ def index():
 @app.route('/my_info', methods=['GET'])
 @login_required
 def myInfo():
-    #Si el usuario no esta logeado, redirigir a la pagina de login
-    return render_template('my_info.html')
+    #Obtenemos la información del usuario
+    user_info = {
+        'id': current_user.id_usuario,
+        'user_name': current_user.nombre,
+        'apellido': current_user.apellido,
+        'email': current_user.email,
+        'rol': current_user
+    }
+    return render_template('my_info.html', user=user_info)
 
 @app.route('/new_product', methods=['GET'])
 #@login_required
@@ -182,6 +189,25 @@ def managePosts():
 @app.route('/hello', methods=['GET'])
 def index_get():
     return render_template('base.html')
+
+@app.route('/personal_details', methods=['GET'])
+def personal_details():
+    return render_template('personal_details.html')
+
+@app.route('/change_password', methods=['GET'])
+def change_password():
+    return render_template('change_password.html')
+
+@app.route('/view_transactions', methods=['GET'])
+def view_transactions():
+    return render_template('view_transactions.html')
+
+@app.route('/view_reviews', methods=['GET'])
+def view_reviews():
+    return render_template('view_reviews.html')
+
+
+
 
 @app.route('/chat', methods=['GET'])
 @login_required

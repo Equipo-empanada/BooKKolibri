@@ -69,8 +69,8 @@
                     <img src="{{ url_for('static', filename='../Frontend/assets/icon.jpg') }}">
                 </div>
                 <div class="personal-info-text">
-                    <div>usuario123</div>
-                    <div>diegoa.castro@ucuenca.edu.ec</div>
+                    <div>{{user.user_name}}</div>
+                    <div>{{user.email}}</div>
                 </div>
             </div>
             <a class="info-button" href="./personal_details">

@@ -49,7 +49,7 @@ html, body {
 
 main {
     background-color: var(--background-color);
-    height: 60%;
+    height: 100%;
     
 }
 
@@ -86,7 +86,8 @@ h1 {
 body {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    height: 100%;
 }
 
 .navbar,
@@ -141,14 +142,16 @@ body {
 
 #main_container {
     /* flex-wrap: wrap; */
-    align-items: flex-start;
+    /* align-items: flex-start; */
     /* Alinea los elementos al inicio */
     transition: opacity 150ms ease-in-out;
     padding: 0 5px;
     margin: 0 auto auto 20px;
     max-width: 1040px;
     width: 100%;
+    justify-content: center;
     gap: 20px;
+    align-items: center;
     padding-bottom: 30px;
     background-color: var(--background-color);
     height: 100%;
@@ -267,8 +270,6 @@ footer {
     text-align: center;
     background: var(--footer-color);
     padding: 35px 20px 40px;
-
-
 }
 
 .footer__info h4 {
