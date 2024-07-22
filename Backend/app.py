@@ -78,18 +78,6 @@ class Tienda(db.Model):
     direccion = db.Column(db.String(255), nullable=False)
     usuario = db.relationship('Usuario', backref=db.backref('tiendas', lazy=True))
 
-
-class Pedido(db.Model):
-    __tablename__ = 'pedido'
-    id_pedido = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    fecha = db.Column(db.Date, nullable=False)
-    cantidad = db.Column(db.Integer, nullable=False)
-    tipotransaccion = db.Column(db.String(50), nullable=False)
-    id_libro = db.Column(db.Integer, db.ForeignKey('libro.id_libro'), nullable=False)
-    id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario'), nullable=False)
-    libro = db.relationship('Libro', backref=db.backref('pedidos', lazy=True))
-    usuario = db.relationship('Usuario', backref=db.backref('pedidos', lazy=True))
-
 class Publicacion(db.Model):
     __tablename__ = 'publicacion'
     id_publicacion = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -102,6 +90,17 @@ class Publicacion(db.Model):
     id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario'), nullable=False)
     libro = db.relationship('Libro', backref=db.backref('publicaciones', lazy=True))
     usuario = db.relationship('Usuario', backref=db.backref('publicaciones', lazy=True))
+
+class Pedido(db.Model):
+    __tablename__ = 'pedido'
+    id_pedido = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    fecha = db.Column(db.Date, nullable=False)
+    cantidad = db.Column(db.Integer, nullable=False)
+    tipotransaccion = db.Column(db.String(50), nullable=False)
+    id_libro = db.Column(db.Integer, db.ForeignKey('publicacion.id_publicacion'), nullable=False)
+    id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario'), nullable=False)
+    Publicacion = db.relationship('Publicacion', backref=db.backref('pedidos', lazy=True))
+    usuario = db.relationship('Usuario', backref=db.backref('pedidos', lazy=True))
 
 class ImagenLibro(db.Model):
     __tablename__ = 'imagenlibro'
@@ -776,6 +775,45 @@ def search_for_label(label=None):
         })
     
     return jsonify(lista_resultados)
+
+#Register purchase
+@app.route('/register_purchase', methods=['POST'])
+@login_required
+def register_purchase():
+    try:
+        data = request.json
+        items = data.get('items', [])
+
+        if not items:
+            return jsonify({'success': False, 'message': 'No items to purchase'}), 400
+
+        for item in items:
+            # Register the purchase in Pedido table
+            new_pedido = Pedido(
+                fecha=datetime.utcnow(),
+                cantidad=1,  # Assuming each item is one unit
+                tipotransaccion='Compra',
+                id_libro=item['id'],  # This should be id_publicacion now
+                id_usuario=current_user.id_usuario
+            )
+            db.session.add(new_pedido)
+
+            # Update the status of the publication
+            publication = Publicacion.query.filter_by(id_publicacion=item['id']).first()
+            if publication:
+                publication.activo = False
+
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Purchase registered successfully'})
+
+    except IntegrityError as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'Database Integrity Error: ' + str(e)}), 500
+
+    except Exception as e:
+        db.session.rollback()
+        app.logger.error(f"Error registering purchase: {e}")
+        return jsonify({'success': False, 'message': 'An error occurred: ' + str(e)}), 500
 
 #Chat
 #data = ['room','receiver','message']

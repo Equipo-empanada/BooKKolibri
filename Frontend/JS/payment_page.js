@@ -181,17 +181,29 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listener for country selection
     countrySelect.addEventListener('change', setcities);
 
-    // Event listener for payment button
-    paymentButton.addEventListener('click', function (e) {
-        e.preventDefault();
-        Swal.fire({
-            title: 'Realizando pago...',
-            text: 'Por favor, espera mientras procesamos tu transacción.',
-            icon: 'info',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-                setTimeout(() => {
+// Event listener for payment button
+paymentButton.addEventListener('click', function (e) {
+    e.preventDefault();
+    Swal.fire({
+        title: 'Realizando pago...',
+        text: 'Por favor, espera mientras procesamos tu transacción.',
+        icon: 'info',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+            // Create purchase record
+            fetch('/register_purchase', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    items: shoppingCart
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
                     Swal.fire({
                         title: 'Transacción exitosa',
                         text: 'Tu pago ha sido procesado con éxito.',
@@ -202,11 +214,20 @@ document.addEventListener('DOMContentLoaded', function () {
                         shoppingCart = [];
                         localStorage.setItem('shopping_cart', JSON.stringify(shoppingCart));
                         // Redirect to a confirmation page or reset the form
+                        window.location.href = '/'; // Example URL
                     });
-                }, 2000); // Simulate a 2-second delay for the payment process
-            }
-        });
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Hubo un problema procesando tu transacción.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        }
     });
+});
 
     // Load shopping cart on page load
     loadShoppingCart();
