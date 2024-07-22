@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const paymentButton = document.querySelector('.payment_button');
     const subtotalElement = document.querySelector('.payment_summary__total .price');
     const totalElement = document.querySelector('.total_price .price');
+    const countrySelect = document.getElementById('country-select');
+    const cities = document.getElementById('city-select');
     const serviceFee = 1.5; // Tarifa de servicio
     let subtotal = 0;
     let shoppingCart = JSON.parse(localStorage.getItem('shopping_cart')) || [];
@@ -91,63 +93,119 @@ document.addEventListener('DOMContentLoaded', function () {
         updateTotals();
     }
 
-    // Function to update subtotal and total
+        /**
+     * Set the cities of the country
+     * @param {string} country 
+     */
+    function setcities(event){
+        //Enable the cities select
+        cities.disabled = false;
+        const country = event.target.options[event.target.selectedIndex].text;
+        console.log(country);
+        if (country === '' || country === null || country === undefined) {
+            return;
+        }
+
+        const endpoint = 'https://countriesnow.space/api/v0.1/countries/cities';
+        console.log(country);
+
+        const body_json = {
+            country: country
+        };
+
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+
+        fetch(endpoint, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(body_json)
+        })
+        .then(response => response.json())
+        .then(data => {
+            cities.innerHTML = '';
+            data.data.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.text = city;
+                cities.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+
+    // Function to update totals
     function updateTotals() {
         const total = subtotal + serviceFee;
-        subtotalElement.textContent = `${subtotal.toFixed(2)} US$`;
-        totalElement.textContent = `${total.toFixed(2)} US$`;
+        subtotalElement.innerHTML = `${subtotal.toFixed(2)}&nbsp;US$`;
+        totalElement.innerHTML = `${total.toFixed(2)}&nbsp;US$`;
     }
 
-    // Function to remove product
-    function removeProduct(productId) {
-        const productElement = document.querySelector(`li[data-id="${productId}"]`);
-        if (productElement) {
-            const productPrice = parseFloat(productElement.querySelector('.price').textContent.replace('US$', '').replace('&nbsp;', '').trim());
-            subtotal -= productPrice;
-            productElement.remove();
-            // Remove product from shoppingCart and localStorage
+    // Event listener for remove product button
+    purchasedProductsContainer.addEventListener('click', function (e) {
+        if (e.target.closest('.remove_product')) {
+            const productElement = e.target.closest('.product');
+            const productId = productElement.getAttribute('data-id');
+            const productPrice = parseFloat(productElement.querySelector('.price').innerHTML.replace('US$', '').replace('&nbsp;', '').trim());
+
+            // Remove product from shopping cart array
             shoppingCart = shoppingCart.filter(item => item.id !== productId);
             localStorage.setItem('shopping_cart', JSON.stringify(shoppingCart));
+
+            // Remove product element from DOM
+            productElement.remove();
+
+            // Update subtotal and totals
+            subtotal -= productPrice;
             updateTotals();
         }
-    }
+    });
 
-    // Function to show loading and success message
-    function showPaymentProcessing() {
-        Swal.fire({
-            title: 'Procesando pago...',
-            text: 'Por favor, espera mientras procesamos tu pago.',
-            icon: 'info',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
+    // Fetch and populate countries
+    fetch('https://restcountries.com/v3.1/all')
+        .then(response => response.json())
+        .then(data => {
+            data.sort((a, b) => a.name.common.localeCompare(b.name.common)); // Sort countries alphabetically
+            data.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country.cca2; // Use country code as value
+                option.textContent = country.name.common;
+                countrySelect.appendChild(option);
+            });
         });
 
-        // Simulate payment processing
-        setTimeout(() => {
-            Swal.fire({
-                title: 'Transacción exitosa',
-                text: 'Tu pago se ha realizado con éxito.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-        }, 3000);
-    }
+    // Event listener for country selection
+    countrySelect.addEventListener('change', setcities);
 
     // Event listener for payment button
     paymentButton.addEventListener('click', function (e) {
         e.preventDefault();
-        showPaymentProcessing();
-    });
-
-    // Event listener for remove product buttons
-    purchasedProductsContainer.addEventListener('click', function (e) {
-        if (e.target.closest('.remove_product')) {
-            const productId = e.target.closest('.product').getAttribute('data-id');
-            removeProduct(productId);
-        }
+        Swal.fire({
+            title: 'Realizando pago...',
+            text: 'Por favor, espera mientras procesamos tu transacción.',
+            icon: 'info',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+                setTimeout(() => {
+                    Swal.fire({
+                        title: 'Transacción exitosa',
+                        text: 'Tu pago ha sido procesado con éxito.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        // Clear shopping cart and localStorage
+                        shoppingCart = [];
+                        localStorage.setItem('shopping_cart', JSON.stringify(shoppingCart));
+                        // Redirect to a confirmation page or reset the form
+                    });
+                }, 2000); // Simulate a 2-second delay for the payment process
+            }
+        });
     });
 
     // Load shopping cart on page load
