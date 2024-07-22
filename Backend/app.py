@@ -569,7 +569,7 @@ def editPost():
 @app.route('/sign_up', methods=['POST'])
 def sign_up():
     data = request.form
-    nombre = data.get('nombre')
+    nombre = data.get('name')
     email = data.get('email')
     password = data.get('password')
     confirm_password = data.get('confir-password')
@@ -613,7 +613,8 @@ def sign_in():
 @app.route('/sign_out',methods=['GET'])
 def sign_out():
     logout_user()
-    return jsonify({'message': 'logout'})
+    return redirect('/')
+    # return jsonify({'message': 'logout'})
 
 @app.route('/search/<title>',methods=['GET'])
 def search_title(title):
