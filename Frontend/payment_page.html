@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment page</title>
     <!-- Icon -->
-    <link rel="icon" href="..Frontend/assets/logo_icon.svg" type="image/svg">
-    <link rel="stylesheet" href="CSS/reset.css">
-    <link rel="stylesheet" href="CSS/payment_page.css">
+    <link rel="icon" href="{{ url_for('static', filename='assets/logo_icon.svg') }}" type="image/svg+xml">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/payment_page.css') }}">
 </head>
 <body>
     <header class="header">
-        <a href="./purchase_page.html" class="header__back">
+        <a href="{{ url_for('purchase_page') }}" class="header__back">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
         </a>
-        <a href="./home.html" class="header__home">
-            <img src="./assets/g1.svg" alt="Logo" height="50" class="header__logo">
+        <a href="{{ url_for('index') }}" class="header__home">
+            <img src="{{ url_for('static', filename='assets/g1.svg') }}" alt="Logo" height="50" class="header__logo">
         </a>
         <ul class="header__process__list">
             <li class="header__process__list__item">
@@ -27,7 +27,7 @@
                 <!-- Linea de separación blanca vectorial -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
                     <line x1="-40" y1="12" x2="50" y2="12"></line>
-                
+                </svg>
             </li>
             <li class="header__process__list__item">
                 <div class="rounded_number">&check;</div>
@@ -35,7 +35,7 @@
                 <!-- Linea de separación blanca vectorial -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="60" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
                     <line x1="-40" y1="12" x2="50" y2="12"></line>
-                
+                </svg>
             </li>
             <li class="header__process__list__item">
                 <div class="rounded_number">3</div>
@@ -107,9 +107,6 @@
                                                 <span class="card_field_span">CVV</span>
                                                 <input type="text" id="card-cvv-field" class="card_field" placeholder="123">
                                             </label>
-
-
-
                                         </div>
 
                                         <div class="payment_is_safe_text">
@@ -179,15 +176,13 @@
                                                     <option value="BG">Bulgaria</option>
                                                     <option value="BF">Burkina Faso</option>
                                                     <option value="BI">Burundi</option>
-                                                    <option value="BT">Bután
-                                                    </option>
+                                                    <option value="BT">Bután</option>
                                                 </select>
                                             </div>
-
                                         </div>
                                         <div class="billing_address">
                                             <div class="UdnpKl">
-                                                <label for="address" class="LoM1Ps">Ciudad</label>
+                                                <label for="city" class="LoM1Ps">Ciudad</label>
                                                 <span class="yJocoA">*</span>
                                             </div>
                                             <div class="billing_address_line">
@@ -203,20 +198,10 @@
                                                 <input type="text" id="address" class="input_billing_address" required="" data-hj-suppress="true">
                                             </div>
                                         </div>
-
                                     </div>
-
-
-                                        
                                 </div>
-                                    
-
                             </div>
-
-
-
                         </div>
-
                     </li>
                     <li>
                         <button id="payment-braintree_paypal" type="button" class="radioLabel jws6Mp QOcvtj">
@@ -242,13 +227,13 @@
                                             fill="currentColor">
                                         </path>
                                     </svg>
-                                </span>PayPal</button>
+                                </span>PayPal
+                            </button>
                             <div class="uN43s8"></div>
                             <div class="payment_info__structure"></div>
                         </div>
                     </li>
                 </ul>
-
             </div>
 
             <!-- OBhmV_ -->
@@ -259,21 +244,17 @@
                             <div class="product_store">
                                 <div class="product_store_info">
                                     <div>
-                                        <img src="./assets/logotest.png" alt="Logo de la tienda" class="store_logo">
+                                        <img src="{{ url_for('static', filename='assets/logotest.png') }}" alt="Logo de la tienda" class="store_logo">
                                     </div>
                                     <div class="store_name_container">
                                         <div class="store_name_info">
-                                            <span class="store_name" tabindex="-1">
-                                                Book Store Sample
-                                            </span>
+                                            <span class="store_name" tabindex="-1">Book Store Sample</span>
                                         </div>
                                         <div class="LevzSC"></div>
                                     </div>
-
                                 </div>
-
                             </div>
-                            <img src="./assets/samplePurcharse 1.png" alt="Imagen del producto" class="product_image">
+                            <img src="{{ url_for('static', filename='assets/samplePurcharse1.png') }}" alt="Imagen del producto" class="product_image">
                             <span class="product_name">Luna de Pluton</span>
                             <div>
                                 <span class="product_status">Libro usado</span>
@@ -313,8 +294,6 @@
                                     </svg>
                                 </span>
                             </button>
-
-                            </div>
                         </li>
                     </ul>
                     <ul class="payment_summary__total">
@@ -323,7 +302,6 @@
                             <strong>
                                 <span class="price">15,88&nbsp;US$</span>
                             </strong>
-                            
                         </li>
                         <li>
                             Tarifa de servicio
@@ -335,8 +313,7 @@
                     </ul>      
                 
                     <div class="payment_total">
-                        Total
-                        :
+                        Total:
                         <div class="total_price">
                             <strong>
                                 <span class="price">17,38&nbsp;US$</span>
@@ -350,16 +327,12 @@
                     </div>
 
                     <div class="payment_summary__terms">
-                        <p>Al hacer clic en "Realizar pago", aceptas los Términos y Condicionesy la Política de Privacidad de BooKKolibri.</p>
+                        <p>Al hacer clic en "Realizar pago", aceptas los Términos y Condiciones y la Política de Privacidad de BooKKolibri.</p>
                     </div>
-
                 </div>
-                
-                
             </div>
-
         </div>
     </form>
-    <script src="./JS/chatbot.js"></script>
+    <script src="{{ url_for('static', filename='JS/chatbot.js') }}"></script>
 </body>
 </html>
