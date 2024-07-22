@@ -206,6 +206,10 @@ def view_transactions():
 def view_reviews():
     return render_template('view_reviews.html')
 
+@app.route('/payment_page', methods=['GET'])
+def payment_page():
+    return render_template('payment_page.html')
+
 
 
 
