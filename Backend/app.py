@@ -306,7 +306,7 @@ def purchasePage():
         img_mid = ImagenLibro.query.filter_by(id_libro=book.id_libro)
         image_src = [url_for('static', filename=f'static/uploads/{img.descripcion}') for img in img_mid]
 
-        seller = 'Usuario prueba.'
+        seller = post.usuario.nombre
         # sell_books = sample_book.sell_books
         # rating = sample_book.rating
         location = get_location_name(post.latitud, post.longitud)
