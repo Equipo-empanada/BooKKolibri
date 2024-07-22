@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function() {
     .then(user => {
         if (user.email) {
             document.getElementById("login_signup").innerHTML = `
-                <span class="user-email">${user.email}</span>
+                <span class="user-name">${user.nombre}</span>
                 <div class="position-relative ms-2">
                     <button class="btn btn-cart" type="button" onclick='purcharse_page()'>
                         <i class="fas fa-shopping-cart"></i>

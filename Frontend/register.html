@@ -29,6 +29,7 @@
                     </div>
                     <form action="{{ url_for('sign_up') }}" method="POST" class="bloque-datos-usuario">
                         <div class="datos-usuario"><br>
+                            <input type="text" class="credenciales" name="name" id="user-name" placeholder="Nombre de usuario" required><br>
                             <input type="email" class="credenciales" name="email" id="user-email" placeholder="Email" required><br>
                             <input type="password" class="credenciales" name="password" id="user-password" placeholder="Contraseña" required><br>
                             <input type="password" class="credenciales" name="confir-password" id="user-confirma" placeholder="Confirmar contraseña" required><br>

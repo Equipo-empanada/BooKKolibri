@@ -556,6 +556,7 @@ def editPost():
 @app.route('/sign_up', methods=['POST'])
 def sign_up():
     data = request.form
+    nombre = data.get('nombre')
     email = data.get('email')
     password = data.get('password')
     confirm_password = data.get('confir-password')
@@ -566,7 +567,7 @@ def sign_up():
     hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
     new_user = Usuario(
-        nombre='Nombre',
+        nombre=nombre,
         apellido='Apellido',
         email=email,
         contraseña=hashed_password,
