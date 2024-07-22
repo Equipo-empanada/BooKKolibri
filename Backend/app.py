@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify, render_template, url_for, redirect
+
 import requests
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
+from flask import Flask, request, jsonify, render_template, jsonify, url_for, redirect
+from flask_login import LoginManager, login_user, logout_user,login_required,current_user,UserMixin
 from chat import get_response
 from flask_sqlalchemy import SQLAlchemy
 #from flask_wtf.csrf import CSRFProtect
@@ -8,16 +9,22 @@ from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 import json
 import os
-from werkzeug.security import generate_password_hash, check_password_hash
 
+from werkzeug.security import generate_password_hash, check_password_hash
+import random
 
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from PIL import Image
 
+#socket
+from flask_socketio import SocketIO, send,emit, join_room, leave_room
+
+
 #Utils
 from app_utils import check_password
 from app_utils import hash_password
+from app_utils import generate_unique_code
 
 #Templates folder
 template_dir = os.path.abspath('../Frontend')
@@ -29,7 +36,8 @@ app.config['UPLOAD_FOLDER'] = '../Frontend/static/uploads'
 app.secret_key = 'empanada_viento'
 #csrf = CSRFProtect()
 db = SQLAlchemy(app)
-login_mannager_app = LoginManager(app) 
+login_mannager_app = LoginManager(app)
+socketIO = SocketIO(app)
 
 # Models definition DB
 class Libro(db.Model):
@@ -119,12 +127,13 @@ class Mensaje(db.Model):
     texto = db.Column(db.Text, nullable=False)
     fecha = db.Column(db.DateTime, nullable=False)
     leido = db.Column(db.Boolean, nullable=False)
+    usuario = db.Column(db.Text,nullable=False)
     id_chat = db.Column(db.Integer, db.ForeignKey('chat.id_chat'), nullable=False)
     chat = db.relationship('Chat', backref=db.backref('mensajes', lazy=True))
 
 class Chat(db.Model):
     __tablename__ = 'chat'
-    id_chat = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id_chat = db.Column(db.Integer, primary_key=True) #número unico de la sala 
     fechainicio = db.Column(db.DateTime, nullable=False)
     fechafin = db.Column(db.DateTime, nullable=True)
     activo = db.Column(db.Boolean, nullable=False)
@@ -149,6 +158,7 @@ class EtiquetaLibro(db.Model):
 
 # Render templates
 @app.route('/', methods=['GET'])
+@app.route('/index',methods=['GET'])
 def index():
     return render_template('home.html')
 
@@ -172,9 +182,14 @@ def index_get():
     return render_template('base.html')
 
 @app.route('/chat', methods=['GET'])
-#@login_required
+@login_required
 def chat():
-    return render_template('chat.html')
+    chat = Chat.query.filter_by(id_usuario=current_user.id_usuario).all()
+    if not chat:
+        print("Chta not found")
+        return 'Chat not found'
+    return render_template('message_page.html', chats=chat)
+
 
 
 @app.route('/logout')
@@ -252,8 +267,6 @@ def purchasePage():
             post_age = "Ayer"
         else:
             post_age = f"hace {days_since_post} días"
-
-        
         publisher = book.editorial
         state = book.estado
         tags = [tag.etiqueta.nometiqueta for tag in book.etiquetalibros]
@@ -729,7 +742,93 @@ def search_for_label(label=None):
         })
     
     return jsonify(lista_resultados)
-    
+
+#Chat
+#data = ['room','receiver','message']
+#room -> id_chat
+@app.route('/create_chat/<id_publicacion>', methods=['POST'])
+@login_required
+def create_chat(id_publicacion): #Al dar click para enviar mensaje
+    rooms = Chat.query.all()
+    id_chats = []
+    for room in rooms:
+        #Primero comprobar que no exista un chat anterior
+        if str(room.id_publicacion) == str(id_publicacion):
+            return jsonify({'message: ':"chat_access"})
+        id_chats.append(room.id_chat)
+    print(id_chats)
+    chat_code = generate_unique_code(4,rooms=id_chats)
+    new_chat = Chat(id_chat=chat_code, fechainicio=datetime.now(), activo=True,id_publicacion=id_publicacion, id_usuario=current_user.id_usuario)
+    db.session.add(new_chat)
+    db.session.commit()
+    return jsonify({"message: ": "new_chat_created"})
+
+
+
+@app.route('/join_chat', methods=['POST'])
+@login_required
+def join_chat():
+    chat_code = request.form['chat_code'] 
+    chat = Chat.query.filter_by(id_chat=chat_code).first()
+    if chat and chat.activo:
+        chat.id_usuario = current_user.id_usuario
+        db.session.commit()
+    return redirect(url_for('index'))
+
+@app.route('/send_message', methods=['POST'])
+@login_required
+def send_message():
+    messages = request.get_json()
+    text = messages['texto']
+    chat_code = messages['id_chat']
+    chat = Chat.query.filter_by(id_chat=chat_code).first()
+    if chat:
+        new_message = Mensaje(texto=text, fecha=datetime.now(), leido=False, id_chat=chat.id_chat)
+        db.session.add(new_message)
+        db.session.commit()
+        socketIO.emit('message', {'text': text, 'user': current_user.email, 'reciver': chat.id_publicacion}, room=chat_code)
+    return jsonify({"message": "Mensaje enviado"})
+
+@app.route('/chat_message/<chat_code>') #Mensajes segun el chat 
+@login_required
+def chat_messages(chat_code):
+    messages = Mensaje.query.filter_by(id_chat=chat_code).all()
+    chat_messages = [{
+        "texto": m.texto,
+        "fecha": m.fecha,
+        "leido": m.leido,
+        "id_chat": m.id_chat
+    } for m in messages]
+    return jsonify(chat_messages)
+    #return render_template('message_page.html', chats=chat, messages=messages)
+
+
+@socketIO.on('join')
+def on_join(data):
+    room = data['room']
+    join_room(room)
+    emit('status', {'msg': f'{current_user.nombre} has joined the room.'}, room=room)
+
+@socketIO.on('leave')
+def on_leave(data):
+    room = data['room']
+    leave_room(room)
+    emit('status', {'msg': f'{current_user.nombre} has left the room.'}, room=room)
+
+@socketIO.on('connect')
+def handle_connect():
+    send({"message": "Client connected"})
+
+@socketIO.on('disconnect')
+def handle_disconnect():
+    send({"message": "Client disconnected"})
+
+@socketIO.on('message')
+def handle_message(data):
+    user_send = Usuario.query.filter_by(email=data['user']).first()
+    if user_send:
+        room = data['room']
+        send(data['text'], room=room,broadcast=True)
 
 #Mannage Session
 
@@ -773,3 +872,4 @@ def get_current_user():
 if __name__ == '__main__':
     #csrf.init_app(app)
     app.run(debug=True,host='0.0.0.0', port=5000)
+    #socketIO.run(app,debug=True,host='0.0.0.0', port=5000)
