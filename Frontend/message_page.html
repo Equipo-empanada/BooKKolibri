@@ -16,13 +16,13 @@
     
 <body>
     <header class="header">
-        <a href="{{ url_for('Frontend','item_sell_page')}}" class="header__back">
+        <a href="{{ url_for('item_sell_page') }}" class="header__back">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left">
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
         </a>
-        <a href="{{ url_for('home') }}" class="header__logo">
+        <a href="{{ url_for('index') }}" class="header__logo">
             <img src="{{ url_for('static', filename='assets/g1.svg') }}" alt="Logo" height="50">
         </a>
         <input type="text" class="search_bar" placeholder="Buscar">
@@ -41,7 +41,7 @@
                 <span id="chat_header_purcharse_text">Comprar ahora</span>
             </span>
         </button>
-        <a href="{{ url_for('my_info') }}">
+        <a href="{{ url_for('myInfo') }}">
             <img src="{{ url_for('static', filename='assets/icon.jpg') }}" alt="Logo" height="50" width="50" class="profile_pic">
         </a>
     </header>
@@ -212,9 +212,15 @@
 
                         <li class="chat_end"></li>
                     </ul> -->
+                    <ul id="chat_messages">
+                        <li id="chat_separator"></li>
+                        <li id="chat_intro">
+                            <p id="info_conexion"></p>
+                        </li>
+                        <ul id="messages_chat"></ul>
+                    </ul>
                     <div id="chat_input">
                         <form role="presentation" id="chat_input_form">
-        
                             <div id="chat_input_message_bar"> 
                                 <input id="message" name="message" maxlength="255" class="_kd8Pw"
                                     placeholder="Escribe un mensaje..." style="height: 40px !important;">
@@ -236,28 +242,34 @@
                     <div id="recent_messages_header">
                         <span>Conversaciones recientes</span>
                     </div>
-                    <!-- <ul id = "recent_messages_list">
+                    <ul id = "recent_messages_list">
+                                    <!-- Lista de chats  -->
+                        {% for chat in chats %}
                         <li>
                             <a class="recent_message">
                                 <div class="recent_message_image">
-                                    <img src="./assets/purcharseSample.png" alt="product_img">
+                                    <!-- <img src="./assets/purcharseSample.png" alt="product_img"> -->
                                 </div>
                                 <div>
-                                    <p class="recent_message_title">Luna de Pluton</p>
-                                    <span class="recent_message_last_message">Mensaje de prueba</span>
+                                    <p class="card-text">Código de Sala: {{ chat.id_chat }}</p>
                                 </div>
                             </a>
                         </li>
+                        {% endfor %}                                 
 
-                    </ul> -->
+                    </ul>
                 </div>
                 
             </div>
         </div>
     </main>
-
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- chatbot -->
     <script src="{{ url_for('static', filename='JS/chatbot.js') }}"></script>
+    <!-- control -->
     <script src="{{ url_for('static', filename='JS/message_page.js') }}"></script>
+    <!-- socketIO -->
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
     <script src="{{ url_for('static', filename='JS/chat_mannage.js') }}"></script>
 </body>

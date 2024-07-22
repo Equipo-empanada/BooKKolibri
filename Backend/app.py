@@ -123,6 +123,7 @@ class Mensaje(db.Model):
     texto = db.Column(db.Text, nullable=False)
     fecha = db.Column(db.DateTime, nullable=False)
     leido = db.Column(db.Boolean, nullable=False)
+    usuario = db.Column(db.Text,nullable=False)
     id_chat = db.Column(db.Integer, db.ForeignKey('chat.id_chat'), nullable=False)
     chat = db.relationship('Chat', backref=db.backref('mensajes', lazy=True))
 
@@ -153,6 +154,7 @@ class EtiquetaLibro(db.Model):
 
 # Render templates
 @app.route('/', methods=['GET'])
+@app.route('/index',methods=['GET'])
 def index():
     return render_template('home.html')
 
@@ -176,9 +178,13 @@ def index_get():
     return render_template('base.html')
 
 @app.route('/chat', methods=['GET'])
-#@login_required
+@login_required
 def chat():
-    return render_template('message_page.html')
+    chat = Chat.query.filter_by(id_usuario=current_user.id_usuario).all()
+    if not chat:
+        print("Chta not found")
+        return 'Chat not found'
+    return render_template('message_page.html', chats=chat)
 
 @app.route('/login', methods=['GET'])
 def login():
@@ -186,7 +192,7 @@ def login():
 
 
 @app.route('/item_sell_page', methods=['GET'])
-def purchasePage():
+def item_sell_page():
     id_book = request.args.get('id')
     print(id_book)
     sample_book = {
@@ -619,34 +625,60 @@ def join_chat():
         db.session.commit()
     return redirect(url_for('index'))
 
-@socketIO.on('connect')
-def handle_connect():
-    return jsonify({"message: ":"Client connected"})
+@app.route('/send_message', methods=['POST'])
+@login_required
+def send_message():
+    messages = request.get_json()
+    text = messages['texto']
+    chat_code = messages['id_chat']
+    chat = Chat.query.filter_by(id_chat=chat_code).first()
+    if chat:
+        new_message = Mensaje(texto=text, fecha=datetime.now(), leido=False, id_chat=chat.id_chat)
+        db.session.add(new_message)
+        db.session.commit()
+        socketIO.emit('message', {'text': text, 'user': current_user.email, 'reciver': chat.id_publicacion}, room=chat_code)
+    return jsonify({"message": "Mensaje enviado"})
 
-@socketIO.on('disconnect')
-def handle_disconnect():
-    return jsonify({"message: ":"Client Disconect"})
+@app.route('/chat_message/<chat_code>') #Mensajes segun el chat 
+@login_required
+def chat_messages(chat_code):
+    messages = Mensaje.query.filter_by(id_chat=chat_code).all()
+    chat_messages = [{
+        "texto": m.texto,
+        "fecha": m.fecha,
+        "leido": m.leido,
+        "id_chat": m.id_chat
+    } for m in messages]
+    return jsonify(chat_messages)
+    #return render_template('message_page.html', chats=chat, messages=messages)
+
 
 @socketIO.on('join')
 def on_join(data):
     room = data['room']
     join_room(room)
-    send(f'{current_user.nombre} has entered the room',to=room)
+    emit('status', {'msg': f'{current_user.nombre} has joined the room.'}, room=room)
 
 @socketIO.on('leave')
 def on_leave(data):
     room = data['room']
     leave_room(room)
-    send(f'{data['username']} has left the room',to=room)
+    emit('status', {'msg': f'{current_user.nombre} has left the room.'}, room=room)
+
+@socketIO.on('connect')
+def handle_connect():
+    send({"message": "Client connected"})
+
+@socketIO.on('disconnect')
+def handle_disconnect():
+    send({"message": "Client disconnected"})
 
 @socketIO.on('message')
 def handle_message(data):
-    receiver = Usuario.query.filter_by(email=data['receiver'])
-    if receiver:
+    user_send = Usuario.query.filter_by(email=data['user']).first()
+    if user_send:
         room = data['room']
-        message = Mensaje(texto=data['message'],id_chat=data['room'])
-        send(data['message'],to=room)
-
+        send(data['text'], room=room,broadcast=True)
 
 #Mannage Session
 @login_mannager_app.user_loader
@@ -687,5 +719,5 @@ def get_current_user():
 
 if __name__ == '__main__':
     #csrf.init_app(app)
-    socketIO.run(app,debug=True,host='0.0.0.0', port=5000)
-    #app.run(debug=True,host='0.0.0.0', port=5000)
+    app.run(debug=True,host='0.0.0.0', port=5000)
+    #socketIO.run(app,debug=True,host='0.0.0.0', port=5000)
