@@ -380,11 +380,11 @@ def predict():
     return jsonify(message)
 
 @app.route('/addBook', methods=['POST'])
-#@login_required
+@login_required
 def addBook():
     data = request.form
     files = request.files
-    usuario_id = data.get('usuario_id')  # Suponiendo que se pasa el ID del usuario que hace la publicación
+    usuario_id = current_user.id_usuario  # Obtener el ID del usuario actual
     tags_selected = json.loads(data.get('tags_selected', '[]'))  # Lista de etiquetas seleccionadas
 
     # Guardar el libro
@@ -460,9 +460,9 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
     
 @app.route('/posts', methods=['GET'])
-#@login_required
+@login_required
 def getBooks():
-    publicaciones = Publicacion.query.all()
+    publicaciones = Publicacion.query.filter_by(id_usuario=current_user.id_usuario).all()
     books_list = []
     for publicacion in publicaciones:
         book = publicacion.libro
@@ -488,6 +488,7 @@ def getBooks():
             'activo': publicacion.activo
         })
     return jsonify(books_list)
+
 
 
 

@@ -174,11 +174,8 @@ function getSelectedRadioText() {
 function submitPost() {
     const url = 'http://localhost:5000/addBook';
     const formData = new FormData();
-    
-    //User
-    // formData.append('user_id', localStorage.getItem('user_id')); // Dev later
 
-    formData.append('user_id', "2");
+    formData.append('user_id', currentUserId);  // Usa la variable obtenida del template
     formData.append('title', post_title.value);
     formData.append('description', post_description.value);
     formData.append('price', post_price.value);
