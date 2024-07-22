@@ -1,4 +1,6 @@
 var profilePic;
+var search_bar;
+var search_button;
 
 const userDetail = {
     name: "Juan Perez",
@@ -17,22 +19,27 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div class="input-group search-bar">
                     <input type="text" class="form-control" placeholder="Buscar">
                     <div class="input-group-append">
-                        <button class="btn" type="button">
+                        <button class="btn" type="button" id="search_button">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
                 </div>
             </div>
             <div id="login_signup" class="d-flex align-items-center">
-                <a href="./login.html">
+                <a href="/login" id="login-link">
                     <span id="login_text">Iniciar Sesión</span>
                 </a>
-                <a href="./register.html">
+                <a href="/register" id="register-link">
                     <span id="signup_text">Registrarse</span>
                 </a>
-                <button class="btn btn-cart ms-2" type="button">
-                    <i class="fas fa-shopping-cart"></i>
-                </button>
+                <div class="position-relative ms-2">
+                    <button class="btn btn-cart" type="button" onclick='purcharse_page()'>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                            0
+                        </span>
+                    </button>
+                </div>
                 <a id="profile_pic" href="./my_info" class="ms-2">
                     <!-- Add profile picture here -->
                     <img src="${userDetail.pictureSource}" alt="Profile Picture" height="50" width="50" class="profile_pic">
@@ -82,4 +89,62 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
 
     document.querySelector("body").insertAdjacentHTML("afterbegin", headerHTML);
+
+    // Fetch user info and update header
+    fetch("/info_user")
+    .then(response => response.json())
+    .then(user => {
+        if (user.email) {
+            document.getElementById("login_signup").innerHTML = `
+                <span class="user-name">${user.nombre}</span>
+                <div class="position-relative ms-2">
+                    <button class="btn btn-cart" type="button" onclick='purcharse_page()'>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                            0
+                        </span>
+                    </button>
+                </div>
+                <a id="profile_pic" href="./my_info" class="ms-2">
+                    <img src="${userDetail.pictureSource}" alt="Profile Picture" height="50" width="50" class="profile_pic">
+                </a>
+            `;
+        }
+        updateCartCount(); // Actualizar el conteo del carrito después de cambiar el DOM
+    })
+    .catch(error => console.log("Not logged in"));
+
+    search_bar = document.getElementsByClassName('form-control')[0];
+    search_bar.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            window.location.href = './search_page?mode=search&search=' + search_bar.value;
+        }
+    });
+
+    search_button = document.getElementById('search_button');
+    search_button.addEventListener('click', function() {
+        window.location.href = './search_page?mode=search&search=' + search_bar.value;
+    });
+
+    // Actualizar el conteo del carrito
+    updateCartCount();
 });
+
+// Función para actualizar el conteo del carrito
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('shopping_cart')) || [];
+    const cartCount = cart.length;
+
+    const cartCountElement = document.getElementById('cart-count');
+    if (cartCount > 0) {
+        cartCountElement.textContent = cartCount;
+        cartCountElement.style.display = 'inline-block';
+    } else {
+        cartCountElement.style.display = 'none';
+    }
+}
+
+// Redirigir a la página de compra
+function purcharse_page() {
+    window.location.href = "./purchase_page";
+}

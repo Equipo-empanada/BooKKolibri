@@ -1,3 +1,5 @@
+
+import requests
 from flask import Flask, request, jsonify, render_template, jsonify, url_for, redirect
 from flask_login import LoginManager, login_user, logout_user,login_required,current_user,UserMixin
 from chat import get_response
@@ -7,6 +9,8 @@ from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 import json
 import os
+
+from werkzeug.security import generate_password_hash, check_password_hash
 import random
 
 from datetime import datetime
@@ -186,37 +190,179 @@ def chat():
         return 'Chat not found'
     return render_template('message_page.html', chats=chat)
 
-@app.route('/login', methods=['GET'])
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        data = request.form
+        email = data.get('email')
+        password = data.get('password')
+
+        user = Usuario.query.filter_by(email=email).first()
+
+        if user and check_password_hash(user.contraseña, password):
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            return jsonify({'message': 'Invalid credentials'}), 401
+
     return render_template('login.html')
+
+@app.route('/search_page', methods=['GET'])
+def searchPage():
+    return render_template('search_page.html')
+
+# API de  geolocalización
+def get_location_name(latitude, longitude):
+    url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={latitude}&lon={longitude}"
+    headers = {
+        'User-Agent': 'MiAplicacionGeocodificacion/1.0 (tuemail@ejemplo.com)'
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        if 'address' in data:
+            address = data['address']
+            return ', '.join([value for key, value in address.items() if value])
+        else:
+            return "No se encontró ninguna dirección para estas coordenadas."
+    elif response.status_code == 403:
+        return "Error 403: Acceso prohibido. Verifica que estás cumpliendo con los términos de uso de Nominatim."
+    else:
+        return f"Error en la solicitud: {response.status_code}"
+
 
 
 @app.route('/item_sell_page', methods=['GET'])
-def item_sell_page():
-    id_book = request.args.get('id')
-    print(id_book)
-    sample_book = {
-        'title': 'The Lord of the Rings: The Fellowship of the Ring',
-        'description': 'The first installment of the epic fantasy trilogy written by J.R.R. Tolkien.',
-        'price': '25.00',
-        'author': 'J.R.R. Tolkien',
-        'language': 'English',
-        'launch_year': '1954',
-        'publisher': 'Allen & Unwin',
-        'state': 'New',
-        'category': 'Fantasy',
-        'tags': ['Fantasy', 'Adventure', 'Epic'],
-        'image_src': ['https://via.placeholder.com/150','https://via.placeholder.com/200'],
-        'seller': 'John Doe',
-        'sell_books': '4',
-        'rating': '4.5',
-        'location': 'Mall del Sol, Guayaquil',
-    }
-    return render_template('item_sell_page.html', book=sample_book)
+def purchasePage():
+    id_post = request.args.get('id')
+    post = db.session.get(Publicacion, id_post)
+    if not post:
+        return jsonify({'message': 'Publication not found'}), 404
+    else:
+        book = post.libro
+        title = book.titulo
+        description = book.descripcion
+        price = book.precio
+        author = book.autor
+        language = book.idioma
+        launch_year = book.fec_lamzamiento[:4] if book.fec_lamzamiento else None
+        post_date = post.fecha
+        #Cast to datetime
+        post_date = datetime.strptime(str(post_date), '%Y-%m-%d')
+        #Calcular la antiguedad de la publicación
+        days_since_post = (datetime.now() - post_date).days
+        if days_since_post < 1:
+            post_age = "Hoy"
+        elif days_since_post == 1:
+            post_age = "Ayer"
+        else:
+            post_age = f"hace {days_since_post} días"
+        publisher = book.editorial
+        state = book.estado
+        tags = [tag.etiqueta.nometiqueta for tag in book.etiquetalibros]
+        #Consultamos la tabla intermedia para obtener las imagenes
+        img_mid = ImagenLibro.query.filter_by(id_libro=book.id_libro)
+        image_src = [url_for('static', filename=f'static/uploads/{img.descripcion}') for img in img_mid]
 
-@app.route('/register', methods=['GET'])
+        seller = 'Usuario prueba.'
+        # sell_books = sample_book.sell_books
+        # rating = sample_book.rating
+        location = get_location_name(post.latitud, post.longitud)
+
+        #mapeamos state 
+        if state == '1':
+            state = 'Nuevo'
+        elif state == '2':
+            state = 'Semi-nuevo'
+        else:
+            state = 'Usado'
+
+        book_json = {
+            'title': title,
+            'description': description,
+            'price': price,
+            'author': author,
+            'language': language,
+            'launch_year': launch_year,
+            'publisher': publisher,
+            'state': state,
+            'category': post.tipo_publicacion,
+            'tags': tags,
+            'image_src': image_src,
+            'seller': seller,
+            'sell_books': 'sell_books',
+            'rating': 'rating',
+            'location': location,
+            'post_age': post_age
+        }
+        # print(id_book)
+        # sample_book = {
+        #     'title': 'The Lord of the Rings: The Fellowship of the Ring',
+        #     'description': 'The first installment of the epic fantasy trilogy written by J.R.R. Tolkien.',
+        #     'price': '25.00',
+        #     'author': 'J.R.R. Tolkien',
+        #     'language': 'English',
+        #     'launch_year': '1954',
+        #     'publisher': 'Allen & Unwin',
+        #     'state': 'New',
+        #     'category': 'Fantasy',
+        #     'tags': ['Fantasy', 'Adventure', 'Epic'],
+        #     'image_src': ['https://via.placeholder.com/150','https://via.placeholder.com/200'],
+        #     'seller': 'John Doe',
+        #     'sell_books': '4',
+        #     'rating': '4.5',
+        #     'location': 'Mall del Sol, Guayaquil',
+        # }
+        return render_template('item_sell_page.html', book=book_json)
+
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.method == 'POST':
+        data = request.form
+        email = data.get('email')
+        password = data.get('password')
+        confirm_password = data.get('confir-password')
+
+        if password != confirm_password:
+            return jsonify({'message': 'Passwords do not match'}), 400
+
+        hashed_password = generate_password_hash(password, method='sha256')
+
+        new_user = Usuario(
+            nombre='Nombre',
+            apellido='Apellido',
+            email=email,
+            contraseña=hashed_password,
+            fecha_nac='2000-01-01',
+            ciudad='Ciudad',
+            cod_postal='00000',
+            rol='usuario'
+        )
+
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('login'))
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({'message': 'Email already registered'}), 400
+
     return render_template('register.html')
+
+
+@app.route('/purchase_page', methods=['GET'])
+def purchase_page():
+    return render_template('purchase_page.html')
 
 
 # API
@@ -257,7 +403,7 @@ def addBook():
 
     # Guardar la publicación
     new_publication = Publicacion(
-        tipo_publicacion='Libro',  # Ajustar según el tipo de publicación
+        tipo_publicacion=data.get('category'),  # Ajustar según el tipo de publicación
         latitud=data.get('location_lat'),
         longitud=data.get('location_lng'),
         fecha=datetime.utcnow(),
@@ -420,47 +566,49 @@ def editPost():
         return jsonify({"message": "Book updated successfully!"}), 200
     return jsonify({"message": "Publication not found!"}), 404
 
-@app.route('/sing_up',methods=['POST'])
-def sign_up(): #Crea usuario
-    data = request.get_json()
-    #Agregar validaciones
-    new_user=Usuario(
-        nombre = data.get("name"),
-        apellido = data.get("last_name"),
-        email = data.get("email"),
-        contraseña = hash_password(data.get("password")),
-        fecha_nac = data.get("birthdate"),
-        ciudad = data.get("city"),
-        cod_postal = data.get("postalcode"),
-        rol = data.get("role")
-    ) #Rol debe tener un valor por defecto
-    if new_user.email:
-        if new_user.contraseña:
-            try:
-                db.session.add(new_user)
-                db.session.commit()
-                return jsonify({'message': 'User added successfully'})
-            except IntegrityError:
-                db.session.rollback()
-                return jsonify({'message': 'This email is already registered'})
-        return jsonify({'message':'No password'})
-    return jsonify({'message':'No email'})
+@app.route('/sign_up', methods=['POST'])
+def sign_up():
+    data = request.form
+    nombre = data.get('nombre')
+    email = data.get('email')
+    password = data.get('password')
+    confirm_password = data.get('confir-password')
 
-@app.route('/sign_in',methods = ['POST'])
+    if password != confirm_password:
+        return jsonify({'message': 'Passwords do not match'}), 400
+
+    hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+
+    new_user = Usuario(
+        nombre=nombre,
+        apellido='Apellido',
+        email=email,
+        contraseña=hashed_password,
+        fecha_nac='2000-01-01',
+        ciudad='Ciudad',
+        cod_postal='00000',
+        rol='usuario'
+    )
+
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('login'))
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({'message': 'Email already registered'}), 400
+
+@app.route('/sign_in', methods=['POST'])
 def sign_in():
-    data = request.get_json()  # Obtener datos del cuerpo de la solicitud
+    data = request.get_json()
     email_user = data.get('email_user')
     password_user = data.get('password_user')
-    #Consulta y obtine si es que existe el usuario ingresado
-    #persona = db.session.execute(db.select(Persona)).one()
+
     user = Usuario.query.filter_by(email=email_user).first()
-    if user:
-        #Usuario identificado - Validación de password
-        if check_password(user.contraseña,password_user):
-            login_user(user) #almecena como usuario logeado 
-            return jsonify({'message': 'User authenticated successfully'})
-        return jsonify({'message': 'Invalid password'}), 401
-    return jsonify({'message':'Unregistered user'}), 404
+    if user and check_password_hash(user.contraseña, password_user):
+        login_user(user)
+        return jsonify({'message': 'User authenticated successfully'})
+    return jsonify({'message': 'Invalid credentials'}), 401
 
 @app.route('/sign_out',methods=['GET'])
 def sign_out():
@@ -534,6 +682,8 @@ def books_galery(tipo=None):#usar en home y en ver-mas
         img_desc = img.descripcion if img else None
         img_url = url_for('static', filename=f'uploads/{img_desc}') if img_desc else "https://via.placeholder.com/150"
 
+        #Replace /Frontend with ./
+        img_url = img_url.replace('/Frontend','../Frontend/static')
         lista_resultados.append({
             "id_publication": libro.id_publicacion,
             "image": {
@@ -681,6 +831,8 @@ def handle_message(data):
         send(data['text'], room=room,broadcast=True)
 
 #Mannage Session
+
+
 @login_mannager_app.user_loader
 def load_user(user_id):
     sql_query = text("""

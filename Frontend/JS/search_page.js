@@ -1,117 +1,12 @@
 /*
 Script for the search page
-
 */
 
 //Variables del DOM
-
 var results_container;
 
-
-
-
-const results = [
-    {
-        image: {
-            src: "./assets/purcharseSampleHome.png",
-            alt: "Producto 1"
-        },
-        info: {
-            title: {
-                main: "Luna de Pluton",
-                author: "Dross"
-            },
-            status: "Usado"
-        },
-        price: "15,00 US$",
-        stock: 3
-    },
-    {
-        image: {
-            src: "./assets/purcharseSampleHome.png",
-            alt: "Producto 1"
-        },
-        info: {
-            title: {
-                main: "Luna de Pluton",
-                author: "Dross"
-            },
-            status: "Usado"
-        },
-        price: "15,00 US$",
-        stock: 3
-    },
-    {
-        image: {
-            src: "./assets/image 5.png",
-            alt: "Producto 2"
-        },
-        info: {
-            title: {
-                main: "JavaScript guide",
-                author: "Dross"
-            },
-            status: "NUEVO"
-        },
-        price: "15,00 US$",
-        stock: 3
-    },
-    {
-        image: {
-            src: "./assets/image 6.png",
-            alt: "Producto 3"
-        },
-        info: {
-            title: {
-                main: "JavaScript The definitive guide",
-                author: "Dross"
-            },
-            status: "NUEVO"
-        },
-        price: "15,00 US$",
-        stock: 3
-    },
-    {
-        image: {
-            src: "./assets/image 7.png",
-            alt: "Producto 4"
-        },
-        info: {
-            title: {
-                main: "JavaScript The guide",
-                author: "Dross"
-            },
-            status: "NUEVO"
-        },
-        price: "15,00 US$",
-        stock: 3
-    },
-    {
-        image: {
-            src: "./assets/image 8.png",
-            alt: "Producto 5"
-        },
-        info: {
-            title: {
-                main: "JavaScript The definitive guide",
-                author: "Dross"
-            },
-            status: "NUEVO"
-        },
-        price: "15,00 US$",
-        stock: 3
-    }
-];
-
-
-
 //Funciones
-
-// function putUserPic(){
-//     profilePic.innerHTML = `<img src="${userDetail.pictureSource}" alt="Profile Picture" height="50" width="50" class="profile_pic">`;
-// }
-
-function putResults(){
+function putResults(results){
     results_container.innerHTML = "";
     results.forEach((result, index) => {
         results_container.innerHTML += `
@@ -140,12 +35,79 @@ function putResults(){
     });
 }
 
+function getAll(mode){
+    var url = "http://localhost:5000/galery/"+mode;
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            //"Authorization": "Bearer " + localStorage.getItem("token")
+        }
+    }).then(response => {
+        if (response.ok){
+            console.log("Libros obtenidas");
+            return response.json();
+        }else {
+            throw new Error("Error al obtener las ventas");
+        }
+    });
+}
+
+function getSearchResults(search){
+    var url = "http://localhost:5000/search/"+search;
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            //"Authorization": "Bearer " + localStorage.getItem("token")
+        }
+    }).then(response => {
+        if (response.ok){
+            console.log("Libros obtenidas");
+            return response.json();
+        }else {
+            throw new Error("Error al obtener las ventas");
+        }
+    });
+}
+
+
 //Inicializacion
 function init(){
+    //Get mode in url
+    var url = new URL(window.location.href);
+    var mode = url.searchParams.get("mode");
+    var category = url.searchParams.get("category");
+    var search = url.searchParams.get("search");
     profilePic = document.getElementById("profile_pic");
     results_container = document.getElementById("results_container");
     // putUserPic();
-    putResults();
+
+    if (mode === "search"){
+        getSearchResults(search).then(results => {
+            console.log(results);
+            putResults(results);
+        }).catch(error => {
+            console.log(error);
+        });
+        //Caso ventas
+    }else if (mode === "view_category" && category == 'venta'){
+        console.log("entro a ventas");
+        getAll('venta').then(results => {
+            console.log(results);
+            putResults(results);
+        }).catch(error => {
+            console.log(error);
+        });
+    }else {
+        //Intercambio
+        getAll(category).then(results => {
+            console.log(results);
+            putResults(results);
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 }
 
 document.addEventListener("DOMContentLoaded", init);
