@@ -13,7 +13,7 @@
 <body class="body-register">
     <div class="register">
         <header class="header__plain"> 
-            <a href="/">  <!--CAMBIAR POR INDEX -->
+            <a href="/">
                 <img src="{{ url_for('static', filename='assets/g1.svg') }}" alt="Logo" height="75" class="header__logo">
             </a>
         </header>
@@ -27,15 +27,15 @@
                             <a href="{{ url_for('login') }}">Inicia sesión</a>
                         </h3>
                     </div>
-                    <form action="/" method="POST" class="bloque-datos-usuario">
+                    <form action="{{ url_for('sign_up') }}" method="POST" class="bloque-datos-usuario">
                         <div class="datos-usuario"><br>
                             <input type="email" class="credenciales" name="email" id="user-email" placeholder="Email" required><br>
                             <input type="password" class="credenciales" name="password" id="user-password" placeholder="Contraseña" required><br>
-                            <input type="password" class="credenciales" name="confir-password" id="user-confirma" placeholder="Confirmar contraseña"><br>
+                            <input type="password" class="credenciales" name="confir-password" id="user-confirma" placeholder="Confirmar contraseña" required><br>
                             <button type="submit" class="btn-crear-cuenta" value="crear-cuenta" id="btnIniciar-sesion">Crear Cuenta</button>
                         </div>
                         <div class="mensaje-instrucciones">
-                            <p>Al menos 8 carácteres</p><br>
+                            <p>Al menos 8 caracteres</p><br>
                             <p>Al menos un número (0-9) o símbolo especial</p>
                         </div>
                     </form>

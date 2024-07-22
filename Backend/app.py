@@ -1,6 +1,6 @@
-from flask import Flask, request, jsonify, render_template, jsonify, url_for
+from flask import Flask, request, jsonify, render_template, url_for, redirect
 import requests
-from flask_login import LoginManager, login_user, logout_user,login_required,current_user,UserMixin
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user, UserMixin
 from chat import get_response
 from flask_sqlalchemy import SQLAlchemy
 #from flask_wtf.csrf import CSRFProtect
@@ -8,6 +8,8 @@ from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 import json
 import os
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 from datetime import datetime
 from werkzeug.utils import secure_filename
@@ -174,8 +176,30 @@ def index_get():
 def chat():
     return render_template('chat.html')
 
-@app.route('/login', methods=['GET'])
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        data = request.form
+        email = data.get('email')
+        password = data.get('password')
+
+        user = Usuario.query.filter_by(email=email).first()
+
+        if user and check_password_hash(user.contraseña, password):
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            return jsonify({'message': 'Invalid credentials'}), 401
+
     return render_template('login.html')
 
 @app.route('/search_page', methods=['GET'])
@@ -288,9 +312,40 @@ def purchasePage():
         # }
         return render_template('item_sell_page.html', book=book_json)
 
-@app.route('/register', methods=['GET'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.method == 'POST':
+        data = request.form
+        email = data.get('email')
+        password = data.get('password')
+        confirm_password = data.get('confir-password')
+
+        if password != confirm_password:
+            return jsonify({'message': 'Passwords do not match'}), 400
+
+        hashed_password = generate_password_hash(password, method='sha256')
+
+        new_user = Usuario(
+            nombre='Nombre',
+            apellido='Apellido',
+            email=email,
+            contraseña=hashed_password,
+            fecha_nac='2000-01-01',
+            ciudad='Ciudad',
+            cod_postal='00000',
+            rol='usuario'
+        )
+
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('login'))
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({'message': 'Email already registered'}), 400
+
     return render_template('register.html')
+
 
 @app.route('/purchase_page', methods=['GET'])
 def purchase_page():
@@ -498,47 +553,48 @@ def editPost():
         return jsonify({"message": "Book updated successfully!"}), 200
     return jsonify({"message": "Publication not found!"}), 404
 
-@app.route('/sing_up',methods=['POST'])
-def sign_up(): #Crea usuario
-    data = request.get_json()
-    #Agregar validaciones
-    new_user=Usuario(
-        nombre = data.get("name"),
-        apellido = data.get("last_name"),
-        email = data.get("email"),
-        contraseña = hash_password(data.get("password")),
-        fecha_nac = data.get("birthdate"),
-        ciudad = data.get("city"),
-        cod_postal = data.get("postalcode"),
-        rol = data.get("role")
-    ) #Rol debe tener un valor por defecto
-    if new_user.email:
-        if new_user.contraseña:
-            try:
-                db.session.add(new_user)
-                db.session.commit()
-                return jsonify({'message': 'User added successfully'})
-            except IntegrityError:
-                db.session.rollback()
-                return jsonify({'message': 'This email is already registered'})
-        return jsonify({'message':'No password'})
-    return jsonify({'message':'No email'})
+@app.route('/sign_up', methods=['POST'])
+def sign_up():
+    data = request.form
+    email = data.get('email')
+    password = data.get('password')
+    confirm_password = data.get('confir-password')
 
-@app.route('/sign_in',methods = ['POST'])
+    if password != confirm_password:
+        return jsonify({'message': 'Passwords do not match'}), 400
+
+    hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+
+    new_user = Usuario(
+        nombre='Nombre',
+        apellido='Apellido',
+        email=email,
+        contraseña=hashed_password,
+        fecha_nac='2000-01-01',
+        ciudad='Ciudad',
+        cod_postal='00000',
+        rol='usuario'
+    )
+
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('login'))
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({'message': 'Email already registered'}), 400
+
+@app.route('/sign_in', methods=['POST'])
 def sign_in():
-    data = request.get_json()  # Obtener datos del cuerpo de la solicitud
+    data = request.get_json()
     email_user = data.get('email_user')
     password_user = data.get('password_user')
-    #Consulta y obtine si es que existe el usuario ingresado
-    #persona = db.session.execute(db.select(Persona)).one()
+
     user = Usuario.query.filter_by(email=email_user).first()
-    if user:
-        #Usuario identificado - Validación de password
-        if check_password(user.contraseña,password_user):
-            login_user(user) #almecena como usuario logeado 
-            return jsonify({'message': 'User authenticated successfully'})
-        return jsonify({'message': 'Invalid password'}), 401
-    return jsonify({'message':'Unregistered user'}), 404
+    if user and check_password_hash(user.contraseña, password_user):
+        login_user(user)
+        return jsonify({'message': 'User authenticated successfully'})
+    return jsonify({'message': 'Invalid credentials'}), 401
 
 @app.route('/sign_out',methods=['GET'])
 def sign_out():
@@ -675,6 +731,8 @@ def search_for_label(label=None):
     
 
 #Mannage Session
+
+
 @login_mannager_app.user_loader
 def load_user(user_id):
     sql_query = text("""

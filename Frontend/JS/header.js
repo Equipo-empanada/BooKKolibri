@@ -2,7 +2,6 @@ var profilePic;
 var search_bar;
 var search_button;
 
-
 const userDetail = {
     name: "Juan Perez",
     pictureSource: "../Frontend/assets/icon.jpg"  // Ruta relativa a la carpeta estática
@@ -27,10 +26,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>
             </div>
             <div id="login_signup" class="d-flex align-items-center">
-                <a href="./login">
+                <a href="/login" id="login-link">
                     <span id="login_text">Iniciar Sesión</span>
                 </a>
-                <a href="./register">
+                <a href="/register" id="register-link">
                     <span id="signup_text">Registrarse</span>
                 </a>
                 <div class="position-relative ms-2">
@@ -91,8 +90,29 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelector("body").insertAdjacentHTML("afterbegin", headerHTML);
 
-    // Actualizar el conteo del carrito
-    updateCartCount();
+    // Fetch user info and update header
+    fetch("/info_user")
+    .then(response => response.json())
+    .then(user => {
+        if (user.email) {
+            document.getElementById("login_signup").innerHTML = `
+                <span class="user-email">${user.email}</span>
+                <div class="position-relative ms-2">
+                    <button class="btn btn-cart" type="button" onclick='purcharse_page()'>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;">
+                            0
+                        </span>
+                    </button>
+                </div>
+                <a id="profile_pic" href="./my_info" class="ms-2">
+                    <img src="${userDetail.pictureSource}" alt="Profile Picture" height="50" width="50" class="profile_pic">
+                </a>
+            `;
+        }
+        updateCartCount(); // Actualizar el conteo del carrito después de cambiar el DOM
+    })
+    .catch(error => console.log("Not logged in"));
 
     search_bar = document.getElementsByClassName('form-control')[0];
     search_bar.addEventListener('keypress', function(e) {
@@ -106,7 +126,8 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = './search_page?mode=search&search=' + search_bar.value;
     });
 
-
+    // Actualizar el conteo del carrito
+    updateCartCount();
 });
 
 // Función para actualizar el conteo del carrito
