@@ -1,52 +1,97 @@
-//Utilizar JQuery para facilitar la conexión
-document.addEventListener("DOMContentLoaded",function(){
+document.addEventListener("DOMContentLoaded", function() {
     const socket = io();
-    socket.on('message', function(msg){
-        $('#messages_chat').append('<li>'+msg+'</li>')
+    let chat_code;
+
+    // Manejar la recepción de mensajes
+        socket.on('message', function(msg) {
+        console.log(msg);
+        const messageClass = msg.user === $('#user_email').val() ? 'comprador' : 'vendedor';
+        $('#messages_chat').append(`
+            <li class="chat_message ${messageClass}">
+                <div class="chat_message_struct">
+                    <div class="chat_message_tab">
+                        <img src="./assets/image 4.png" alt="product_img">
+                    </div>
+                    <div class="chat_message_content">
+                        <div class="chat_message_text">
+                            <span>${msg.text}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat_message_divisor">${new Date().toLocaleTimeString()}</div>
+            </li>
+        `);
     });
 
-    $('#chat_input_send_btn').on('click',function(){
-        socket.send($('#message').val());
-        $('#message').val('');
+    document.querySelectorAll('#show_message').forEach(button => {
+        button.addEventListener('click', function() {
+            chat_code = button.getAttribute('data-chat-code');
+            console.log(chat_code);
+
+            if (chat_code) {
+                socket.emit('join', { room: chat_code });
+
+                // Cargar mensajes desde el servidor
+                fetch(`/chat_message/${chat_code}`)
+                    .then(response => response.json())
+                    .then(messages => {
+                        const messagesChat = document.getElementById('messages_chat');
+                        messagesChat.innerHTML = ''; // Limpiar mensajes anteriores
+                        messages.forEach(message => {
+                            const messageClass = message.usuario === $('#user_email').val() ? 'comprador' : 'vendedor';
+                            messagesChat.innerHTML += `
+                                <li class="chat_message ${messageClass}">
+                                    <div class="chat_message_struct">
+                                        <div class="chat_message_tab">
+                                            <img src="./assets/image 4.png" alt="product_img">
+                                        </div>
+                                        <div class="chat_message_content">
+                                            <div class="chat_message_text">
+                                                <span>${message.texto}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="chat_message_divisor">${message.fecha}</div>
+                                </li>
+                            `;
+                        });
+                    });
+            }
+        });
     });
-    
+
+    // Manejar el envío de mensajes
+    $('#chat_input_send_btn').on('click', function() {
+        const message = $('#message').val();
+        const current_user = $('#user_email').val();
+        console.log(chat_code);
+        console.log(current_user);
+
+        if (message.trim() !== '' && chat_code) {
+            socket.emit('message', {
+                text: message,
+                user: current_user,
+                room: chat_code
+            });
+            $('#message').val('');
+        } else {
+            console.log("No hay sala seleccionada");
+        }
+    });
+
+    // Manejar el envío del formulario de mensajes
+    $('#chat_input_form').on('submit', function(e) {
+        e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+        const message = $('#message').val();
+        const currentUser = $('#user_email').val();
+
+        if (message.trim() !== '' && chat_code) {
+            socket.emit('message', {
+                text: message,
+                user: currentUser,
+                room: chat_code
+            });
+            $('#message').val('');
+        }
+    });
 });
-// document.addEventListener("DOMContentLoaded", function() {
-//     var socket = io.connect('http://' + document.domain + ':' + location.port);
-//     var room = "default";
-
-//     // Join the room
-//     socket.emit('join', { room: room, username: 'User' });
-
-//     // Listen for messages
-//     socket.on('message', function(msg) {
-//         var messageList = document.getElementById('messages');
-//         var newMessage = document.createElement('li');
-//         newMessage.textContent = msg;
-//         messageList.appendChild(newMessage);
-//     });
-
-//     // Send a message
-//     document.getElementById('sendButton').onclick = function() {
-//         var messageInput = document.getElementById('message');
-//         var message = messageInput.value;
-//         socket.emit('message', { room: room, message: message });
-//         messageInput.value = '';
-//     };
-
-//     // Leave the room when the user navigates away from the page
-//     window.onbeforeunload = function() {
-//         socket.emit('leave', { room: room, username: 'User' });
-//         socket.close();
-//     };
-// });
-
-// function joinRoom() {
-//     var room = document.getElementById('room').value;
-//     socket.emit('join', { room: room });
-// }
-
-// function leaveRoom() {
-//     var room = document.getElementById('room').value;
-//     socket.emit('leave', { room: room });
-// }
