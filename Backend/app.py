@@ -38,6 +38,7 @@ app.secret_key = 'empanada_viento'
 #csrf = CSRFProtect()
 db = SQLAlchemy(app)
 login_mannager_app = LoginManager(app)
+login_mannager_app.login_view = 'login'
 socketIO = SocketIO(app)
 
 # Models definition DB
@@ -165,9 +166,17 @@ def index():
     return render_template('home.html')
 
 @app.route('/my_info', methods=['GET'])
-#@login_required
+@login_required
 def myInfo():
-    return render_template('my_info.html')
+    #Obtenemos la información del usuario
+    user_info = {
+        'id': current_user.id_usuario,
+        'user_name': current_user.nombre,
+        'apellido': current_user.apellido,
+        'email': current_user.email,
+        'rol': current_user
+    }
+    return render_template('my_info.html', user=user_info)
 
 @app.route('/new_product', methods=['GET'])
 #@login_required
@@ -182,6 +191,29 @@ def managePosts():
 @app.route('/hello', methods=['GET'])
 def index_get():
     return render_template('base.html')
+
+@app.route('/personal_details', methods=['GET'])
+def personal_details():
+    return render_template('personal_details.html')
+
+@app.route('/change_password', methods=['GET'])
+def change_password():
+    return render_template('change_password.html')
+
+@app.route('/view_transactions', methods=['GET'])
+def view_transactions():
+    return render_template('view_transactions.html')
+
+@app.route('/view_reviews', methods=['GET'])
+def view_reviews():
+    return render_template('view_reviews.html')
+
+@app.route('/payment_page', methods=['GET'])
+def payment_page():
+    return render_template('payment_page.html')
+
+
+
 
 @app.route('/chat', methods=['GET'])
 @login_required
@@ -382,11 +414,11 @@ def predict():
     return jsonify(message)
 
 @app.route('/addBook', methods=['POST'])
-#@login_required
+@login_required
 def addBook():
     data = request.form
     files = request.files
-    usuario_id = data.get('usuario_id')  # Suponiendo que se pasa el ID del usuario que hace la publicación
+    usuario_id = current_user.id_usuario  # Obtener el ID del usuario actual
     tags_selected = json.loads(data.get('tags_selected', '[]'))  # Lista de etiquetas seleccionadas
 
     # Guardar el libro
@@ -462,9 +494,9 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
     
 @app.route('/posts', methods=['GET'])
-#@login_required
+@login_required
 def getBooks():
-    publicaciones = Publicacion.query.all()
+    publicaciones = Publicacion.query.filter_by(id_usuario=current_user.id_usuario).all()
     books_list = []
     for publicacion in publicaciones:
         book = publicacion.libro
@@ -490,6 +522,7 @@ def getBooks():
             'activo': publicacion.activo
         })
     return jsonify(books_list)
+
 
 
 
@@ -573,7 +606,7 @@ def editPost():
 @app.route('/sign_up', methods=['POST'])
 def sign_up():
     data = request.form
-    nombre = data.get('nombre')
+    nombre = data.get('name')
     email = data.get('email')
     password = data.get('password')
     confirm_password = data.get('confir-password')
@@ -617,7 +650,8 @@ def sign_in():
 @app.route('/sign_out',methods=['GET'])
 def sign_out():
     logout_user()
-    return jsonify({'message': 'logout'})
+    return redirect('/')
+    # return jsonify({'message': 'logout'})
 
 #DATOS PEROSONALES
 @app.route('/personal_details',methods=['GET'])

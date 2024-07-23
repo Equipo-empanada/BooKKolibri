@@ -51,6 +51,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/view_reviews">Ver Reseñas</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/sign_out">Cerrar sesión</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -66,8 +69,8 @@
                     <img src="{{ url_for('static', filename='../Frontend/assets/icon.jpg') }}">
                 </div>
                 <div class="personal-info-text">
-                    <div>usuario123</div>
-                    <div>diegoa.castro@ucuenca.edu.ec</div>
+                    <div>{{user.user_name}}</div>
+                    <div>{{user.email}}</div>
                 </div>
             </div>
             <a class="info-button" href="./personal_details">
@@ -87,6 +90,9 @@
             </a>
             <a class="info-button" href="./view_reviews">
                 <h1>Ver Reseñas</h1>
+            </a>
+            <a class="info-button" href="./sign_out">
+                <h1>Cerrar Sesión</h1>
             </a>
         </div>
     </main>
