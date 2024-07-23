@@ -77,16 +77,13 @@
             <h2 class="sub-titulo">Filtros</h2>
             <div class="buscador">
                 <input type="text" placeholder="Buscar Por Titulo...">
-                <!-- <button type="submit">Buscar</button> -->
             </div>
             <div class="filtros">
                 <select id="generos-select">
                     <option value="0">Género</option>
-                    <!-- Otras opciones -->
                 </select>
                 <select name="idioma" id="filterIdioma" class="filter-idioma">
                     <option value="0">Idioma</option>
-                    <!-- Otras opciones -->
                 </select> 
             </div>
             <div class="acciones">
@@ -101,31 +98,12 @@
                         <th>Título</th>
                         <th>Autor</th>
                         <th>Género</th>
+                        <th>Estado</th>
                         <th>Imagen</th>
+                        
                     </tr>
                 </thead>
                 <tbody class="tabla-body">
-                    <!-- <tr>
-                        <td>
-                            <img class="btn-tabla editar-post" src="{{ url_for('static', filename='assets/icon_edit.svg') }}" alt="editar">
-                            <img class="btn-tabla delete-post" src="{{ url_for('static', filename='assets/icon_trash.svg') }}" alt="delete">
-                        </td>
-                        <td>El cuervo (1845)</td>
-                        <td>Edgar Allan Poe</td>
-                        <td>Fantasía<br>Horror</td>
-                        <td><img src="{{ url_for('static', filename='assets/libro_cuervo.svg') }}" alt="libro"></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <img class="btn-tabla editar-post" src="{{ url_for('static', filename='assets/icon_edit.svg') }}" alt="editar">
-                            <img class="btn-tabla delete-post" src="{{ url_for('static', filename='assets/icon_trash.svg') }}" alt="delete">
-                        </td>
-                        <td>El cuervo (1845)</td>
-                        <td>Edgar Allan Poe</td>
-                        <td>Fantasía<br>Horror</td>
-                        <td><img src="{{ url_for('static', filename='assets/libro_cuervo.svg') }}" alt="libro"></td>
-                    </tr> -->
-                    <!-- Más filas -->
                 </tbody>
             </table>
         </div>

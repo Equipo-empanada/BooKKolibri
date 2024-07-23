@@ -110,6 +110,10 @@ function loadItems(filteredPosts = posts) {
         if (Array.isArray(item.tags) && item.tags.length) {
             tagsHtml = '<ul>' + item.tags.map(tag => `<li>${tag}</li>`).join('') + '</ul>';
         }
+
+        // Determinar el estado de la publicación
+        const estado = item.activo ? "Publicada" : "Vendida";
+
         row.innerHTML = `
             <td>
                 <img class="btn-tabla editar-post" src="../Frontend/assets/icon_edit.svg" alt="editar">
@@ -118,6 +122,7 @@ function loadItems(filteredPosts = posts) {
             <td>${item.title}</td>
             <td>${item.author}</td>
             <td>${tagsHtml}</td>
+            <td>${estado}</td>
             <td><img src="${imageUrl}" alt="Imagen del producto"></td>
         `;
         tabla_body.appendChild(row);
