@@ -196,9 +196,6 @@ def index_get():
 def personal_details():
     return render_template('personal_details.html')
 
-@app.route('/change_password', methods=['GET'])
-def change_password():
-    return render_template('change_password.html')
 
 @app.route('/view_transactions', methods=['GET'])
 def view_transactions():
@@ -839,7 +836,7 @@ def search_for_label(label=None):
 #Chat
 #data = ['room','receiver','message']
 #room -> id_chat
-@app.route('/create_chat/<id_publicacion>', methods=['POST'])
+@app.route('/create_chat/<id_publicacion>', methods=['GET'])
 @login_required
 def create_chat(id_publicacion): #Al dar click para enviar mensaje
     rooms = Chat.query.all()
@@ -847,7 +844,7 @@ def create_chat(id_publicacion): #Al dar click para enviar mensaje
     for room in rooms:
         #Primero comprobar que no exista un chat anterior
         if str(room.id_publicacion) == str(id_publicacion):
-            return jsonify({'message: ':"chat_access"})
+            return redirect(url_for('chat'))
         id_chats.append(room.id_chat)
     print(id_chats)
     publicacion = Publicacion.query.filter_by(id_publicacion=id_publicacion).first()
@@ -859,7 +856,7 @@ def create_chat(id_publicacion): #Al dar click para enviar mensaje
                     publicador = publicacion.usuario.id_usuario)
     db.session.add(new_chat)
     db.session.commit()
-    return jsonify({"message: ": "new_chat_created"})
+    return redirect(url_for('chat'))
 
 
 
