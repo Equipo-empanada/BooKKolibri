@@ -178,14 +178,21 @@ def myInfo():
     return render_template('my_info.html', user=user_info)
 
 @app.route('/new_product', methods=['GET'])
-#@login_required
+@login_required
 def newProduct():
-    return render_template('new_product.html')
+    #Verificar si el usuario tiene el rol de tienda
+    if current_user.rol != 'tienda':
+         return render_template('error_store.html'), 401
+    else:
+        return render_template('new_product.html')
 
 @app.route('/manage_posts', methods=['GET'])
-#@login_required
+@login_required
 def managePosts():
-    return render_template('manage_posts.html')
+    if current_user.rol != 'tienda':
+         return render_template('error_store.html'), 401
+    else:
+        return render_template('manage_posts.html')
 
 @app.route('/hello', methods=['GET'])
 def index_get():
@@ -323,7 +330,12 @@ def purchasePage():
         img_mid = ImagenLibro.query.filter_by(id_libro=book.id_libro)
         image_src = [url_for('static', filename=f'static/uploads/{img.descripcion}') for img in img_mid]
 
-        seller = post.usuario.nombre
+        #Consultamos el nombre de la tienda del vendedor
+        seller = Tienda.query.filter_by(id_usuario=post.id_usuario)
+        if not seller:
+            seller = Usuario.query.filter_by(id_usuario=post.id_usuario).first().nombre
+        else:
+            seller = seller.first().nombrecomercial
         # sell_books = sample_book.sell_books
         # rating = sample_book.rating
         location = get_location_name(post.latitud, post.longitud)

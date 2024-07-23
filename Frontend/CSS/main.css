@@ -38,8 +38,12 @@ html, body {
 }
 header{
     background: var(--navbar-color);
-    padding-bottom: 50px;
+    /* padding-bottom: 50px; */
 
+}
+
+.headera{
+    padding-bottom: 50px;
 }
 
 
