@@ -162,18 +162,18 @@ class EtiquetaLibro(db.Model):
 #Foto de perfil
 @app.route('/photo_user',methods=['GET'])
 def photo_user():
-    user_info = {
+    default_info = {
         'nombre' : "usuario",
         'foto_perfil' : "0.jpg"
     }
-    if current_user:
+    if current_user.is_authenticated:
         usuario = Usuario.query.filter_by(id_usuario = current_user.id_usuario).first()
         user_info = {
             'nombre' : usuario.nombre,
             'foto_perfil' : usuario.foto_perfil
         }
         return jsonify(user_info)
-    return jsonify(user_info)
+    return jsonify(default_info)
 
 # Render templates
 @app.route('/', methods=['GET'])
