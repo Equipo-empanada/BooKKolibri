@@ -10,6 +10,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 import json
 import os
+import random
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -67,7 +68,7 @@ class Usuario(db.Model,UserMixin):
     ciudad = db.Column(db.String(20), nullable=False)
     cod_postal = db.Column(db.String(20), nullable=False)
     rol = db.Column(db.String(10), nullable=False)
-    foto_perfil = db.Column(db.LargeBinary, nullable=True)
+    foto_perfil = db.Column(db.Text, nullable=True)
     def get_id(self):
         return str(self.id_usuario)
 
@@ -158,6 +159,21 @@ class EtiquetaLibro(db.Model):
     etiqueta = db.relationship('Etiqueta', backref=db.backref('etiquetalibros', lazy=True))
     libro = db.relationship('Libro', backref=db.backref('etiquetalibros', lazy=True))
 
+#Foto de perfil
+@app.route('/photo_user',methods=['GET'])
+def photo_user():
+    user_info = {
+        'nombre' : "usuario",
+        'foto_perfil' : "0.jpg"
+    }
+    if current_user:
+        usuario = Usuario.query.filter_by(id_usuario = current_user.id_usuario).first()
+        user_info = {
+            'nombre' : usuario.nombre,
+            'foto_perfil' : usuario.foto_perfil
+        }
+        return jsonify(user_info)
+    return jsonify(user_info)
 
 # Render templates
 @app.route('/', methods=['GET'])
@@ -169,12 +185,14 @@ def index():
 @login_required
 def myInfo():
     #Obtenemos la información del usuario
+    user = Usuario.query.filter_by(id_usuario=current_user.id_usuario).first()
     user_info = {
         'id': current_user.id_usuario,
         'user_name': current_user.nombre,
         'apellido': current_user.apellido,
         'email': current_user.email,
-        'rol': current_user
+        'rol': current_user,
+        'foto_perfil' : user.foto_perfil
     }
     return render_template('my_info.html', user=user_info)
 
@@ -602,26 +620,30 @@ def editPost():
 
 @app.route('/sign_up', methods=['POST'])
 def sign_up():
+    num_photo = random.randint(1, 5)
     data = request.form
     nombre = data.get('name')
+    apellido = data.get('lastname')
     email = data.get('email')
+    fec_nac = data.get('fec_nac')
     password = data.get('password')
     confirm_password = data.get('confir-password')
-
+    #url_photo = url_for('static',filename=f'static/perfil_photos/{str(num_photo)}')
+    photo = str(num_photo)+".jpg"
     if password != confirm_password:
         return jsonify({'message': 'Passwords do not match'}), 400
 
     hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-
     new_user = Usuario(
         nombre=nombre,
-        apellido='Apellido',
+        apellido=apellido,
         email=email,
         contraseña=hashed_password,
-        fecha_nac='2000-01-01',
+        fecha_nac=fec_nac,
         ciudad='Ciudad',
         cod_postal='00000',
-        rol='usuario'
+        rol='usuario',
+        foto_perfil = photo
     )
 
     try:
