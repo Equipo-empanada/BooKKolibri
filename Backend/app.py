@@ -75,7 +75,7 @@ class Usuario(db.Model,UserMixin):
 class Tienda(db.Model):
     __tablename__ = 'tienda'
     id_tienda = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    nombre_comercial = db.Column(db.String(100), nullable=False)
+    nombrecomercial = db.Column(db.String(100), nullable=False)
     id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario'), nullable=False)
     direccion = db.Column(db.String(255), nullable=False)
     usuario = db.relationship('Usuario', backref=db.backref('tiendas', lazy=True))
@@ -196,14 +196,21 @@ def myInfo():
     return render_template('my_info.html', user=user_info)
 
 @app.route('/new_product', methods=['GET'])
-#@login_required
+@login_required
 def newProduct():
-    return render_template('new_product.html')
+    #Verificar si el usuario tiene el rol de tienda
+    if current_user.rol != 'tienda':
+         return render_template('error_store.html'), 401
+    else:
+        return render_template('new_product.html')
 
 @app.route('/manage_posts', methods=['GET'])
-#@login_required
+@login_required
 def managePosts():
-    return render_template('manage_posts.html')
+    if current_user.rol != 'tienda':
+         return render_template('error_store.html'), 401
+    else:
+        return render_template('manage_posts.html')
 
 @app.route('/hello', methods=['GET'])
 def index_get():
@@ -340,7 +347,12 @@ def purchasePage():
         img_mid = ImagenLibro.query.filter_by(id_libro=book.id_libro)
         image_src = [url_for('static', filename=f'static/uploads/{img.descripcion}') for img in img_mid]
 
-        seller = post.usuario.nombre
+        #Consultamos el nombre de la tienda del vendedor
+        seller = Tienda.query.filter_by(id_usuario=post.id_usuario)
+        if not seller:
+            seller = Usuario.query.filter_by(id_usuario=post.id_usuario).first().nombre
+        else:
+            seller = seller.first().nombrecomercial
         # sell_books = sample_book.sell_books
         # rating = sample_book.rating
         location = get_location_name(post.latitud, post.longitud)
@@ -736,6 +748,44 @@ def edit_user_info():
     db.session.commit()
     
     return jsonify({'message': 'User updated successfully'})
+
+@app.route('/register_store', methods=['POST'])
+@login_required
+def register_store():
+    try:
+        data = request.json
+        nombre_comercial = data.get('nombre_comercial')
+        ciudad = data.get('ciudad')
+        cod_postal = data.get('cod_postal')
+        
+        nueva_tienda = Tienda(
+            nombrecomercial=nombre_comercial,
+            id_usuario=current_user.id_usuario,
+            direccion=ciudad,
+            # cod_postal=cod_postal
+        )
+
+        db.session.add(nueva_tienda)
+        db.session.commit()
+        return jsonify({'message': 'Tienda registrada exitosamente'}), 201
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({'message': 'Error al registrar la tienda'}), 500
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': str(e)}), 500
+    
+
+# Set store role
+@app.route('/set_store_role', methods=['GET'])
+@login_required
+def set_store_role():
+    user = Usuario.query.filter_by(id_usuario=current_user.id_usuario).first()
+    user.rol = 'tienda'
+    db.session.commit()
+    return jsonify({'message': 'Store role set successfully'}), 200
+
+
 # --------------------------------------------------------------
 # Change password
 @app.route('/change_password', methods=['GET', 'POST'])

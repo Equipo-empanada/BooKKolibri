@@ -17,9 +17,10 @@ var product_description;
 var product_price;
 var seller_name;
 
-//Botones
+// Botones
 var message_to_seller;
 var purchase_button;
+
 
 
 //Funciones
@@ -28,10 +29,10 @@ function messageToSeller(id) {
 }
 
 function makePurcharse() {
-    //Obtenemos el id del post en la url
+    // Obtenemos el id del post en la url
     let url = new URL(window.location.href);
     let post_id = url.searchParams.get("id");
-    //Añadir al carrito
+    // Añadir al carrito
     addShoppingCart(post_id, product_name, product_price, seller_name, product_state, product_img);
     location.href = "/purchase_page";
 }
@@ -61,19 +62,25 @@ function addShoppingCart(post_id, booktitle, price, seller, state, img) {
         // Verificar si el carrito ya tiene el item
         let itemExists = shopping_cart.some(item => item.id === post_id);
         if (itemExists) {
-            alert("Item already in shopping cart");
+            Swal.fire({
+                icon: 'info',
+                title: 'Oops...',
+                text: 'Este item ya está en tu carrito'
+            });
             return;
         }
     }
     shopping_cart.push(book);
     localStorage.setItem("shopping_cart", JSON.stringify(shopping_cart));
-    alert("Item added to shopping cart");
+    Swal.fire({
+        icon: 'success',
+        title: 'Bien hecho',
+        text: 'Item añadido al carrito 🛒'
+    });
 }
 
-
-//Document Ready
+// Document Ready
 function init() {
-
     product_name = document.getElementsByClassName("product_title")[0].innerHTML;
     product_img = document.getElementsByClassName("item_details_product_image_img")[0].src;
     seller_name = document.getElementsByClassName("seller_name")[0].innerHTML;
@@ -84,6 +91,7 @@ function init() {
     purchase_button = document.getElementById("make_purcharse");
     // make_offer = document.getElementById("make_offer");
     
+
     //Listeners
     message_to_seller.addEventListener("click", function() {
         let url = new URL(window.location.href);
@@ -91,12 +99,11 @@ function init() {
         console.log(post_id)
         messageToSeller(post_id);
     });
+
     purchase_button.addEventListener("click", makePurcharse);
     // make_offer.addEventListener("click", makePurcharse);
 
 }
 
-//Load
+// Load
 document.addEventListener("DOMContentLoaded", init);
-
-

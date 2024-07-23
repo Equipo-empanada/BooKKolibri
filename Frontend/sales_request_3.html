@@ -11,8 +11,7 @@
     <title>BookKolibri - Solicitud</title>
 </head>
 <body>
-
-    <header class="header">
+    <header class="headera">
         <a href="{{ url_for('index') }}" class="header__logo">
             <img src="{{ url_for('static', filename='assets/g1.svg') }}" alt="Logo" height="50">
         </a>
@@ -69,6 +68,7 @@
             </div>
         </form>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{{ url_for('static', filename='JS/events_sales_request_3.js') }}"></script>
 </body>
 </html>
