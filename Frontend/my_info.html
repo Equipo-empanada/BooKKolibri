@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lgk">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand font-weight-bold" href="/">
                 <img class="mr-2" src="{{ url_for('static', filename='../Frontend/assets/g1.svg') }}" alt="Logo" height="50" />
@@ -29,34 +29,7 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="d-flex justify-content-between w-100">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            
-                            <a class="nav-link" href="personal_details">Cambiar datos personales</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('newProduct') }}">Publicar libro</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('managePosts') }}">Mis publicaciones</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/change_password">Cambiar la contraseña</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/view_transactions">Ver Transacciones</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/view_reviews">Ver Reseñas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/sign_out">Cerrar sesión</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+           
         </div>
     </nav>
     <main>
@@ -91,7 +64,7 @@
             <a class="info-button" href="./view_reviews">
                 <h1>Ver Reseñas</h1>
             </a>
-            <a class="info-button" href="./sign_out">
+            <a class="info-button" id="mainSignOut">
                 <h1>Cerrar Sesión</h1>
             </a>
         </div>
@@ -107,8 +80,8 @@
                 Calle Falsa 123, Cuenca, Ecuador Términos y Condiciones, Aviso de Privacidad</p>
         </div>
     </footer>
+    <script src="{{ url_for('static', filename='JS/chatbot.js') }}"></script>
+    <script src="{{ url_for('static', filename='JS/sessionHandler.js') }}"></script>
 </body>
-
-<script src="{{ url_for('static', filename='JS/chatbot.js') }}"></script>
 
 </html>
