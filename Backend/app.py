@@ -195,9 +195,7 @@ def index_get():
 def personal_details():
     return render_template('personal_details.html')
 
-@app.route('/change_password', methods=['GET'])
-def change_password():
-    return render_template('change_password.html')
+
 
 @app.route('/view_transactions', methods=['GET'])
 @login_required
