@@ -198,8 +198,24 @@ def change_password():
     return render_template('change_password.html')
 
 @app.route('/view_transactions', methods=['GET'])
+@login_required
 def view_transactions():
-    return render_template('view_transactions.html')
+    # Obtener las transacciones del usuario
+    compras = Pedido.query.filter_by(id_usuario=current_user.id_usuario, tipotransaccion='Compra').all()
+    publicaciones_comprados = Publicacion.query.filter(Publicacion.id_publicacion.in_([compra.id_libro for compra in compras])).all()
+    libros_comprados = [publicacion.libro for publicacion in publicaciones_comprados]
+    imagenes_comprados = [ImagenLibro.query.filter_by(id_libro=libro.id_libro).first() for libro in libros_comprados]
+
+    intercambios = Pedido.query.filter_by(id_usuario=current_user.id_usuario, tipotransaccion='Intercambio').all()
+    publicaciones_cambiadas = Publicacion.query.filter(Publicacion.id_publicacion.in_([intercambio.id_libro for intercambio in intercambios])).all()
+    libros_cambiados = [publicacion.libro for publicacion in publicaciones_cambiadas]
+    imagenes_cambiados = [ImagenLibro.query.filter_by(id_libro=libro.id_libro).first() for libro in libros_cambiados]
+
+    compras_con_imagenes = zip(libros_comprados, imagenes_comprados,compras)
+    intercambios_con_imagenes = zip(libros_cambiados, imagenes_cambiados,intercambios, intercambios)
+
+    return render_template('view_transactions.html', compras=compras_con_imagenes, intercambios=intercambios_con_imagenes)
+
 
 @app.route('/view_reviews', methods=['GET'])
 def view_reviews():
