@@ -23,8 +23,8 @@ var purchase_button;
 
 
 //Funciones
-function messageToSeller() {
-    location.href = "/message_page";
+function messageToSeller(id) {
+    location.href = "/create_chat/"+id;
 }
 
 function makePurcharse() {
@@ -85,7 +85,12 @@ function init() {
     // make_offer = document.getElementById("make_offer");
     
     //Listeners
-    message_to_seller.addEventListener("click", messageToSeller);
+    message_to_seller.addEventListener("click", function() {
+        let url = new URL(window.location.href);
+        let post_id = url.searchParams.get("id");
+        console.log(post_id)
+        messageToSeller(post_id);
+    });
     purchase_button.addEventListener("click", makePurcharse);
     // make_offer.addEventListener("click", makePurcharse);
 
