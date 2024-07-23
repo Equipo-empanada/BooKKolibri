@@ -653,6 +653,61 @@ def sign_out():
     return redirect('/')
     # return jsonify({'message': 'logout'})
 
+#DATOS PEROSONALES
+@app.route('/personal_details',methods=['GET'])
+@login_required
+def personal_detail():
+    user = Usuario.query.filter_by(id_usuario=current_user.id_usuario).first()
+    
+    usuario = {
+        "id_usuario" : user.id_usuario,
+        "nombre" : user.nombre,
+        "apellido": user.apellido,
+        "fecha_nac": user.fecha_nac,
+        "cod_postal": user.cod_postal,
+        "ciudad": user.ciudad
+    }
+    return render_template("personal_details.html",usuario=usuario)
+
+@app.route('/edit_user_info', methods=['POST'])
+@login_required
+def edit_user_info():
+    data = request.json
+    user = Usuario.query.filter_by(id_usuario=current_user.id_usuario).first()
+    print(data)
+    user.nombre = data.get('nombre')
+    user.apellido = data.get('appellido')
+    user.fecha_nac = data.get('fecha_nac')
+    user.cod_postal = data.get('postal')
+    user.ciudad = data.get('ciudad')
+
+    db.session.commit()
+    
+    return jsonify({'message': 'User updated successfully'})
+# --------------------------------------------------------------
+# Change password
+@app.route('/change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    if request.method == 'POST':
+        data = request.get_json()
+        prev_pass = data.get('prevPass')
+        new_pass = data.get('newPass')
+        print(data)
+        if not prev_pass or not new_pass:
+            return jsonify({'message': 'Please provide all required fields'}), 400
+
+        user = Usuario.query.filter_by(id_usuario=current_user.id_usuario).first()
+        if not check_password_hash(user.contraseña, prev_pass):
+            return jsonify({'message': 'Incorrect previous password'}), 400
+
+        user.contraseña = generate_password_hash(new_pass, method='pbkdf2:sha256')
+        db.session.commit()
+        return jsonify({'message': 'Password updated successfully'}), 200
+
+    return render_template('change_password.html')
+
+# --------------------------------------------------------------
 @app.route('/search/<title>',methods=['GET'])
 def search_title(title):
     #Busqueda principal por titulo
@@ -829,7 +884,6 @@ def send_message():
         new_message = Mensaje(texto=text, fecha=datetime.now(), leido=False, id_chat=chat.id_chat)
         db.session.add(new_message)
         db.session.commit()
-        #socketIO.emit('message', {'text': text, 'user': current_user.email, 'reciver': chat.id_publicacion}, room=chat_code)
     return jsonify({"message": "Mensaje guardado"})
 
 @app.route('/chat_message/<chat_code>') #Mensajes segun el chat 
@@ -844,8 +898,6 @@ def chat_messages(chat_code):
         "usuario" : m.usuario
     } for m in messages]
     return jsonify(chat_messages)
-    #return render_template('message_page.html', chats=chat, messages=messages)
-
 
 @socketIO.on('join')
 def on_join(data):
@@ -867,15 +919,7 @@ def handle_connect():
 def handle_disconnect():
     send({"message": "Client disconnected"})
 
-'''
-@socketIO.on('message')
-def handle_message(data):
-    try:
-        print(f"Received data: {data}") 
-        send({'text': data['text'], 'user': data['user']}, broadcast=True)
-    except Exception as e:
-        print(f"Error handling message: {e}") 
-'''
+
 @socketIO.on('message')
 def handle_message(data):
     try:
