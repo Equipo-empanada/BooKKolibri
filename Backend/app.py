@@ -650,7 +650,30 @@ def edit_user_info():
     db.session.commit()
     
     return jsonify({'message': 'User updated successfully'})
+# --------------------------------------------------------------
+# Change password
+@app.route('/change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    if request.method == 'POST':
+        data = request.get_json()
+        prev_pass = data.get('prevPass')
+        new_pass = data.get('newPass')
+        print(data)
+        if not prev_pass or not new_pass:
+            return jsonify({'message': 'Please provide all required fields'}), 400
 
+        user = Usuario.query.filter_by(id_usuario=current_user.id_usuario).first()
+        if not check_password_hash(user.contraseña, prev_pass):
+            return jsonify({'message': 'Incorrect previous password'}), 400
+
+        user.contraseña = generate_password_hash(new_pass, method='pbkdf2:sha256')
+        db.session.commit()
+        return jsonify({'message': 'Password updated successfully'}), 200
+
+    return render_template('change_password.html')
+
+# --------------------------------------------------------------
 @app.route('/search/<title>',methods=['GET'])
 def search_title(title):
     #Busqueda principal por titulo
