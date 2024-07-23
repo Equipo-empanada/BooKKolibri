@@ -18,8 +18,8 @@ function putResults(results){
                             <p class="card-text"><strong>Autor:</strong> ${result.info.title.author}</p>
                             <p class="card-text"><strong>Estado:</strong> ${result.info.status}</p>
                             <p class="card-text">${result.price}</p>
-                            <p class="card-text"><strong>Disponibles:</strong> ${result.stock} </p>
-                            <button class="btn btn-cart">
+                            <p class="card-text"><strong>Disponible!</strong> </p>
+                            <button class="btn btn-cart" onclick="getProductionInfo(${result.id_publication})">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 12"
                                     style="max-width: 10px; min-width: 10px; height: auto;">
                                     <path fill="#fff"
@@ -71,6 +71,10 @@ function getSearchResults(search){
     });
 }
 
+function getProductionInfo(id){
+    //Redirect to the production page
+    window.location.href = "item_sell_page?id="+id;
+}
 
 //Inicializacion
 function init(){
