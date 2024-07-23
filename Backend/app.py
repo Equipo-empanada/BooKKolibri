@@ -74,7 +74,7 @@ class Usuario(db.Model,UserMixin):
 class Tienda(db.Model):
     __tablename__ = 'tienda'
     id_tienda = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    nombre_comercial = db.Column(db.String(100), nullable=False)
+    nombrecomercial = db.Column(db.String(100), nullable=False)
     id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario'), nullable=False)
     direccion = db.Column(db.String(255), nullable=False)
     usuario = db.relationship('Usuario', backref=db.backref('tiendas', lazy=True))
@@ -715,6 +715,44 @@ def edit_user_info():
     db.session.commit()
     
     return jsonify({'message': 'User updated successfully'})
+
+@app.route('/register_store', methods=['POST'])
+@login_required
+def register_store():
+    try:
+        data = request.json
+        nombre_comercial = data.get('nombre_comercial')
+        ciudad = data.get('ciudad')
+        cod_postal = data.get('cod_postal')
+        
+        nueva_tienda = Tienda(
+            nombrecomercial=nombre_comercial,
+            id_usuario=current_user.id_usuario,
+            direccion=ciudad,
+            # cod_postal=cod_postal
+        )
+
+        db.session.add(nueva_tienda)
+        db.session.commit()
+        return jsonify({'message': 'Tienda registrada exitosamente'}), 201
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({'message': 'Error al registrar la tienda'}), 500
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': str(e)}), 500
+    
+
+# Set store role
+@app.route('/set_store_role', methods=['GET'])
+@login_required
+def set_store_role():
+    user = Usuario.query.filter_by(id_usuario=current_user.id_usuario).first()
+    user.rol = 'tienda'
+    db.session.commit()
+    return jsonify({'message': 'Store role set successfully'}), 200
+
+
 # --------------------------------------------------------------
 # Change password
 @app.route('/change_password', methods=['GET', 'POST'])
