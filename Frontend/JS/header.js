@@ -59,28 +59,28 @@ document.addEventListener("DOMContentLoaded", function() {
                         <a class="nav-link" href="#">Tienda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./sales_request_1.html">Venta con BooKKolibri</a>
+                        <a class="nav-link" href="./sales_request_1">Venta con BooKKolibri</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Intercambio</a>
+                        <a class="nav-link" href="/search_page?mode=view_category&category=intercambio">Intercambio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Nuevo</a>
+                        <a class="nav-link" href="/search_page?mode=view_category&category=venta">Nuevo</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Libros</a>
+                        <a class="nav-link" href="/search_page?mode=search&search=Libro">Libros</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Colecciones</a>
+                        <a class="nav-link" href="/search_page?mode=search&search=Colecci">Colecciones</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Escolar</a>
+                        <a class="nav-link" href="/search_page?mode=search&search=Progra">Programación</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Académico</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Novelas</a>
+                        <a class="nav-link" href="/search_page?mode=search&search=Novela">Novelas</a>
                     </li>
                 </ul>
             </div>

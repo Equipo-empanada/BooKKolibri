@@ -411,6 +411,18 @@ def register():
 def purchase_page():
     return render_template('purchase_page.html')
 
+@app.route('/sales_request_1', methods=['GET'])
+def sales_request_1():
+    return render_template('sales_request_1.html')
+
+@app.route('/sales_request_2', methods=['GET'])
+def sales_request_2():
+    return render_template('sales_request_2.html')
+
+@app.route('/sales_request_3', methods=['GET'])
+def sales_request_3():
+    return render_template('sales_request_3.html')
+
 
 # API
 

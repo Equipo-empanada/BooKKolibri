@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Icon -->
-    <link rel="icon" href="./assets/logo_icon.svg" type="image/svg">
-    <link rel="stylesheet" href="./CSS/reset.css">
-    <link rel="stylesheet" href="./CSS/main.css">
-    <link rel="stylesheet" href="./CSS/sales_request.css">
+    <link rel="icon" href="{{ url_for('static', filename='assets/logo_icon.svg') }}" type="image/svg">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/sales_request.css') }}">
     <title>BookKolibri - Solicitud</title>
 </head>
 <body>
+
     <header class="header">
-        <a href="./home.html" class="header__logo">
-            <img src="./assets/g1.svg" alt="Logo" height="50">
+        <a href="{{ url_for('index') }}" class="header__logo">
+            <img src="{{ url_for('static', filename='assets/g1.svg') }}" alt="Logo" height="50">
         </a>
         <ul class="header__process__list">
             <li class="header__process__list__item">
@@ -38,7 +39,7 @@
             </li>
         </ul>
     </header>
-    <main>
+    <main class="main-container">
         <h1>Documentos Legales</h1>
         <form class="formulario">
             <h2>Subir Archivos</h2>
@@ -68,6 +69,6 @@
             </div>
         </form>
     </main>
-    <script src="./JS/events_sales_request_3.js"></script>
+    <script src="{{ url_for('static', filename='JS/events_sales_request_3.js') }}"></script>
 </body>
 </html>
