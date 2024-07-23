@@ -175,7 +175,7 @@ class Chatbox {
         
         .messages__item {
             margin-top: 10px;
-            background: #E0E0E0;
+            background: #444;
             padding: 8px 12px;
             max-width: 70%;
         }
@@ -215,8 +215,13 @@ class Chatbox {
             padding: 10px 10px;
             border-radius: 30px;
             text-align: left;
+            color: black;
         }
         
+        .chatbox__footer input:placeholder {
+            color: #888;
+        }
+
         .chatbox__send--footer {
             color: white;
         }

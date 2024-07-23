@@ -8,6 +8,8 @@
     <link rel="icon" href="{{ url_for('static', filename='assets/logo_icon.svg') }}" type="image/svg+xml">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/reset.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/payment_page.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="{{ url_for('static', filename='JS/payment_page.js') }}"></script>
 </head>
 <body>
     <header class="header">
@@ -16,6 +18,7 @@
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
+
         </a>
         <a href="{{ url_for('index') }}" class="header__home">
             <img src="{{ url_for('static', filename='assets/g1.svg') }}" alt="Logo" height="50" class="header__logo">
@@ -140,8 +143,8 @@
                                                 <span class="yJocoA">*</span>
                                             </div>
                                             <div class="billing_address_line">
-                                                <select id="country" class="input_billing_address" required="" data-hj-suppress="true">
-                                                    <option value="AF">Afganistán</option>
+                                                <select id="country-select" class="input_billing_address" required="" data-hj-suppress="true">
+                                                    <!-- <option value="AF">Afganistán</option>
                                                     <option value="AL">Albania</option>
                                                     <option value="DE">Alemania</option>
                                                     <option value="AD">Andorra</option>
@@ -176,7 +179,7 @@
                                                     <option value="BG">Bulgaria</option>
                                                     <option value="BF">Burkina Faso</option>
                                                     <option value="BI">Burundi</option>
-                                                    <option value="BT">Bután</option>
+                                                    <option value="BT">Bután</option> -->
                                                 </select>
                                             </div>
                                         </div>
@@ -186,7 +189,7 @@
                                                 <span class="yJocoA">*</span>
                                             </div>
                                             <div class="billing_address_line">
-                                                <input type="text" id="city" class="input_billing_address" required="" data-hj-suppress="true">
+                                                <select id="city-select" class="input_billing_address" required="" data-hj-suppress="true" disabled></select>
                                             </div>
                                         </div>
                                         <div class="billing_address">
@@ -240,7 +243,7 @@
             <div class="payment_summary_container">
                 <div class="payment_summary">
                     <ul class="purcharsed_products">
-                        <li class="product">
+                        <!-- <li class="product">
                             <div class="product_store">
                                 <div class="product_store_info">
                                     <div>
@@ -294,13 +297,13 @@
                                     </svg>
                                 </span>
                             </button>
-                        </li>
+                        </li> -->
                     </ul>
                     <ul class="payment_summary__total">
                         <li>
                             Subtotal
                             <strong>
-                                <span class="price">15,88&nbsp;US$</span>
+                                <span class="price">&nbsp;US$</span>
                             </strong>
                         </li>
                         <li>
@@ -316,7 +319,7 @@
                         Total:
                         <div class="total_price">
                             <strong>
-                                <span class="price">17,38&nbsp;US$</span>
+                                <span class="price">&nbsp;US$</span>
                             </strong>
                         </div>
                     </div>

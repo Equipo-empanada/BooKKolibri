@@ -525,8 +525,8 @@ h3{
 
 .product {
     display: grid;
-    grid-template-columns: 50px 1fr;
-    grid-gap: 5px 10px;
+    grid-template-columns: 90px 1fr;
+    grid-gap: 10px 20px;
     font-size: 1.2rem;
     line-height: 1.3;
     padding: 10px 30px;

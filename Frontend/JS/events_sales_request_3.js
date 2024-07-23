@@ -10,5 +10,5 @@ divCedula.addEventListener("click",function(){
 });
 
 btnAtras_2.addEventListener('click',function(){
-    window.location.href = "sales_request_2.html";
+    window.location.href = "sales_request_2";
 });

@@ -79,18 +79,6 @@ class Tienda(db.Model):
     direccion = db.Column(db.String(255), nullable=False)
     usuario = db.relationship('Usuario', backref=db.backref('tiendas', lazy=True))
 
-
-class Pedido(db.Model):
-    __tablename__ = 'pedido'
-    id_pedido = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    fecha = db.Column(db.Date, nullable=False)
-    cantidad = db.Column(db.Integer, nullable=False)
-    tipotransaccion = db.Column(db.String(50), nullable=False)
-    id_libro = db.Column(db.Integer, db.ForeignKey('libro.id_libro'), nullable=False)
-    id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario'), nullable=False)
-    libro = db.relationship('Libro', backref=db.backref('pedidos', lazy=True))
-    usuario = db.relationship('Usuario', backref=db.backref('pedidos', lazy=True))
-
 class Publicacion(db.Model):
     __tablename__ = 'publicacion'
     id_publicacion = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -103,6 +91,17 @@ class Publicacion(db.Model):
     id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario'), nullable=False)
     libro = db.relationship('Libro', backref=db.backref('publicaciones', lazy=True))
     usuario = db.relationship('Usuario', backref=db.backref('publicaciones', lazy=True))
+
+class Pedido(db.Model):
+    __tablename__ = 'pedido'
+    id_pedido = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    fecha = db.Column(db.Date, nullable=False)
+    cantidad = db.Column(db.Integer, nullable=False)
+    tipotransaccion = db.Column(db.String(50), nullable=False)
+    id_libro = db.Column(db.Integer, db.ForeignKey('publicacion.id_publicacion'), nullable=False)
+    id_usuario = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario'), nullable=False)
+    Publicacion = db.relationship('Publicacion', backref=db.backref('pedidos', lazy=True))
+    usuario = db.relationship('Usuario', backref=db.backref('pedidos', lazy=True))
 
 class ImagenLibro(db.Model):
     __tablename__ = 'imagenlibro'
@@ -201,8 +200,24 @@ def change_password():
     return render_template('change_password.html')
 
 @app.route('/view_transactions', methods=['GET'])
+@login_required
 def view_transactions():
-    return render_template('view_transactions.html')
+    # Obtener las transacciones del usuario
+    compras = Pedido.query.filter_by(id_usuario=current_user.id_usuario, tipotransaccion='Compra').all()
+    publicaciones_comprados = Publicacion.query.filter(Publicacion.id_publicacion.in_([compra.id_libro for compra in compras])).all()
+    libros_comprados = [publicacion.libro for publicacion in publicaciones_comprados]
+    imagenes_comprados = [ImagenLibro.query.filter_by(id_libro=libro.id_libro).first() for libro in libros_comprados]
+
+    intercambios = Pedido.query.filter_by(id_usuario=current_user.id_usuario, tipotransaccion='Intercambio').all()
+    publicaciones_cambiadas = Publicacion.query.filter(Publicacion.id_publicacion.in_([intercambio.id_libro for intercambio in intercambios])).all()
+    libros_cambiados = [publicacion.libro for publicacion in publicaciones_cambiadas]
+    imagenes_cambiados = [ImagenLibro.query.filter_by(id_libro=libro.id_libro).first() for libro in libros_cambiados]
+
+    compras_con_imagenes = zip(libros_comprados, imagenes_comprados,compras)
+    intercambios_con_imagenes = zip(libros_cambiados, imagenes_cambiados,intercambios, intercambios)
+
+    return render_template('view_transactions.html', compras=compras_con_imagenes, intercambios=intercambios_con_imagenes)
+
 
 @app.route('/view_reviews', methods=['GET'])
 def view_reviews():
@@ -310,11 +325,17 @@ def purchasePage():
         img_mid = ImagenLibro.query.filter_by(id_libro=book.id_libro)
         image_src = [url_for('static', filename=f'static/uploads/{img.descripcion}') for img in img_mid]
 
-        seller = 'Usuario prueba.'
+        seller = post.usuario.nombre
         # sell_books = sample_book.sell_books
         # rating = sample_book.rating
         location = get_location_name(post.latitud, post.longitud)
 
+        #Consultamos las publicaciones vendidas por el vendedor (publicaciones con estado activo = False)
+        sell_books = Publicacion.query.filter_by(id_usuario=post.id_usuario, activo=False).count()
+
+        if sell_books == 0:
+            sell_books = "Ninguno"
+            
         #mapeamos state 
         if state == '1':
             state = 'Nuevo'
@@ -336,7 +357,7 @@ def purchasePage():
             'tags': tags,
             'image_src': image_src,
             'seller': seller,
-            'sell_books': 'sell_books',
+            'sell_books': sell_books,
             'rating': 'rating',
             'location': location,
             'post_age': post_age
@@ -399,6 +420,18 @@ def register():
 @app.route('/purchase_page', methods=['GET'])
 def purchase_page():
     return render_template('purchase_page.html')
+
+@app.route('/sales_request_1', methods=['GET'])
+def sales_request_1():
+    return render_template('sales_request_1.html')
+
+@app.route('/sales_request_2', methods=['GET'])
+def sales_request_2():
+    return render_template('sales_request_2.html')
+
+@app.route('/sales_request_3', methods=['GET'])
+def sales_request_3():
+    return render_template('sales_request_3.html')
 
 
 # API
@@ -835,6 +868,45 @@ def search_for_label(label=None):
         })
     
     return jsonify(lista_resultados)
+
+#Register purchase
+@app.route('/register_purchase', methods=['POST'])
+@login_required
+def register_purchase():
+    try:
+        data = request.json
+        items = data.get('items', [])
+
+        if not items:
+            return jsonify({'success': False, 'message': 'No items to purchase'}), 400
+
+        for item in items:
+            # Register the purchase in Pedido table
+            new_pedido = Pedido(
+                fecha=datetime.utcnow(),
+                cantidad=1,  # Assuming each item is one unit
+                tipotransaccion='Compra',
+                id_libro=item['id'],  # This should be id_publicacion now
+                id_usuario=current_user.id_usuario
+            )
+            db.session.add(new_pedido)
+
+            # Update the status of the publication
+            publication = Publicacion.query.filter_by(id_publicacion=item['id']).first()
+            if publication:
+                publication.activo = False
+
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Purchase registered successfully'})
+
+    except IntegrityError as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'Database Integrity Error: ' + str(e)}), 500
+
+    except Exception as e:
+        db.session.rollback()
+        app.logger.error(f"Error registering purchase: {e}")
+        return jsonify({'success': False, 'message': 'An error occurred: ' + str(e)}), 500
 
 #Chat
 #data = ['room','receiver','message']

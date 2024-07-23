@@ -347,15 +347,17 @@ textarea,
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     line-height: 1.5;
-    max-height: 5em;
+    
+    min-height: 5em;
 
 }
 
 .suggested_item__info__title {
     overflow: hidden;
     margin-bottom: 8px;
+
 }
 
 .suggested_item__info__title span {
