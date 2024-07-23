@@ -326,6 +326,12 @@ def purchasePage():
         # rating = sample_book.rating
         location = get_location_name(post.latitud, post.longitud)
 
+        #Consultamos las publicaciones vendidas por el vendedor (publicaciones con estado activo = False)
+        sell_books = Publicacion.query.filter_by(id_usuario=post.id_usuario, activo=False).count()
+
+        if sell_books == 0:
+            sell_books = "Ninguno"
+            
         #mapeamos state 
         if state == '1':
             state = 'Nuevo'
@@ -347,7 +353,7 @@ def purchasePage():
             'tags': tags,
             'image_src': image_src,
             'seller': seller,
-            'sell_books': 'sell_books',
+            'sell_books': sell_books,
             'rating': 'rating',
             'location': location,
             'post_age': post_age
