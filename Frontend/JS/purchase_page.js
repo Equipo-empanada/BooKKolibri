@@ -51,6 +51,9 @@ function setShoppingCart() {
         const carritoItem = document.createElement('div');
         carritoItem.className = 'carrito__item';
         carritoItem.setAttribute('data-id', item.id);
+        //Dejar una presion de 2 digitos para el precio
+        item.price = parseFloat(item.price).toFixed(2);
+        console.log(item.price);
 
         carritoItem.innerHTML = `
             <img src="${item.img}" alt="${item.booktitle}" class="carrito__item__img">
@@ -101,6 +104,7 @@ function setShoppingCart() {
         shopping_cart__container.appendChild(carritoItem);
     });
     // Mostrar el precio total
+    total_price = total_price.toFixed(2);
     total_price__container.innerHTML = `${total_price} US$`;
     purchase_summary__total__price.innerHTML = `<span>${total_price} US$</span>`;
 }
