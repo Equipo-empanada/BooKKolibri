@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <li class="chat_message ${messageClass}">
                 <div class="chat_message_struct">
                     <div class="chat_message_tab">
-                        <img src="./assets/image 4.png" alt="product_img">
+                        <img src="../Frontend/static/perfil_photos/default.png" alt="product_img">
                     </div>
                     <div class="chat_message_content">
                         <div class="chat_message_text">
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <li class="chat_message ${messageClass}">
                                     <div class="chat_message_struct">
                                         <div class="chat_message_tab">
-                                            <img src="./assets/image 4.png" alt="product_img">
+                                            <img src="../Frontend/static/perfil_photos/default.png" alt="product_img">
                                         </div>
                                         <div class="chat_message_content">
                                             <div class="chat_message_text">
